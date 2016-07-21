@@ -20,18 +20,17 @@ terminus site delete-env --site=${SITE_UUID} --env=${MULTIDEV} --remove-branch -
 echo -e "\nre-creating the ${MULTIDEV} multidev environment..."
 terminus site create-env --site=${SITE_UUID} --from-env=dev --to-env=${MULTIDEV}
 
-# making sure the multidev is in SFTP mode
-echo -e "\nsetting the ${MULTIDEV} multidev to SFTP mode"
-terminus site set-connection-mode --site=${SITE_UUID} --env=${MULTIDEV} --mode=sftp
-
-# create a backup of the multidev
-echo -e "\ncreating a backup of the ${MULTIDEV} multidev..."
-terminus site backups create --site=${SITE_UUID} --env=${MULTIDEV} --element=all
+# making sure the multidev is in git mode
+echo -e "\nsetting the ${MULTIDEV} multidev to git mode"
+terminus site set-connection-mode --site=${SITE_UUID} --env=${MULTIDEV} --mode=git
 
 # apply upstream updates, if applicable
 echo -e "\napplying upstream updates to the ${MULTIDEV} multidev..."
 terminus site upstream-updates apply --site=${SITE_UUID} --env=${MULTIDEV}
 
+# making sure the multidev is in SFTP mode
+echo -e "\nsetting the ${MULTIDEV} multidev to SFTP mode"
+terminus site set-connection-mode --site=${SITE_UUID} --env=${MULTIDEV} --mode=sftp
 
 # check for WordPress core updates
 #echo -e "\nchecking for WordPress core updates on the ${MULTIDEV} multidev..."
