@@ -28,21 +28,9 @@ terminus site set-connection-mode --site=${SITE_UUID} --env=${MULTIDEV} --mode=s
 echo -e "\ncreating a backup of the ${MULTIDEV} multidev..."
 terminus site backups create --site=${SITE_UUID} --env=${MULTIDEV} --element=all
 
-# check for upstream updates
-# echo -e "\nchecking for upstream updates on the ${MULTIDEV} multidev..."
-# UPSTREAM_UPDATES="$(terminus site upstream-updates list --site=${SITE_UUID} --env=${MULTIDEV} --format=bash)"
-#
-# echo ${UPSTREAM_UPDATES} | grep -c 'No updates'
-#
-# if [[ ${UPSTREAM_UPDATES} == *"No updates"* ]]
-# then
-#     # no upstream updates found
-#     echo -e "\nno upstream updates found on the ${MULTIDEV} multidev..."
-# else
-#     # apply upstream updates, if applicable
-#     echo -e "\napplying upstream updates to the ${MULTIDEV} multidev..."
-#     terminus site upstream-updates apply --site=${SITE_UUID} --env=${MULTIDEV}
-# fi
+# apply upstream updates, if applicable
+echo -e "\napplying upstream updates to the ${MULTIDEV} multidev..."
+terminus site upstream-updates apply --site=${SITE_UUID} --env=${MULTIDEV}
 
 
 # check for WordPress core updates
