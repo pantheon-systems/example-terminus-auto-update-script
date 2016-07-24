@@ -87,5 +87,33 @@ else
 fi
 
 # visual regression with Bactrack
-echo -e "\nstarting visual regression test between live and the ${MULTIDEV} multidev..."
-curl --header 'x-api-key: b0d82d371962671ebb02c5080a8f0a59' --request POST https://backtrac.io/api/project/24520/compare_prod_dev
+# echo -e "\nstarting visual regression test between live and the ${MULTIDEV} multidev..."
+# curl --header 'x-api-key: b0d82d371962671ebb02c5080a8f0a59' --request POST https://backtrac.io/api/project/24520/compare_prod_dev
+
+# install node dependencies
+echo -e "\nrunning npm install..."
+npm install
+
+# backstop visual regression
+echo -e "\nrunning BackstopJS tests..."
+
+cd node_modules/backstopjs
+
+npm run reference
+# npm run test
+
+VISUAL_REGRESSION_RESULTS=$(npm run test)
+
+echo "${VISUAL_REGRESSION_RESULTS}"
+
+cd -
+
+if [[ ${VISUAL_REGRESSION_RESULTS} == *"Mismatch errors found"* ]]
+then
+    # visual regression failed
+    echo -e "\nVisual regression tests failed! Please manually check the ${MULTIDEV} multidev..."
+    exit 1
+else
+    # visual regression passed
+    echo -e "\nVisual regression tests passed. Merging the ${MULTIDEV} multidev back into master..."
+fi
