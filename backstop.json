@@ -31,8 +31,8 @@
         "document"
       ],
       "readyEvent": null,
-      "delay": 500,
-      "misMatchThreshold" : 3.0
+      "delay": 1500,
+      "misMatchThreshold" : 0.1
     },
     {
       "label": "Elastic Architecture",
@@ -132,7 +132,7 @@
     "casper_scripts": "../../backstop_data/casper_scripts"
   },
   "engine": "phantomjs",
-  "report": ["CLI"],
+  "report": [ "CLI" ],
   "casperFlags": [],
   "debug": false,
   "port": 3001
