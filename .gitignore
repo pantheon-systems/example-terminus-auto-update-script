@@ -1,2 +1,4 @@
 node_modules
 .idea
+backstop_data/bitmaps_reference/
+backstop_data/bitmaps_test/
