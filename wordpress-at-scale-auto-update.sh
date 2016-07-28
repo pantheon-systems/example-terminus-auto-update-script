@@ -28,24 +28,6 @@ terminus site upstream-updates apply --site=${SITE_UUID} --env=${MULTIDEV}
 echo -e "\nsetting the ${MULTIDEV} multidev to SFTP mode"
 terminus site set-connection-mode --site=${SITE_UUID} --env=${MULTIDEV} --mode=sftp
 
-# check for WordPress core updates
-#echo -e "\nchecking for WordPress core updates on the ${MULTIDEV} multidev..."
-#CORE_UPDATES=$(terminus wp "core check-update" --site=${SITE_UUID} --env=${MULTIDEV} --format=bash)
-#
-#if [[ ${CORE_UPDATES} == *"WordPress is at the latest version"* ]]
-#then
-#    # no WordPress core updates found
-#    echo -e "\nno WordPress core updates found on the ${MULTIDEV} multidev..."
-#else
-#    # update WordPress core
-#    echo -e "\nupdating WordPress core on the ${MULTIDEV} multidev..."
-#    terminus wp "core update" --site=${SITE_UUID} --env=${MULTIDEV}
-#
-#    # committing updated WordPress core
-#    echo -e "\ncommitting WordPress core updates on the ${MULTIDEV} multidev..."
-#    terminus site code commit --site=${SITE_UUID} --env=${MULTIDEV} --message="update WordPress core" --yes
-#fi
-
 # check for WordPress plugin updates
 echo -e "\nchecking for WordPress plugin updates on the ${MULTIDEV} multidev..."
 PLUGIN_UPDATES=$(terminus wp "plugin list --field=update" --site=${SITE_UUID} --env=${MULTIDEV} --format=bash)
