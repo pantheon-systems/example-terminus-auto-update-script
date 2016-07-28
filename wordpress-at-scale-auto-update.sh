@@ -8,10 +8,6 @@ SITE_UUID="02854fa0-b6e4-4349-932a-8aa7d9cab884"
 echo -e "\nlogging into Terminus..."
 terminus auth login
 
-# ping the multidev environment to wake it from sleep
-echo -e "\npinging the ${MULTIDEV} multidev environment to wake it from sleep..."
-curl -I https://update-wp-wp-microsite.pantheonsite.io/
-
 # delete the multidev environment
 echo -e "\ndeleting the ${MULTIDEV} multidev environment..."
 terminus site delete-env --site=${SITE_UUID} --env=${MULTIDEV} --remove-branch --yes
@@ -94,6 +90,10 @@ fi
 echo -e "\nrunning npm install..."
 npm install
 
+# ping the multidev environment to wake it from sleep
+echo -e "\npinging the ${MULTIDEV} multidev environment to wake it from sleep..."
+curl -I https://update-wp-wp-microsite.pantheonsite.io/
+
 # backstop visual regression
 echo -e "\nrunning BackstopJS tests..."
 
@@ -115,5 +115,22 @@ then
     exit 1
 else
     # visual regression passed
-    echo -e "\nVisual regression tests passed. Merging the ${MULTIDEV} multidev back into master..."
+    echo -e "\nVisual regression tests passed between the ${MULTIDEV} multidev and live."
+
+    # enable git mode on dev
+    echo -e "\nEnabling git mode on the dev environment..."
+    terminus site set-connection-mode --site=${SITE_UUID} --env=dev --mode=git --yes
+
+    # merge the multidev back to dev
+    echo -e "\nMerging the ${MULTIDEV} multidev back into the dev environment (master)..."
+    terminus site merge-to-dev --site=${SITE_UUID} --env=${MULTIDEV}
+
+    # deploy to test
+    echo -e "\nDeploying the updates from dev to test..."
+    terminus site deploy --site=${SITE_UUID} --env=test --sync-content --cc --note="Auto deploy of WordPress updates (core, plugin, themes)"
+
+    # deploy to live
+    echo -e "\nDeploying the updates from test to live..."
+    terminus site deploy --site=${SITE_UUID} --env=live --cc --note="Auto deploy of WordPress updates (core, plugin, themes)"
+
 fi
