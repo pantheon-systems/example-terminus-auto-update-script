@@ -18,7 +18,7 @@ terminus site delete-env --site=${SITE_UUID} --env=${MULTIDEV} --remove-branch -
 
 # recreate the multidev environment
 echo -e "\nre-creating the ${MULTIDEV} multidev environment..."
-terminus site create-env --site=${SITE_UUID} --from-env=dev --to-env=${MULTIDEV}
+terminus site create-env --site=${SITE_UUID} --from-env=live --to-env=${MULTIDEV}
 
 # making sure the multidev is in git mode
 echo -e "\nsetting the ${MULTIDEV} multidev to git mode"
