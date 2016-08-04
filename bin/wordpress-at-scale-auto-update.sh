@@ -94,44 +94,44 @@ cd -
 
 if [[ "${UPDATES_APPLIED}" = false ]]
 then
-    # no updates to apply
+    # no updates applied
     echo -e "\nNo updates to apply..."
     SLACK_MESSAGE="scalewp.io Circle CI update check #${CIRCLE_BUILD_NUM} by ${CIRCLE_PROJECT_USERNAME}. No updates to apply, nothing deployed."
     echo -e "\nSending a message to the ${SLACK_CHANNEL} Slack channel"
     curl -X POST --data "payload={\"channel\": \"${SLACK_CHANNEL}\", \"username\": \"${SLACK_USERNAME}\", \"text\": \"${SLACK_MESSAGE}\"}" $SLACK_HOOK_URL
-    exit 0
-fi
-
-if [[ ${VISUAL_REGRESSION_RESULTS} == *"Mismatch errors found"* ]]
-then
-    # visual regression failed
-    echo -e "\nVisual regression tests failed! Please manually check the ${MULTIDEV} multidev..."
-    SLACK_MESSAGE="scalewp.io Circle CI update check #${CIRCLE_BUILD_NUM} by ${CIRCLE_PROJECT_USERNAME}. Visual regression tests failed on <https://dashboard.pantheon.io/sites/${SITE_UUID}#${MULTIDEV}/code|the ${MULTIDEV} environment>! Please test manually."
-    echo -e "\nSending a message to the ${SLACK_CHANNEL} Slack channel"
-    curl -X POST --data "payload={\"channel\": \"${SLACK_CHANNEL}\", \"username\": \"${SLACK_USERNAME}\", \"text\": \"${SLACK_MESSAGE}\"}" $SLACK_HOOK_URL
-    exit 1
 else
-    # visual regression passed
-    echo -e "\nVisual regression tests passed between the ${MULTIDEV} multidev and live."
+    # updates applied, carry on
+    if [[ ${VISUAL_REGRESSION_RESULTS} == *"Mismatch errors found"* ]]
+    then
+        # visual regression failed
+        echo -e "\nVisual regression tests failed! Please manually check the ${MULTIDEV} multidev..."
+        SLACK_MESSAGE="scalewp.io Circle CI update check #${CIRCLE_BUILD_NUM} by ${CIRCLE_PROJECT_USERNAME}. Visual regression tests failed on <https://dashboard.pantheon.io/sites/${SITE_UUID}#${MULTIDEV}/code|the ${MULTIDEV} environment>! Please test manually."
+        echo -e "\nSending a message to the ${SLACK_CHANNEL} Slack channel"
+        curl -X POST --data "payload={\"channel\": \"${SLACK_CHANNEL}\", \"username\": \"${SLACK_USERNAME}\", \"text\": \"${SLACK_MESSAGE}\"}" $SLACK_HOOK_URL
+        exit 1
+    else
+        # visual regression passed
+        echo -e "\nVisual regression tests passed between the ${MULTIDEV} multidev and live."
 
-    # enable git mode on dev
-    echo -e "\nEnabling git mode on the dev environment..."
-    terminus site set-connection-mode --site=${SITE_UUID} --env=dev --mode=git --yes
+        # enable git mode on dev
+        echo -e "\nEnabling git mode on the dev environment..."
+        terminus site set-connection-mode --site=${SITE_UUID} --env=dev --mode=git --yes
 
-    # merge the multidev back to dev
-    echo -e "\nMerging the ${MULTIDEV} multidev back into the dev environment (master)..."
-    terminus site merge-to-dev --site=${SITE_UUID} --env=${MULTIDEV}
+        # merge the multidev back to dev
+        echo -e "\nMerging the ${MULTIDEV} multidev back into the dev environment (master)..."
+        terminus site merge-to-dev --site=${SITE_UUID} --env=${MULTIDEV}
 
-    # deploy to test
-    echo -e "\nDeploying the updates from dev to test..."
-    terminus site deploy --site=${SITE_UUID} --env=test --sync-content --cc --note="Auto deploy of WordPress updates (core, plugin, themes)"
+        # deploy to test
+        echo -e "\nDeploying the updates from dev to test..."
+        terminus site deploy --site=${SITE_UUID} --env=test --sync-content --cc --note="Auto deploy of WordPress updates (core, plugin, themes)"
 
-    # deploy to live
-    echo -e "\nDeploying the updates from test to live..."
-    terminus site deploy --site=${SITE_UUID} --env=live --cc --note="Auto deploy of WordPress updates (core, plugin, themes)"
+        # deploy to live
+        echo -e "\nDeploying the updates from test to live..."
+        terminus site deploy --site=${SITE_UUID} --env=live --cc --note="Auto deploy of WordPress updates (core, plugin, themes)"
 
-    echo -e "\nVisual regression tests passed! WordPress updates deployed to live..."
-    SLACK_MESSAGE="scalewp.io Circle CI update check #${CIRCLE_BUILD_NUM} by ${CIRCLE_PROJECT_USERNAME} Visual regression tests passed! WordPress updates deployed to <https://dashboard.pantheon.io/sites/${SITE_UUID}#live/deploys|the live environment>."
-    echo -e "\nSending a message to the ${SLACK_CHANNEL} Slack channel"
-    curl -X POST --data "payload={\"channel\": \"${SLACK_CHANNEL}\", \"username\": \"${SLACK_USERNAME}\", \"text\": \"${SLACK_MESSAGE}\"}" $SLACK_HOOK_URL
+        echo -e "\nVisual regression tests passed! WordPress updates deployed to live..."
+        SLACK_MESSAGE="scalewp.io Circle CI update check #${CIRCLE_BUILD_NUM} by ${CIRCLE_PROJECT_USERNAME} Visual regression tests passed! WordPress updates deployed to <https://dashboard.pantheon.io/sites/${SITE_UUID}#live/deploys|the live environment>."
+        echo -e "\nSending a message to the ${SLACK_CHANNEL} Slack channel"
+        curl -X POST --data "payload={\"channel\": \"${SLACK_CHANNEL}\", \"username\": \"${SLACK_USERNAME}\", \"text\": \"${SLACK_MESSAGE}\"}" $SLACK_HOOK_URL
+    fi
 fi
