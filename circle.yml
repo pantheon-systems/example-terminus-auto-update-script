@@ -23,6 +23,10 @@ dependencies:
     - echo Disabling strict host checking
     - echo "StrictHostKeyChecking no" > ~/.ssh/config
 
+    # Install gulp
+    - echo Installing gulp globally
+    - npm install -g gulp
+
   override:
     - ./bin/wordpress-at-scale-auto-update.sh
 
