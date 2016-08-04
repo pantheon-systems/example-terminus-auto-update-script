@@ -31,12 +31,11 @@ dependencies:
     - echo Installing gulp globally
     - npm install -g gulp
 
-  override:
     # Install Terminus
-    - composer global require pantheon-systems/terminus
+    - composer global require pantheon-systems/terminus --update-with-dependencies
     - PATH=~/.composer/vendor/bin:$PATH
 
-    # Run the script
+  override:
     - ./bin/wordpress-at-scale-auto-update.sh
 
 test:
