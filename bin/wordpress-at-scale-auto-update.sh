@@ -2,7 +2,7 @@
 
 MULTIDEV="update-wp"
 
-UPDATES_APPLIED=0
+UPDATES_APPLIED=false
 
 # login to Terminus
 echo -e "\nlogging into Terminus..."
@@ -41,7 +41,7 @@ then
     # committing updated WordPress plugins
     echo -e "\ncommitting WordPress plugin updates on the ${MULTIDEV} multidev..."
     terminus site code commit --site=${SITE_UUID} --env=${MULTIDEV} --message="update WordPress plugins" --yes
-    UPDATES_APPLIED=1
+    UPDATES_APPLIED=true
 else
     # no WordPress plugin updates found
     echo -e "\nno WordPress plugin updates found on the ${MULTIDEV} multidev..."
@@ -60,7 +60,7 @@ then
     # committing updated WordPress themes
     echo -e "\ncommitting WordPress theme updates on the ${MULTIDEV} multidev..."
     terminus site code commit --site=${SITE_UUID} --env=${MULTIDEV} --message="update WordPress themes" --yes
-    UPDATES_APPLIED=1
+    UPDATES_APPLIED=true
 else
     # no WordPress theme updates found
     echo -e "\nno WordPress theme updates found on the ${MULTIDEV} multidev..."
@@ -92,7 +92,7 @@ echo "${VISUAL_REGRESSION_RESULTS}"
 
 cd -
 
-if [[ "$UPDATES_APPLIED" -eq 0 ]]
+if [[ "${UPDATES_APPLIED}" = false ]]
 then
     # no updates to apply
     echo -e "\nNo updates to apply..."
@@ -134,5 +134,4 @@ else
     SLACK_MESSAGE="scalewp.io Circle CI update check #${CIRCLE_BUILD_NUM} by ${CIRCLE_PROJECT_USERNAME} Visual regression tests passed! WordPress updates deployed to <https://dashboard.pantheon.io/sites/${SITE_UUID}#live/deploys|the live environment>."
     echo -e "\nSending a message to the ${SLACK_CHANNEL} Slack channel"
     curl -X POST --data "payload={\"channel\": \"${SLACK_CHANNEL}\", \"username\": \"${SLACK_USERNAME}\", \"text\": \"${SLACK_MESSAGE}\"}" $SLACK_HOOK_URL
-
 fi
