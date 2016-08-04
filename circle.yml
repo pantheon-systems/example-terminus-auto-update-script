@@ -6,7 +6,7 @@ machine:
     version: 4.4.7
 
   php:
-      version: 7.0.9
+      version: 7.0.4
 
   # This will be added to the `/etc/hosts` file
   hosts:
