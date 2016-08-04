@@ -32,7 +32,8 @@ dependencies:
     - npm install -g gulp
 
     # Install Terminus
-    - curl https://github.com/pantheon-systems/terminus/releases/download/0.11.3/terminus.phar -L -o /usr/local/bin/terminus && chmod +x /usr/local/bin/terminus
+    - sudo curl https://github.com/pantheon-systems/terminus/releases/download/0.11.3/terminus.phar -L -o /usr/local/bin/terminus
+    - sudo chmod +x /usr/local/bin/terminus
 
   override:
     - ./bin/wordpress-at-scale-auto-update.sh
