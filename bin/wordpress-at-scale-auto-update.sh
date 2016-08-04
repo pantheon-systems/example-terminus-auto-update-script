@@ -2,11 +2,11 @@
 
 MULTIDEV="update-wp"
 
-SITE_UUID="02854fa0-b6e4-4349-932a-8aa7d9cab884"
+UPDATES_APPLIED=0
 
 # login to Terminus
 echo -e "\nlogging into Terminus..."
-terminus auth login
+terminus auth login --machine-token=${TERMINUS_MACHINE_TOKEN}
 
 # delete the multidev environment
 echo -e "\ndeleting the ${MULTIDEV} multidev environment..."
@@ -41,6 +41,7 @@ then
     # committing updated WordPress plugins
     echo -e "\ncommitting WordPress plugin updates on the ${MULTIDEV} multidev..."
     terminus site code commit --site=${SITE_UUID} --env=${MULTIDEV} --message="update WordPress plugins" --yes
+    UPDATES_APPLIED=1
 else
     # no WordPress plugin updates found
     echo -e "\nno WordPress plugin updates found on the ${MULTIDEV} multidev..."
@@ -59,6 +60,7 @@ then
     # committing updated WordPress themes
     echo -e "\ncommitting WordPress theme updates on the ${MULTIDEV} multidev..."
     terminus site code commit --site=${SITE_UUID} --env=${MULTIDEV} --message="update WordPress themes" --yes
+    UPDATES_APPLIED=1
 else
     # no WordPress theme updates found
     echo -e "\nno WordPress theme updates found on the ${MULTIDEV} multidev..."
@@ -90,10 +92,23 @@ echo "${VISUAL_REGRESSION_RESULTS}"
 
 cd -
 
+if [[ "$UPDATES_APPLIED" -eq 0 ]]
+then
+    # no updates to apply
+    echo -e "\nNo updates to apply..."
+    SLACK_MESSAGE="scalewp.io Circle CI update check #${CIRCLE_BUILD_NUM} by ${CIRCLE_PROJECT_USERNAME}. Visual regression tests passed! WordPress updates deployed to <https://dashboard.pantheon.io/sites/${SITE_UUID}#live/deploys|the live environment>."
+    echo -e "\nSending a message to the ${SLACK_CHANNEL} Slack channel"
+    curl -X POST --data "payload={\"channel\": \"${SLACK_CHANNEL}\", \"username\": \"${SLACK_USERNAME}\", \"text\": \"${SLACK_MESSAGE}\"}" $SLACK_HOOK_URL
+    exit 1
+fi
+
 if [[ ${VISUAL_REGRESSION_RESULTS} == *"Mismatch errors found"* ]]
 then
     # visual regression failed
     echo -e "\nVisual regression tests failed! Please manually check the ${MULTIDEV} multidev..."
+    SLACK_MESSAGE="scalewp.io Circle CI update check #${CIRCLE_BUILD_NUM} by ${CIRCLE_PROJECT_USERNAME}. Visual regression tests failed on <https://dashboard.pantheon.io/sites/${SITE_UUID}#${MULTIDEV}/code|the ${MULTIDEV} environment>! Please test manually."
+    echo -e "\nSending a message to the ${SLACK_CHANNEL} Slack channel"
+    curl -X POST --data "payload={\"channel\": \"${SLACK_CHANNEL}\", \"username\": \"${SLACK_USERNAME}\", \"text\": \"${SLACK_MESSAGE}\"}" $SLACK_HOOK_URL
     exit 1
 else
     # visual regression passed
@@ -114,5 +129,10 @@ else
     # deploy to live
     echo -e "\nDeploying the updates from test to live..."
     terminus site deploy --site=${SITE_UUID} --env=live --cc --note="Auto deploy of WordPress updates (core, plugin, themes)"
+
+    echo -e "\nVisual regression tests passed! WordPress updates deployed to live..."
+    SLACK_MESSAGE="scalewp.io Circle CI update check #${CIRCLE_BUILD_NUM} by ${CIRCLE_PROJECT_USERNAME} Visual regression tests passed! WordPress updates deployed to <https://dashboard.pantheon.io/sites/${SITE_UUID}#live/deploys|the live environment>."
+    echo -e "\nSending a message to the ${SLACK_CHANNEL} Slack channel"
+    curl -X POST --data "payload={\"channel\": \"${SLACK_CHANNEL}\", \"username\": \"${SLACK_USERNAME}\", \"text\": \"${SLACK_MESSAGE}\"}" $SLACK_HOOK_URL
 
 fi

@@ -1,0 +1,31 @@
+machine:
+  timezone:
+    America/Chicago
+
+  node:
+    version: 4.4.7
+
+  # This will be added to the `/etc/hosts` file
+  hosts:
+    wp-best-practices.dev: 127.0.0.1
+
+dependencies:
+  cache_directories:
+    - ~/node_modules
+    - ~/.terminus/tokens
+    - /home/ubuntu/nvm/versions/node/4.4.7/bin
+    - /home/ubuntu/nvm/versions/node/4.4.7/lib/node_modules
+    - /usr/local/bin/terminus
+
+  pre:
+    # Dynamic hosts through Pantheon mean constantly checking interactively
+    # that we mean to connect to an unknown host. We ignore those here.
+    - echo Disabling strict host checking
+    - echo "StrictHostKeyChecking no" > ~/.ssh/config
+
+  override:
+    - ./bin/wordpress-at-scale-auto-update.sh
+
+test:
+  override:
+    - ls
