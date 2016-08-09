@@ -8,10 +8,6 @@ machine:
   php:
       version: 7.0.4
 
-  # This will be added to the `/etc/hosts` file
-  hosts:
-    wp-best-practices.dev: 127.0.0.1
-
 dependencies:
   cache_directories:
     - ~/node_modules
