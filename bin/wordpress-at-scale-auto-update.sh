@@ -10,7 +10,7 @@ terminus auth login --machine-token=${TERMINUS_MACHINE_TOKEN}
 
 # delete the multidev environment
 echo -e "\ndeleting the ${MULTIDEV} multidev environment..."
-terminus site delete-env --site=${SITE_UUID} --env=${MULTIDEV} --remove-branch --yes
+terminus site delete-env --remove-branch --yes
 
 # recreate the multidev environment
 echo -e "\nre-creating the ${MULTIDEV} multidev environment..."
@@ -18,29 +18,29 @@ terminus site create-env --site=${SITE_UUID} --from-env=live --to-env=${MULTIDEV
 
 # making sure the multidev is in git mode
 echo -e "\nsetting the ${MULTIDEV} multidev to git mode"
-terminus site set-connection-mode --site=${SITE_UUID} --env=${MULTIDEV} --mode=git
+terminus site set-connection-mode --mode=git
 
 # apply upstream updates, if applicable
 echo -e "\napplying upstream updates to the ${MULTIDEV} multidev..."
-terminus site upstream-updates apply --site=${SITE_UUID} --env=${MULTIDEV}
+terminus site upstream-updates apply
 
 # making sure the multidev is in SFTP mode
 echo -e "\nsetting the ${MULTIDEV} multidev to SFTP mode"
-terminus site set-connection-mode --site=${SITE_UUID} --env=${MULTIDEV} --mode=sftp
+terminus site set-connection-mode --mode=sftp
 
 # check for WordPress plugin updates
 echo -e "\nchecking for WordPress plugin updates on the ${MULTIDEV} multidev..."
-PLUGIN_UPDATES=$(terminus wp "plugin list --field=update" --site=${SITE_UUID} --env=${MULTIDEV} --format=bash)
+PLUGIN_UPDATES=$(terminus wp "plugin list --field=update" --format=bash)
 
 if [[ ${PLUGIN_UPDATES} == *"available"* ]]
 then
     # update WordPress plugins
     echo -e "\nupdating WordPress plugins on the ${MULTIDEV} multidev..."
-    terminus wp "plugin update --all" --site=${SITE_UUID} --env=${MULTIDEV}
+    terminus wp "plugin update --all"
 
     # committing updated WordPress plugins
     echo -e "\ncommitting WordPress plugin updates on the ${MULTIDEV} multidev..."
-    terminus site code commit --site=${SITE_UUID} --env=${MULTIDEV} --message="update WordPress plugins" --yes
+    terminus site code commit --message="update WordPress plugins" --yes
     UPDATES_APPLIED=true
 else
     # no WordPress plugin updates found
@@ -49,17 +49,17 @@ fi
 
 # check for WordPress theme updates
 echo -e "\nchecking for WordPress theme updates on the ${MULTIDEV} multidev..."
-THEME_UPDATES=$(terminus wp "theme list --field=update" --site=${SITE_UUID} --env=${MULTIDEV} --format=bash)
+THEME_UPDATES=$(terminus wp "theme list --field=update" --format=bash)
 
 if [[ ${THEME_UPDATES} == *"available"* ]]
 then
     # update WordPress themes
     echo -e "\nupdating WordPress plugins on the ${MULTIDEV} multidev..."
-    terminus wp "theme update --all" --site=${SITE_UUID} --env=${MULTIDEV}
+    terminus wp "theme update --all"
 
     # committing updated WordPress themes
     echo -e "\ncommitting WordPress theme updates on the ${MULTIDEV} multidev..."
-    terminus site code commit --site=${SITE_UUID} --env=${MULTIDEV} --message="update WordPress themes" --yes
+    terminus site code commit --message="update WordPress themes" --yes
     UPDATES_APPLIED=true
 else
     # no WordPress theme updates found
@@ -115,7 +115,7 @@ else
 
         # merge the multidev back to dev
         echo -e "\nMerging the ${MULTIDEV} multidev back into the dev environment (master)..."
-        terminus site merge-to-dev --site=${SITE_UUID} --env=${MULTIDEV}
+        terminus site merge-to-dev
 
         # deploy to test
         echo -e "\nDeploying the updates from dev to test..."
