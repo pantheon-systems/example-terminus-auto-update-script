@@ -4,6 +4,7 @@
 Automate WordPress core, plugin and theme updates on [Pantheon](https://pantheon.io)) with Terminus, CircleCI, WP-CLI, BackstopJS and Slack.
 
 This script will:
+
 1. Authenticate with [Terminus](https://github.com/pantheon-systems/terminus) via machine token
 2. Delete the multidev environment `update-wp`
 3. Recreate the multidev environment `update-wp`
