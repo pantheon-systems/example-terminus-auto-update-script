@@ -23,11 +23,12 @@ dependencies:
     - echo Installing gulp globally
     - npm install -g gulp
 
-    # Install Terminus
-    - sudo curl https://github.com/pantheon-systems/terminus/releases/download/0.11.3/terminus.phar -L -o /usr/local/bin/terminus
-    - sudo chmod +x /usr/local/bin/terminus
-
   override:
+    # Install Terminus
+    - composer global require pantheon-systems/terminus
+    - PATH=~/.composer/vendor/bin:$PATH
+
+    # Run the update
     - ./bin/wordpress-at-scale-auto-update.sh
 
 test:
