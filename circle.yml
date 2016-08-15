@@ -11,11 +11,8 @@ machine:
 dependencies:
   cache_directories:
     - ~/node_modules
-    - ~/.terminus/tokens
     - /home/ubuntu/nvm/versions/node/4.4.7/bin
     - /home/ubuntu/nvm/versions/node/4.4.7/lib/node_modules
-    - /usr/local/bin/terminus
-    - ~/.composer/cache
 
   pre:
 
