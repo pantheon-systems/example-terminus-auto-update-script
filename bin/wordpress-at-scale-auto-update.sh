@@ -20,9 +20,21 @@ terminus site create-env --site=${SITE_UUID} --from-env=live --to-env=${MULTIDEV
 echo -e "\nsetting the ${MULTIDEV} multidev to git mode"
 terminus site set-connection-mode --mode=git
 
-# apply upstream updates, if applicable
-echo -e "\napplying upstream updates to the ${MULTIDEV} multidev..."
-terminus site upstream-updates apply
+# check for upstream updates
+echo -e "\nchecking for upstream updates on the ${MULTIDEV} multidev..."
+# the output goes to stderr, not stdout
+UPSTREAM_UPDATES=$(terminus site upstream-updates list  --format=bash  2>&1)
+
+if [[ ${UPSTREAM_UPDATES} == *"No updates"* ]]
+then
+    # no upstream updates available
+    echo -e "\nno upstream updates found on the ${MULTIDEV} multidev..."
+else
+    # apply WordPress upstream updates
+    echo -e "\napplying upstream updates on the ${MULTIDEV} multidev..."
+    terminus site upstream-updates apply
+    UPDATES_APPLIED=true
+fi
 
 # making sure the multidev is in SFTP mode
 echo -e "\nsetting the ${MULTIDEV} multidev to SFTP mode"
