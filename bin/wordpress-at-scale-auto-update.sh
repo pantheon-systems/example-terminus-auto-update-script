@@ -133,6 +133,10 @@ else
         echo -e "\nDeploying the updates from dev to test..."
         terminus site deploy --site=${SITE_UUID} --env=test --sync-content --cc --note="Auto deploy of WordPress updates (core, plugin, themes)"
 
+        # backup the live site
+        echo -e "\nBacking up the live environment..."
+        terminus site backups create --env=live --element=all
+
         # deploy to live
         echo -e "\nDeploying the updates from test to live..."
         terminus site deploy --site=${SITE_UUID} --env=live --cc --note="Auto deploy of WordPress updates (core, plugin, themes)"
