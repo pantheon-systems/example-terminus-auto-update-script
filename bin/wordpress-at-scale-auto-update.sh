@@ -14,7 +14,7 @@ terminus site delete-env --remove-branch --yes
 
 # recreate the multidev environment
 echo -e "\nre-creating the ${MULTIDEV} multidev environment..."
-terminus site create-env --site=${SITE_UUID} --from-env=live --to-env=${MULTIDEV}
+terminus site create-env --from-env=live --to-env=${MULTIDEV}
 
 # making sure the multidev is in git mode
 echo -e "\nsetting the ${MULTIDEV} multidev to git mode"
@@ -123,7 +123,7 @@ else
 
         # enable git mode on dev
         echo -e "\nEnabling git mode on the dev environment..."
-        terminus site set-connection-mode --site=${SITE_UUID} --env=dev --mode=git --yes
+        terminus site set-connection-mode --env=dev --mode=git --yes
 
         # merge the multidev back to dev
         echo -e "\nMerging the ${MULTIDEV} multidev back into the dev environment (master)..."
@@ -131,7 +131,7 @@ else
 
         # deploy to test
         echo -e "\nDeploying the updates from dev to test..."
-        terminus site deploy --site=${SITE_UUID} --env=test --sync-content --cc --note="Auto deploy of WordPress updates (core, plugin, themes)"
+        terminus site deploy --env=test --sync-content --cc --note="Auto deploy of WordPress updates (core, plugin, themes)"
 
         # backup the live site
         echo -e "\nBacking up the live environment..."
@@ -139,7 +139,7 @@ else
 
         # deploy to live
         echo -e "\nDeploying the updates from test to live..."
-        terminus site deploy --site=${SITE_UUID} --env=live --cc --note="Auto deploy of WordPress updates (core, plugin, themes)"
+        terminus site deploy --env=live --cc --note="Auto deploy of WordPress updates (core, plugin, themes)"
 
         echo -e "\nVisual regression tests passed! WordPress updates deployed to live..."
         SLACK_MESSAGE="scalewp.io Circle CI update check #${CIRCLE_BUILD_NUM} by ${CIRCLE_PROJECT_USERNAME} Visual regression tests passed! WordPress updates deployed to <https://dashboard.pantheon.io/sites/${SITE_UUID}#live/deploys|the live environment>."
