@@ -5,77 +5,77 @@ MULTIDEV="update-wp"
 UPDATES_APPLIED=false
 
 # login to Terminus
-echo -e "\nlogging into Terminus..."
+echo -e "\nLogging into Terminus..."
 terminus auth login --machine-token=${TERMINUS_MACHINE_TOKEN}
 
 # delete the multidev environment
-echo -e "\ndeleting the ${MULTIDEV} multidev environment..."
+echo -e "\nDeleting the ${MULTIDEV} multidev environment..."
 terminus site delete-env --remove-branch --yes
 
 # recreate the multidev environment
-echo -e "\nre-creating the ${MULTIDEV} multidev environment..."
+echo -e "\nRe-creating the ${MULTIDEV} multidev environment..."
 terminus site create-env --from-env=live --to-env=${MULTIDEV}
 
 # making sure the multidev is in git mode
-echo -e "\nsetting the ${MULTIDEV} multidev to git mode"
+echo -e "\nSetting the ${MULTIDEV} multidev to git mode"
 terminus site set-connection-mode --mode=git
 
 # check for upstream updates
-echo -e "\nchecking for upstream updates on the ${MULTIDEV} multidev..."
+echo -e "\nChecking for upstream updates on the ${MULTIDEV} multidev..."
 # the output goes to stderr, not stdout
 UPSTREAM_UPDATES=$(terminus site upstream-updates list  --format=bash  2>&1)
 
 if [[ ${UPSTREAM_UPDATES} == *"No updates"* ]]
 then
     # no upstream updates available
-    echo -e "\nno upstream updates found on the ${MULTIDEV} multidev..."
+    echo -e "\nNo upstream updates found on the ${MULTIDEV} multidev..."
 else
     # apply WordPress upstream updates
-    echo -e "\napplying upstream updates on the ${MULTIDEV} multidev..."
+    echo -e "\nApplying upstream updates on the ${MULTIDEV} multidev..."
     terminus site upstream-updates apply
     UPDATES_APPLIED=true
 fi
 
 # making sure the multidev is in SFTP mode
-echo -e "\nsetting the ${MULTIDEV} multidev to SFTP mode"
+echo -e "\nSetting the ${MULTIDEV} multidev to SFTP mode"
 terminus site set-connection-mode --mode=sftp
 
 # check for WordPress plugin updates
-echo -e "\nchecking for WordPress plugin updates on the ${MULTIDEV} multidev..."
+echo -e "\nChecking for WordPress plugin updates on the ${MULTIDEV} multidev..."
 PLUGIN_UPDATES=$(terminus wp "plugin list --field=update" --format=bash)
 
 if [[ ${PLUGIN_UPDATES} == *"available"* ]]
 then
     # update WordPress plugins
-    echo -e "\nupdating WordPress plugins on the ${MULTIDEV} multidev..."
+    echo -e "\nUpdating WordPress plugins on the ${MULTIDEV} multidev..."
     terminus wp "plugin update --all"
 
     # committing updated WordPress plugins
-    echo -e "\ncommitting WordPress plugin updates on the ${MULTIDEV} multidev..."
+    echo -e "\nCommitting WordPress plugin updates on the ${MULTIDEV} multidev..."
     terminus site code commit --message="update WordPress plugins" --yes
     UPDATES_APPLIED=true
 else
     # no WordPress plugin updates found
-    echo -e "\nno WordPress plugin updates found on the ${MULTIDEV} multidev..."
+    echo -e "\nNo WordPress plugin updates found on the ${MULTIDEV} multidev..."
 fi
 
 # check for WordPress theme updates
-echo -e "\nchecking for WordPress theme updates on the ${MULTIDEV} multidev..."
+echo -e "\nChecking for WordPress theme updates on the ${MULTIDEV} multidev..."
 THEME_UPDATES=$(terminus wp "theme list --field=update" --format=bash)
 
 if [[ ${THEME_UPDATES} == *"available"* ]]
 then
     # update WordPress themes
-    echo -e "\nupdating WordPress plugins on the ${MULTIDEV} multidev..."
+    echo -e "\nUpdating WordPress plugins on the ${MULTIDEV} multidev..."
     terminus wp "theme update --all"
 
     # committing updated WordPress themes
-    echo -e "\ncommitting WordPress theme updates on the ${MULTIDEV} multidev..."
+    echo -e "\nCommitting WordPress theme updates on the ${MULTIDEV} multidev..."
     terminus site code commit --message="update WordPress themes" --yes
     UPDATES_APPLIED=true
 else
     # no WordPress theme updates found
-    echo -e "\nno WordPress theme updates found on the ${MULTIDEV} multidev..."
+    echo -e "\nNo WordPress theme updates found on the ${MULTIDEV} multidev..."
 fi
 
 if [[ "${UPDATES_APPLIED}" = false ]]
@@ -89,15 +89,15 @@ else
     # updates applied, carry on
 
     # install node dependencies
-    echo -e "\nrunning npm install..."
+    echo -e "\nRunning npm install..."
     npm install
 
     # ping the multidev environment to wake it from sleep
-    echo -e "\npinging the ${MULTIDEV} multidev environment to wake it from sleep..."
+    echo -e "\nPinging the ${MULTIDEV} multidev environment to wake it from sleep..."
     curl -I https://update-wp-wp-microsite.pantheonsite.io/
 
     # backstop visual regression
-    echo -e "\nrunning BackstopJS tests..."
+    echo -e "\nRunning BackstopJS tests..."
 
     cd node_modules/backstopjs
 
