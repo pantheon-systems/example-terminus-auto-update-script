@@ -32,7 +32,7 @@ then
 else
     # apply WordPress upstream updates
     echo -e "\nApplying upstream updates on the ${MULTIDEV} multidev..."
-    terminus site upstream-updates apply
+    terminus site upstream-updates apply --yes --updatedb --accept-upstream
     UPDATES_APPLIED=true
 fi
 
