@@ -16,10 +16,6 @@ terminus site delete-env --remove-branch --yes
 echo -e "\nRe-creating the ${MULTIDEV} multidev environment..."
 terminus site create-env --from-env=live --to-env=${MULTIDEV}
 
-# making sure the multidev is in git mode
-echo -e "\nSetting the ${MULTIDEV} multidev to git mode"
-terminus site set-connection-mode --mode=git
-
 # check for upstream updates
 echo -e "\nChecking for upstream updates on the ${MULTIDEV} multidev..."
 # the output goes to stderr, not stdout
@@ -30,6 +26,10 @@ then
     # no upstream updates available
     echo -e "\nNo upstream updates found on the ${MULTIDEV} multidev..."
 else
+    # making sure the multidev is in git mode
+    echo -e "\nSetting the ${MULTIDEV} multidev to git mode"
+    terminus site set-connection-mode --mode=git
+
     # apply WordPress upstream updates
     echo -e "\nApplying upstream updates on the ${MULTIDEV} multidev..."
     terminus site upstream-updates apply --yes --updatedb --accept-upstream
