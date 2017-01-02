@@ -15,18 +15,15 @@ dependencies:
     - /home/ubuntu/nvm/versions/node/4.4.7/lib/node_modules
 
   pre:
-
     # Install gulp
     - echo Installing gulp globally
     - npm install -g gulp
 
+  override:
     # Install Terminus
     - sudo curl https://github.com/pantheon-systems/terminus/releases/download/0.11.4/terminus.phar -L -o /usr/local/bin/terminus
     - sudo chmod +x /usr/local/bin/terminus
 
-  override:
-    - ./bin/wordpress-at-scale-auto-update.sh
-
 test:
   override:
-    - ls
+    - ./bin/wordpress-at-scale-auto-update.sh
