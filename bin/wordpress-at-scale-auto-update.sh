@@ -32,7 +32,7 @@ else
 
     # apply WordPress upstream updates
     echo -e "\nApplying upstream updates on the ${MULTIDEV} multidev..."
-    terminus site upstream-updates apply --yes --updatedb --accept-upstream
+    terminus site upstream-updates apply --yes --updatedb --accept-upstream --env=${MULTIDEV}
     UPDATES_APPLIED=true
 fi
 
@@ -107,6 +107,9 @@ else
     VISUAL_REGRESSION_RESULTS=$(npm run test)
 
     echo "${VISUAL_REGRESSION_RESULTS}"
+
+    echo "Rsyncing Backstop results to artifacts directory"
+    rsync  -rlvz   /home/ubuntu/wordpress-at-scale-auto-update/backstop_data $CIRCLE_ARTIFACTS/backstop
 
     cd -
     if [[ ${VISUAL_REGRESSION_RESULTS} == *"Mismatch errors found"* ]]
