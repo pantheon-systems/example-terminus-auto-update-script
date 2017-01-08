@@ -8,8 +8,8 @@ machine:
   php:
       version: 7.0.4
 
-    environment:
-      PATH: "${PATH}:${HOME}/terminus/bin"
+  environment:
+    PATH: "${PATH}:${HOME}/terminus/bin"
 
 dependencies:
   cache_directories:
