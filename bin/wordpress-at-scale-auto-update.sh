@@ -6,72 +6,72 @@ UPDATES_APPLIED=false
 
 # login to Terminus
 echo -e "\nLogging into Terminus..."
-terminus auth login --machine-token=${TERMINUS_MACHINE_TOKEN}
+terminus auth:login --machine-token=${TERMINUS_MACHINE_TOKEN}
 
 # delete the multidev environment
 echo -e "\nDeleting the ${MULTIDEV} multidev environment..."
-terminus site delete-env --remove-branch --yes
+terminus multidev:delete $SITE_UUID.$MULTIDEV --remove-branch --yes
 
 # recreate the multidev environment
 echo -e "\nRe-creating the ${MULTIDEV} multidev environment..."
-terminus site create-env --from-env=live --to-env=${MULTIDEV}
+terminus multidev:create $SITE_UUID.live $MULTIDEV
 
 # check for upstream updates
 echo -e "\nChecking for upstream updates on the ${MULTIDEV} multidev..."
 # the output goes to stderr, not stdout
-UPSTREAM_UPDATES=$(terminus site upstream-updates list  --format=bash  2>&1)
+UPSTREAM_UPDATES="$(terminus upstream:updates:list $SITE_UUID.$MULTIDEV  --format=list  2>&1)"
 
-if [[ ${UPSTREAM_UPDATES} == *"No updates"* ]]
+if [[ ${UPSTREAM_UPDATES} == *"no available updates"* ]]
 then
     # no upstream updates available
     echo -e "\nNo upstream updates found on the ${MULTIDEV} multidev..."
 else
     # making sure the multidev is in git mode
     echo -e "\nSetting the ${MULTIDEV} multidev to git mode"
-    terminus site set-connection-mode --mode=git
+    terminus connection:set $SITE_UUID.$MULTIDEV git
 
     # apply WordPress upstream updates
     echo -e "\nApplying upstream updates on the ${MULTIDEV} multidev..."
-    terminus site upstream-updates apply --yes --updatedb --accept-upstream
+    terminus upstream:updates:apply $SITE_UUID.$MULTIDEV --yes --updatedb --accept-upstream
     UPDATES_APPLIED=true
 fi
 
 # making sure the multidev is in SFTP mode
 echo -e "\nSetting the ${MULTIDEV} multidev to SFTP mode"
-terminus site set-connection-mode --mode=sftp
+terminus connection:set $SITE_UUID.$MULTIDEV git
 
 # check for WordPress plugin updates
 echo -e "\nChecking for WordPress plugin updates on the ${MULTIDEV} multidev..."
-PLUGIN_UPDATES=$(terminus wp "plugin list --field=update" --format=bash)
+PLUGIN_UPDATES="$(terminus wp $SITE_UUID.$MULTIDEV -- plugin list --update=available --format=count)"
 
-if [[ ${PLUGIN_UPDATES} == *"available"* ]]
+if [[ "$PLUGIN_UPDATES" == "0" ]]
 then
+	# no WordPress plugin updates found
+    echo -e "\nNo WordPress plugin updates found on the ${MULTIDEV} multidev..."
+else
     # update WordPress plugins
     echo -e "\nUpdating WordPress plugins on the ${MULTIDEV} multidev..."
-    terminus wp "plugin update --all"
+    terminus wp $SITE_UUID.$MULTIDEV -- plugin update --all
 
     # committing updated WordPress plugins
     echo -e "\nCommitting WordPress plugin updates on the ${MULTIDEV} multidev..."
-    terminus site code commit --message="update WordPress plugins" --yes
+    terminus env:commit $SITE_UUID.$MULTIDEV --message="update WordPress plugins" --yes
     UPDATES_APPLIED=true
-else
-    # no WordPress plugin updates found
-    echo -e "\nNo WordPress plugin updates found on the ${MULTIDEV} multidev..."
 fi
 
 # check for WordPress theme updates
 echo -e "\nChecking for WordPress theme updates on the ${MULTIDEV} multidev..."
-THEME_UPDATES=$(terminus wp "theme list --field=update" --format=bash)
+THEME_UPDATES=$(terminus wp $SITE_UUID.$MULTIDEV -- theme list --update=available --format=count)
 
-if [[ ${THEME_UPDATES} == *"available"* ]]
+if [[ "$THEME_UPDATES" == "0" ]]
 then
     # update WordPress themes
     echo -e "\nUpdating WordPress plugins on the ${MULTIDEV} multidev..."
-    terminus wp "theme update --all"
+    terminus $SITE_UUID.$MULTIDEV -- wp theme update --all
 
     # committing updated WordPress themes
     echo -e "\nCommitting WordPress theme updates on the ${MULTIDEV} multidev..."
-    terminus site code commit --message="update WordPress themes" --yes
+    terminus env:commit $SITE_UUID.$MULTIDEV --message="update WordPress themes" --yes
     UPDATES_APPLIED=true
 else
     # no WordPress theme updates found
@@ -94,7 +94,7 @@ else
 
     # ping the multidev environment to wake it from sleep
     echo -e "\nPinging the ${MULTIDEV} multidev environment to wake it from sleep..."
-    curl -I https://update-wp-wp-microsite.pantheonsite.io/
+    curl -I "https://$MULTIDEV-wp-microsite.pantheonsite.io/"
 
     # backstop visual regression
     echo -e "\nRunning BackstopJS tests..."
@@ -123,23 +123,23 @@ else
 
         # enable git mode on dev
         echo -e "\nEnabling git mode on the dev environment..."
-        terminus site set-connection-mode --env=dev --mode=git --yes
+        terminus connection:set $SITE_UUID.dev git
 
         # merge the multidev back to dev
         echo -e "\nMerging the ${MULTIDEV} multidev back into the dev environment (master)..."
-        terminus site merge-to-dev
+        terminus multidev:merge-to-dev $SITE_UUID.$MULTIDEV
 
         # deploy to test
         echo -e "\nDeploying the updates from dev to test..."
-        terminus site deploy --env=test --sync-content --cc --note="Auto deploy of WordPress updates (core, plugin, themes)"
+        terminus env:deploy $SITE_UUID.test --sync-content --cc --note="Auto deploy of WordPress updates (core, plugin, themes)"
 
         # backup the live site
         echo -e "\nBacking up the live environment..."
-        terminus site backups create --env=live --element=all
+        terminus backup:create $SITE_UUID.live --element=all --keep-for=30
 
         # deploy to live
         echo -e "\nDeploying the updates from test to live..."
-        terminus site deploy --env=live --cc --note="Auto deploy of WordPress updates (core, plugin, themes)"
+        terminus env:deploy $SITE_UUID.live --cc --note="Auto deploy of WordPress updates (core, plugin, themes)"
 
         echo -e "\nVisual regression tests passed! WordPress updates deployed to live..."
         SLACK_MESSAGE="scalewp.io Circle CI update check #${CIRCLE_BUILD_NUM} by ${CIRCLE_PROJECT_USERNAME} Visual regression tests passed! WordPress updates deployed to <https://dashboard.pantheon.io/sites/${SITE_UUID}#live/deploys|the live environment>."
