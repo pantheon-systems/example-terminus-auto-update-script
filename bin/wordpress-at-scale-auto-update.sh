@@ -10,7 +10,7 @@ terminus auth:login --machine-token=${TERMINUS_MACHINE_TOKEN}
 
 # delete the multidev environment
 echo -e "\nDeleting the ${MULTIDEV} multidev environment..."
-terminus multidev:delete $SITE_UUID.$MULTIDEV --remove-branch --yes
+terminus multidev:delete $SITE_UUID.$MULTIDEV --delete-branch --yes
 
 # recreate the multidev environment
 echo -e "\nRe-creating the ${MULTIDEV} multidev environment..."
