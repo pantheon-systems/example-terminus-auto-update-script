@@ -38,7 +38,7 @@ fi
 
 # making sure the multidev is in SFTP mode
 echo -e "\nSetting the ${MULTIDEV} multidev to SFTP mode"
-terminus connection:set $SITE_UUID.$MULTIDEV git
+terminus connection:set $SITE_UUID.$MULTIDEV sftp
 
 # check for WordPress plugin updates
 echo -e "\nChecking for WordPress plugin updates on the ${MULTIDEV} multidev..."
@@ -65,17 +65,17 @@ THEME_UPDATES=$(terminus wp $SITE_UUID.$MULTIDEV -- theme list --update=availabl
 
 if [[ "$THEME_UPDATES" == "0" ]]
 then
+	# no WordPress theme updates found
+    echo -e "\nNo WordPress theme updates found on the ${MULTIDEV} multidev..."
+else
     # update WordPress themes
-    echo -e "\nUpdating WordPress plugins on the ${MULTIDEV} multidev..."
+    echo -e "\nUpdating WordPress themes on the ${MULTIDEV} multidev..."
     terminus $SITE_UUID.$MULTIDEV -- wp theme update --all
 
     # committing updated WordPress themes
     echo -e "\nCommitting WordPress theme updates on the ${MULTIDEV} multidev..."
     terminus env:commit $SITE_UUID.$MULTIDEV --message="update WordPress themes" --yes
     UPDATES_APPLIED=true
-else
-    # no WordPress theme updates found
-    echo -e "\nNo WordPress theme updates found on the ${MULTIDEV} multidev..."
 fi
 
 if [[ "${UPDATES_APPLIED}" = false ]]
