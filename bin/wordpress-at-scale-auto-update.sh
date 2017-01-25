@@ -34,6 +34,8 @@ else
     echo -e "\nApplying upstream updates on the ${MULTIDEV} multidev..."
     terminus upstream:updates:apply $SITE_UUID.$MULTIDEV --yes --updatedb --accept-upstream
     UPDATES_APPLIED=true
+
+    terminus wp $SITE_UUID.$MULTIDEV -- core update-db
 fi
 
 # making sure the multidev is in SFTP mode
@@ -129,9 +131,17 @@ else
         echo -e "\nMerging the ${MULTIDEV} multidev back into the dev environment (master)..."
         terminus multidev:merge-to-dev $SITE_UUID.$MULTIDEV
 
+	# update WordPress database on dev
+        echo -e "\nUpdating the WordPress database on the dev environment..."
+	terminus wp $SITE_UUID.dev -- core update-db
+
         # deploy to test
         echo -e "\nDeploying the updates from dev to test..."
         terminus env:deploy $SITE_UUID.test --sync-content --cc --note="Auto deploy of WordPress updates (core, plugin, themes)"
+
+	# update WordPress database on test
+        echo -e "\nUpdating the WordPress database on the test environment..."
+	terminus wp $SITE_UUID.test -- core update-db
 
         # backup the live site
         echo -e "\nBacking up the live environment..."
@@ -140,6 +150,10 @@ else
         # deploy to live
         echo -e "\nDeploying the updates from test to live..."
         terminus env:deploy $SITE_UUID.live --cc --note="Auto deploy of WordPress updates (core, plugin, themes)"
+
+	# update WordPress database on live
+        echo -e "\nUpdating the WordPress database on the live environment..."
+	terminus wp $SITE_UUID.live -- core update-db
 
         echo -e "\nVisual regression tests passed! WordPress updates deployed to live..."
         SLACK_MESSAGE="scalewp.io Circle CI update check #${CIRCLE_BUILD_NUM} by ${CIRCLE_PROJECT_USERNAME} Visual regression tests passed! WordPress updates deployed to <https://dashboard.pantheon.io/sites/${SITE_UUID}#live/deploys|the live environment>."
