@@ -55,9 +55,13 @@ else
     echo -e "\nUpdating WordPress plugins on the ${MULTIDEV} multidev..."
     terminus wp $SITE_UUID.$MULTIDEV -- plugin update --all
 
+    # wake the site environment before committing code
+    echo -e "\nWaking the ${MULTIDEV} multidev..."
+    terminus $SITE_UUID.$MULTIDEV env:wake
+
     # committing updated WordPress plugins
     echo -e "\nCommitting WordPress plugin updates on the ${MULTIDEV} multidev..."
-    terminus env:commit $SITE_UUID.$MULTIDEV --message="update WordPress plugins" --yes -vvv
+    terminus env:commit $SITE_UUID.$MULTIDEV --message="update WordPress plugins" --yes
     UPDATES_APPLIED=true
 fi
 
@@ -74,9 +78,13 @@ else
     echo -e "\nUpdating WordPress themes on the ${MULTIDEV} multidev..."
     terminus $SITE_UUID.$MULTIDEV -- wp theme update --all
 
+    # wake the site environment before committing code
+    echo -e "\nWaking the ${MULTIDEV} multidev..."
+    terminus $SITE_UUID.$MULTIDEV env:wake
+
     # committing updated WordPress themes
     echo -e "\nCommitting WordPress theme updates on the ${MULTIDEV} multidev..."
-    terminus env:commit $SITE_UUID.$MULTIDEV --message="update WordPress themes" --yes -vvv
+    terminus env:commit $SITE_UUID.$MULTIDEV --message="update WordPress themes" --yes
     UPDATES_APPLIED=true
 fi
 
