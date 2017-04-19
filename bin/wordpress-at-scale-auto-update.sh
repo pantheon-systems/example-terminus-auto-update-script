@@ -57,7 +57,7 @@ else
 
     # wake the site environment before committing code
     echo -e "\nWaking the ${MULTIDEV} multidev..."
-    terminus $SITE_UUID.$MULTIDEV env:wake
+    terminus env:wake $SITE_UUID.$MULTIDEV
 
     # committing updated WordPress plugins
     echo -e "\nCommitting WordPress plugin updates on the ${MULTIDEV} multidev..."
