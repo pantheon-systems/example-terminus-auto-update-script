@@ -61,7 +61,7 @@ else
 
     # committing updated WordPress plugins
     echo -e "\nCommitting WordPress plugin updates on the ${MULTIDEV} multidev..."
-    terminus env:commit $SITE_UUID.$MULTIDEV --message="update WordPress plugins" --force
+    terminus env:commit $SITE_UUID.$MULTIDEV --force --message="update WordPress plugins"
     UPDATES_APPLIED=true
 fi
 
@@ -84,7 +84,7 @@ else
 
     # committing updated WordPress themes
     echo -e "\nCommitting WordPress theme updates on the ${MULTIDEV} multidev..."
-    terminus env:commit $SITE_UUID.$MULTIDEV --message="update WordPress themes" --force
+    terminus env:commit $SITE_UUID.$MULTIDEV --force --message="update WordPress themes"
     UPDATES_APPLIED=true
 fi
 
