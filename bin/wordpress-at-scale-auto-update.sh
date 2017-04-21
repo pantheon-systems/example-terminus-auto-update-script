@@ -48,7 +48,7 @@ PLUGIN_UPDATES="$(terminus wp $SITE_UUID.$MULTIDEV -- plugin list --update=avail
 
 if [[ "$PLUGIN_UPDATES" == "0" ]]
 then
-	# no WordPress plugin updates found
+    # no WordPress plugin updates found
     echo -e "\nNo WordPress plugin updates found on the ${MULTIDEV} multidev..."
 else
     # update WordPress plugins
@@ -71,7 +71,7 @@ THEME_UPDATES=$(terminus wp $SITE_UUID.$MULTIDEV -- theme list --update=availabl
 
 if [[ "$THEME_UPDATES" == "0" ]]
 then
-	# no WordPress theme updates found
+    # no WordPress theme updates found
     echo -e "\nNo WordPress theme updates found on the ${MULTIDEV} multidev..."
 else
     # update WordPress themes
