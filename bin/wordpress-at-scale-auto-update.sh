@@ -76,11 +76,11 @@ then
 else
     # update WordPress themes
     echo -e "\nUpdating WordPress themes on the ${MULTIDEV} multidev..."
-    terminus $SITE_UUID.$MULTIDEV -- wp theme update --all
+    terminus wp $SITE_UUID.$MULTIDEV -- theme update --all
 
     # wake the site environment before committing code
     echo -e "\nWaking the ${MULTIDEV} multidev..."
-    terminus $SITE_UUID.$MULTIDEV env:wake
+    terminus env:wake $SITE_UUID.$MULTIDEV
 
     # committing updated WordPress themes
     echo -e "\nCommitting WordPress theme updates on the ${MULTIDEV} multidev..."
