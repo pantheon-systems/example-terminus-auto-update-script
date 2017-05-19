@@ -28,7 +28,7 @@ dependencies:
     - ./bin/install_terminus.sh
 
   override:
-    - ./bin/wordpress-at-scale-auto-update.sh
+    - ./bin/auto-update.sh
 
 test:
   override:
