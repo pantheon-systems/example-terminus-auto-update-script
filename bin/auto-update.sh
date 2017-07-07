@@ -102,10 +102,6 @@ then
 else
     # updates applied, carry on
 
-    # install node dependencies
-    echo -e "\nRunning npm install..."
-    npm install
-
     # ping the multidev environment to wake it from sleep
     echo -e "\nPinging the ${MULTIDEV} multidev environment to wake it from sleep..."
     curl -I "https://$MULTIDEV-wp-microsite.pantheonsite.io/"
