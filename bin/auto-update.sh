@@ -5,6 +5,9 @@ SITENAME="scalewp.io"
 
 UPDATES_APPLIED=false
 
+# Stash Circle Artifacts URL
+CIRCLE_ARTIFACTS_URL="$CIRCLE_BUILD_URL/artifacts/$CIRCLE_NODE_INDEX/$CIRCLE_ARTIFACTS"
+
 # login to Terminus
 echo -e "\nLogging into Terminus..."
 terminus auth:login --machine-token=${TERMINUS_MACHINE_TOKEN}
@@ -119,12 +122,23 @@ else
 
     echo "${VISUAL_REGRESSION_RESULTS}"
 
+    # Rsync files to CIRCLE_ARTIFACTS
+    echo -e "\nRsyincing backstop_data files to $CIRCLE_ARTIFACTS..."
+    rsync -rlvz backstop_data $CIRCLE_ARTIFACTS
+
+    DIFF_REPORT="$CIRCLE_ARTIFACTS/backstop_data/html_report/index.html"
+    if [ ! -f $DIFF_REPORT ]; then
+        echo -e "\nDiff report file $DIFF_REPORT not found!"
+        exit 1
+    fi
+    DIFF_REPORT_URL="$CIRCLE_ARTIFACTS_URL/backstop_data/html_report/index.html"
+
     cd -
     if [[ ${VISUAL_REGRESSION_RESULTS} == *"Mismatch errors found"* ]]
     then
         # visual regression failed
         echo -e "\nVisual regression tests failed! Please manually check the ${MULTIDEV} multidev..."
-        SLACK_MESSAGE="${SITENAME} Circle CI update check #${CIRCLE_BUILD_NUM} by ${CIRCLE_PROJECT_USERNAME}. Visual regression tests failed on <https://dashboard.pantheon.io/sites/${SITE_UUID}#${MULTIDEV}/code|the ${MULTIDEV} environment>! Please test manually."
+        SLACK_MESSAGE="${SITENAME} Circle CI update check #${CIRCLE_BUILD_NUM} by ${CIRCLE_PROJECT_USERNAME}. Visual regression tests failed on <https://dashboard.pantheon.io/sites/${SITE_UUID}#${MULTIDEV}/code|the ${MULTIDEV} environment>! Please test manually. Visual Regression Report: $DIFF_REPORT_URL"
         echo -e "\nSending a message to the ${SLACK_CHANNEL} Slack channel"
         curl -X POST --data "payload={\"channel\": \"${SLACK_CHANNEL}\", \"username\": \"${SLACK_USERNAME}\", \"text\": \"${SLACK_MESSAGE}\"}" $SLACK_HOOK_URL
         exit 1
@@ -140,17 +154,17 @@ else
         echo -e "\nMerging the ${MULTIDEV} multidev back into the dev environment (master)..."
         terminus multidev:merge-to-dev $SITE_UUID.$MULTIDEV
 
-	# update WordPress database on dev
+	    # update WordPress database on dev
         echo -e "\nUpdating the WordPress database on the dev environment..."
-	terminus wp $SITE_UUID.dev -- core update-db
+	    terminus wp $SITE_UUID.dev -- core update-db
 
         # deploy to test
         echo -e "\nDeploying the updates from dev to test..."
         terminus env:deploy $SITE_UUID.test --sync-content --cc --note="Auto deploy of WordPress updates (core, plugin, themes)"
 
-	# update WordPress database on test
+	    # update WordPress database on test
         echo -e "\nUpdating the WordPress database on the test environment..."
-	terminus wp $SITE_UUID.test -- core update-db
+	    terminus wp $SITE_UUID.test -- core update-db
 
         # backup the live site
         echo -e "\nBacking up the live environment..."
@@ -160,12 +174,12 @@ else
         echo -e "\nDeploying the updates from test to live..."
         terminus env:deploy $SITE_UUID.live --cc --note="Auto deploy of WordPress updates (core, plugin, themes)"
 
-	# update WordPress database on live
+	    # update WordPress database on live
         echo -e "\nUpdating the WordPress database on the live environment..."
-	terminus wp $SITE_UUID.live -- core update-db
+	    terminus wp $SITE_UUID.live -- core update-db
 
         echo -e "\nVisual regression tests passed! WordPress updates deployed to live..."
-        SLACK_MESSAGE="${SITENAME} Circle CI update check #${CIRCLE_BUILD_NUM} by ${CIRCLE_PROJECT_USERNAME} Visual regression tests passed! WordPress updates deployed to <https://dashboard.pantheon.io/sites/${SITE_UUID}#live/deploys|the live environment>."
+        SLACK_MESSAGE="${SITENAME} Circle CI update check #${CIRCLE_BUILD_NUM} by ${CIRCLE_PROJECT_USERNAME} Visual regression tests passed! WordPress updates deployed to <https://dashboard.pantheon.io/sites/${SITE_UUID}#live/deploys|the live environment>.  Visual Regression Report: $DIFF_REPORT_URL"
         echo -e "\nSending a message to the ${SLACK_CHANNEL} Slack channel"
         curl -X POST --data "payload={\"channel\": \"${SLACK_CHANNEL}\", \"username\": \"${SLACK_USERNAME}\", \"text\": \"${SLACK_MESSAGE}\"}" $SLACK_HOOK_URL
     fi
