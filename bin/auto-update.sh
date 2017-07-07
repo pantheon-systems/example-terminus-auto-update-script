@@ -113,12 +113,13 @@ else
     # backstop visual regression
     echo -e "\nRunning BackstopJS tests..."
 
-    cd node_modules/backstopjs
+    # Backstop visual regression
+    echo -e "\nRunning backstop reference..."
 
-    npm run reference
-    # npm run test
+    backstop reference
 
-    VISUAL_REGRESSION_RESULTS=$(npm run test)
+    echo -e "\nRunning backstop test..."
+    VISUAL_REGRESSION_RESULTS=$(backstop test || echo 'true')
 
     echo "${VISUAL_REGRESSION_RESULTS}"
 
