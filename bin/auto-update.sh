@@ -138,7 +138,6 @@ else
         SLACK_MESSAGE="${SITENAME} Circle CI update check #${CIRCLE_BUILD_NUM} by ${CIRCLE_PROJECT_USERNAME}. Visual regression tests failed on <https://dashboard.pantheon.io/sites/${SITE_UUID}#${MULTIDEV}/code|the ${MULTIDEV} environment>! Please test manually. Visual Regression Report: $DIFF_REPORT_URL"
         echo -e "\nSending a message to the ${SLACK_CHANNEL} Slack channel"
         curl -X POST --data "payload={\"channel\": \"${SLACK_CHANNEL}\", \"username\": \"${SLACK_USERNAME}\", \"text\": \"${SLACK_MESSAGE}\"}" $SLACK_HOOK_URL
-        exit 1
     else
         # visual regression passed
         echo -e "\nVisual regression tests passed between the ${MULTIDEV} multidev and live."
