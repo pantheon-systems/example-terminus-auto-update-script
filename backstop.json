@@ -31,7 +31,7 @@
         "document"
       ],
       "readyEvent": null,
-      "delay": 1500,
+      "delay": 1000,
       "misMatchThreshold" : 0.1
     },
     {
@@ -40,7 +40,7 @@
       "referenceUrl": "https://update-wp-wp-microsite.pantheonsite.io/elastic-architecture/",
       "selectors": ["document"],
       "readyEvent": null,
-      "delay": 500,
+      "delay": 1000,
       "misMatchThreshold" : 0.1
     },
     {
@@ -49,7 +49,7 @@
       "referenceUrl": "https://update-wp-wp-microsite.pantheonsite.io/page-caching/",
       "selectors": ["document"],
       "readyEvent": null,
-      "delay": 500,
+      "delay": 1000,
       "misMatchThreshold" : 0.1
     },
     {
@@ -58,7 +58,7 @@
       "referenceUrl": "https://update-wp-wp-microsite.pantheonsite.io/object-caching/",
       "selectors": ["document"],
       "readyEvent": null,
-      "delay": 500,
+      "delay": 1000,
       "misMatchThreshold" : 0.1
     },
     {
@@ -67,7 +67,7 @@
       "referenceUrl": "https://update-wp-wp-microsite.pantheonsite.io/query-performance/",
       "selectors": ["document"],
       "readyEvent": null,
-      "delay": 500,
+      "delay": 1000,
       "misMatchThreshold" : 0.1
     },
     {
@@ -76,7 +76,7 @@
       "referenceUrl": "https://update-wp-wp-microsite.pantheonsite.io/searching-for-scale/",
       "selectors": ["document"],
       "readyEvent": null,
-      "delay": 500,
+      "delay": 1000,
       "misMatchThreshold" : 0.1
     },
     {
@@ -85,7 +85,7 @@
       "referenceUrl": "https://update-wp-wp-microsite.pantheonsite.io/a-real-world-scalable-architecture/",
       "selectors": ["document"],
       "readyEvent": null,
-      "delay": 500,
+      "delay": 1000,
       "misMatchThreshold" : 0.1
     },
     {
@@ -94,7 +94,7 @@
       "referenceUrl": "https://update-wp-wp-microsite.pantheonsite.io/a-real-world-scalable-architecture/",
       "selectors": ["document"],
       "readyEvent": null,
-      "delay": 500,
+      "delay": 1000,
       "misMatchThreshold" : 0.1
     },
     {
@@ -103,7 +103,7 @@
       "referenceUrl": "https://update-wp-wp-microsite.pantheonsite.io/resources/",
       "selectors": ["document"],
       "readyEvent": null,
-      "delay": 500,
+      "delay": 1000,
       "misMatchThreshold" : 0.1
     },
     {
@@ -112,7 +112,7 @@
       "referenceUrl": "https://update-wp-wp-microsite.pantheonsite.io/about/",
       "selectors": ["document"],
       "readyEvent": null,
-      "delay": 500,
+      "delay": 1000,
       "misMatchThreshold" : 0.1
     },
     {
@@ -121,7 +121,7 @@
       "referenceUrl": "https://update-wp-wp-microsite.pantheonsite.io/contribute/",
       "selectors": ["document"],
       "readyEvent": null,
-      "delay": 500,
+      "delay": 1000,
       "misMatchThreshold" : 0.1
     }
   ],
