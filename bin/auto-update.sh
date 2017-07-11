@@ -48,7 +48,7 @@ terminus connection:set $SITE_UUID.$MULTIDEV sftp
 
 # check for WordPress plugin updates
 echo -e "\nChecking for WordPress plugin updates on the ${MULTIDEV} multidev..."
-PLUGIN_UPDATES="$(terminus -n wp $SITE_UUID.$MULTIDEV -- plugin list --update=available --format=count)"
+PLUGIN_UPDATES=$(terminus -n wp $SITE_UUID.$MULTIDEV -- plugin list --update=available --format=count)
 echo $PLUGIN_UPDATES
 
 if [[ "$PLUGIN_UPDATES" == "0" ]]
