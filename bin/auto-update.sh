@@ -46,6 +46,9 @@ fi
 echo -e "\nSetting the ${MULTIDEV} multidev to SFTP mode"
 terminus connection:set $SITE_UUID.$MULTIDEV sftp
 
+# Wake pantheon SSH
+terminus -n wp $SITE_UUID.$MULTIDEV -- cli version
+
 # check for WordPress plugin updates
 echo -e "\nChecking for WordPress plugin updates on the ${MULTIDEV} multidev..."
 PLUGIN_UPDATES=$(terminus -n wp $SITE_UUID.$MULTIDEV -- plugin list --update=available --format=count)
