@@ -10,20 +10,20 @@ CIRCLE_ARTIFACTS_URL="$CIRCLE_BUILD_URL/artifacts/$CIRCLE_NODE_INDEX/$CIRCLE_ART
 
 # login to Terminus
 echo -e "\nLogging into Terminus..."
-terminus -n auth:login --machine-token=${TERMINUS_MACHINE_TOKEN}
+terminus auth:login --machine-token=${TERMINUS_MACHINE_TOKEN}
 
 # delete the multidev environment
 echo -e "\nDeleting the ${MULTIDEV} multidev environment..."
-terminus -n multidev:delete $SITE_UUID.$MULTIDEV --delete-branch --yes
+terminus multidev:delete $SITE_UUID.$MULTIDEV --delete-branch --yes
 
 # recreate the multidev environment
 echo -e "\nRe-creating the ${MULTIDEV} multidev environment..."
-terminus -n multidev:create $SITE_UUID.live $MULTIDEV
+terminus multidev:create $SITE_UUID.live $MULTIDEV
 
 # check for upstream updates
 echo -e "\nChecking for upstream updates on the ${MULTIDEV} multidev..."
 # the output goes to stderr, not stdout
-UPSTREAM_UPDATES="$(terminus -n upstream:updates:list $SITE_UUID.$MULTIDEV  --format=list  2>&1)"
+UPSTREAM_UPDATES="$(terminus upstream:updates:list $SITE_UUID.$MULTIDEV  --format=list  2>&1)"
 
 if [[ ${UPSTREAM_UPDATES} == *"no available updates"* ]]
 then
@@ -32,11 +32,11 @@ then
 else
     # making sure the multidev is in git mode
     echo -e "\nSetting the ${MULTIDEV} multidev to git mode"
-    terminus -n connection:set $SITE_UUID.$MULTIDEV git
+    terminus connection:set $SITE_UUID.$MULTIDEV git
 
     # apply WordPress upstream updates
     echo -e "\nApplying upstream updates on the ${MULTIDEV} multidev..."
-    terminus -n upstream:updates:apply $SITE_UUID.$MULTIDEV --yes --updatedb --accept-upstream
+    terminus upstream:updates:apply $SITE_UUID.$MULTIDEV --yes --updatedb --accept-upstream
     UPDATES_APPLIED=true
 
     terminus -n wp $SITE_UUID.$MULTIDEV -- core update-db
@@ -44,7 +44,7 @@ fi
 
 # making sure the multidev is in SFTP mode
 echo -e "\nSetting the ${MULTIDEV} multidev to SFTP mode"
-terminus -n connection:set $SITE_UUID.$MULTIDEV sftp
+terminus connection:set $SITE_UUID.$MULTIDEV sftp
 
 # check for WordPress plugin updates
 echo -e "\nChecking for WordPress plugin updates on the ${MULTIDEV} multidev..."
@@ -61,11 +61,11 @@ else
 
     # wake the site environment before committing code
     echo -e "\nWaking the ${MULTIDEV} multidev..."
-    terminus -n env:wake $SITE_UUID.$MULTIDEV
+    terminus env:wake $SITE_UUID.$MULTIDEV
 
     # committing updated WordPress plugins
     echo -e "\nCommitting WordPress plugin updates on the ${MULTIDEV} multidev..."
-    terminus -n env:commit $SITE_UUID.$MULTIDEV --force --message="update WordPress plugins"
+    terminus env:commit $SITE_UUID.$MULTIDEV --force --message="update WordPress plugins"
     UPDATES_APPLIED=true
 fi
 
@@ -84,11 +84,11 @@ else
 
     # wake the site environment before committing code
     echo -e "\nWaking the ${MULTIDEV} multidev..."
-    terminus -n env:wake $SITE_UUID.$MULTIDEV
+    terminus env:wake $SITE_UUID.$MULTIDEV
 
     # committing updated WordPress themes
     echo -e "\nCommitting WordPress theme updates on the ${MULTIDEV} multidev..."
-    terminus -n env:commit $SITE_UUID.$MULTIDEV --force --message="update WordPress themes"
+    terminus env:commit $SITE_UUID.$MULTIDEV --force --message="update WordPress themes"
     UPDATES_APPLIED=true
 fi
 
@@ -144,11 +144,11 @@ else
 
         # enable git mode on dev
         echo -e "\nEnabling git mode on the dev environment..."
-        terminus -n connection:set $SITE_UUID.dev git
+        terminus connection:set $SITE_UUID.dev git
 
         # merge the multidev back to dev
         echo -e "\nMerging the ${MULTIDEV} multidev back into the dev environment (master)..."
-        terminus -n multidev:merge-to-dev $SITE_UUID.$MULTIDEV
+        terminus multidev:merge-to-dev $SITE_UUID.$MULTIDEV
 
 	    # update WordPress database on dev
         echo -e "\nUpdating the WordPress database on the dev environment..."
@@ -156,7 +156,7 @@ else
 
         # deploy to test
         echo -e "\nDeploying the updates from dev to test..."
-        terminus -n env:deploy $SITE_UUID.test --sync-content --cc --note="Auto deploy of WordPress updates (core, plugin, themes)"
+        terminus env:deploy $SITE_UUID.test --sync-content --cc --note="Auto deploy of WordPress updates (core, plugin, themes)"
 
 	    # update WordPress database on test
         echo -e "\nUpdating the WordPress database on the test environment..."
@@ -164,11 +164,11 @@ else
 
         # backup the live site
         echo -e "\nBacking up the live environment..."
-        terminus -n backup:create $SITE_UUID.live --element=all --keep-for=30
+        terminus backup:create $SITE_UUID.live --element=all --keep-for=30
 
         # deploy to live
         echo -e "\nDeploying the updates from test to live..."
-        terminus -n env:deploy $SITE_UUID.live --cc --note="Auto deploy of WordPress updates (core, plugin, themes)"
+        terminus env:deploy $SITE_UUID.live --cc --note="Auto deploy of WordPress updates (core, plugin, themes)"
 
 	    # update WordPress database on live
         echo -e "\nUpdating the WordPress database on the live environment..."
