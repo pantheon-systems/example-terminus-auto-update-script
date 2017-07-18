@@ -31,7 +31,10 @@ dependencies:
     - ./bin/install_terminus.sh
 
   override:
-    - ./bin/auto-update.sh
+    - >
+      if [ -n "${CRON_BUILD}" ]; then
+        ./bin/auto-update;
+      fi
 
 test:
   override:
