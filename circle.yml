@@ -21,21 +21,18 @@ dependencies:
     - ~/.terminus/tokens
 
   pre:
-
     # Install gulp
     - echo Installing gulp globally
     - npm install -g gulp
     - npm install -g backstopjs
 
+  override:
     # Install Terminus
     - ./bin/install_terminus.sh
 
+test:
   override:
     - >
       if [ -n "${CRON_BUILD}" ]; then
         ./bin/auto-update;
       fi
-
-test:
-  override:
-    - ls
