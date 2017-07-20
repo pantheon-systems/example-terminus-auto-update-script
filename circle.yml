@@ -34,5 +34,5 @@ test:
   override:
     - >
       if [ -n "${CRON_BUILD}" ]; then
-        ./bin/auto-update;
+        ./bin/auto-update.sh;
       fi
