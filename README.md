@@ -1,14 +1,15 @@
 # Pantheon WordPress Auto Update #
 
 ## Description ##
-Automate WordPress core, plugin and theme updates on [Pantheon](https://pantheon.io)) with Terminus, CircleCI, WP-CLI, BackstopJS and Slack.
+Automate WordPress core, plugin and theme updates on a [Pantheon](https://pantheon.io) site.
+Uses Terminus, CircleCI, WP-CLI, BackstopJS and Slack.
 
 This script will:
 
 1. Authenticate with [Terminus](https://github.com/pantheon-systems/terminus) via machine token
 2. Delete the multidev environment `update-wp`
 3. Recreate the multidev environment `update-wp`
-	* Deletion and recreation is done to clear any existing changes and pull the latest database/files from the live environment 
+	* Deletion and recreation is done to clear any existing changes and pull the latest database/files from the live environment
 4. Switch the multidev environment `update-wp` to Git mode
 5. [Apply Pantheon upstream updates](https://pantheon.io/docs/upstream-updates/)
 	* WordPress core updates are managed in the upstream
@@ -27,7 +28,7 @@ This script will:
 [GPLv2 or later](http://www.gnu.org/licenses/gpl-2.0.html)
 
 ## Setup ##
-1. Create a [CircleCI](https://circleci.com) project
+1. Create a [CircleCI](https://circleci.com) project and point it to a fork of this repo.
 2. Add [environment variables to CircleCI](https://circleci.com/docs/environment-variables/) for the following:
 	* `SITE_UUID`: The [Pantheon site UUID](https://pantheon.io/docs/sites/#site-uuid)
 	* `TERMINUS_MACHINE_TOKEN`: A [Pantheon Terminus machine token](https://pantheon.io/docs/machine-tokens/) with access to the site
@@ -35,8 +36,8 @@ This script will:
 	* `SLACK_CHANNEL`: The Slack channel to post notifications to
 	* `SLACK_USERNAME`: The username to post to Slack with
 3. Add an [SSH key to Pantheon](https://pantheon.io/docs/ssh-keys/) and [to the CircleCI project](https://circleci.com/docs/permissions-and-access-during-deployment/).
-4. Update the site UUID in the `.env` file
-5. Update _scenarios_ in `backstop.js` with URLs for pages you wish to check with visual regression
+4. Update `SITENAME` and `MULTIDEV` in `bin/auto-update.sh` with with the desired site name and multidev site.
+5. Update _scenarios_ in `backstop.json` with URLs for pages you wish to check with visual regression
 	* `url` refers to the live URL and `referenceUrl` refers to the same page on the Pantheon multidev environment
 6. Ping the [CircleCI API](https://circleci.com/docs/api/) at the desired frequency, e.g. daily, to run the script
 
