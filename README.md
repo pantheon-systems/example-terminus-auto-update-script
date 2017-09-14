@@ -39,6 +39,9 @@ This script will:
 5. Update _scenarios_ in `backstop.js` with URLs for pages you wish to check with visual regression
 	* `url` refers to the live URL and `referenceUrl` refers to the same page on the Pantheon multidev environment
 6. Ping the [CircleCI API](https://circleci.com/docs/api/) at the desired frequency, e.g. daily, to run the script. You will need to set the `CRON_BUILD` variable, sent as POST data. See the [nightly build doc](https://circleci.com/docs/1.0/nightly-builds/) for details.
+[Cron-Job.org](https://cron-job.org/en/) settings are shown here for reference:
+	![in the Header field we see Content-Type.  In the Value vfield we see application/json in the "Request body" we see {"build_parameters" : {"CRON_BUILD" : "1"}}][https://image.ibb.co/iAz6Wv/Screen_Shot_2017_09_13_at_2_54_00_PM.png]
+
 
 ## Notes ##
 This workflow assumes the `master` branch (dev) and test environments on Pantheon are always in a shippable state as the script will automatically deploy changes from dev to test and live.
