@@ -1,6 +1,10 @@
 #!/bin/bash
 
-MULTIDEV="update-wp"
+# Check to see if the multidev is already defined in the environment variable. If not, define it now.
+if [ -z "$MULTIDEV" ]
+then
+    MULTIDEV="update-wp"
+fi
 
 UPDATES_APPLIED=false
 
