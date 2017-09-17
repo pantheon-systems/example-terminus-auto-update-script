@@ -28,7 +28,7 @@ This script will:
 
 ## Setup ##
 1. Fork this repository or use this code to create your own
-2. Update _scenarios_ in `backstop.js` with URLs for pages you wish to check with visual regression
+2. Update _scenarios_ in `backstop.json` with URLs for pages you wish to check with visual regression
 	* `url` refers to the live URL and `referenceUrl` refers to the same page on the Pantheon multidev environment
 3. Create a [CircleCI](https://circleci.com) project
 4. Add [environment variables to CircleCI](https://circleci.com/docs/environment-variables/) for the following:
