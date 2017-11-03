@@ -6,7 +6,7 @@ machine:
     version: 6.1.0
 
   php:
-      version: 7.0.4
+      version: 7.0.24
 
   environment:
     PATH: "${PATH}:${HOME}/terminus/bin"
