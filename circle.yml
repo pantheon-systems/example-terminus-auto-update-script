@@ -3,10 +3,10 @@ machine:
     America/Chicago
 
   node:
-    version: 6.1.0
+    version: 8.2.0
 
   php:
-      version: 7.0.24
+      version: 7.1.9
 
   environment:
     PATH: "${PATH}:${HOME}/terminus/bin"
@@ -14,8 +14,8 @@ machine:
 dependencies:
   cache_directories:
     - ~/node_modules
-    - ~/nvm/versions/node/6.1.0/bin
-    - ~/nvm/versions/node/6.1.0/lib/node_modules
+    - ~/nvm/versions/node/8.2.0/bin
+    - ~/nvm/versions/node/8.2.0/lib/node_modules
     - /usr/local/bin/terminus
     - ~/terminus
     - ~/.terminus/tokens
