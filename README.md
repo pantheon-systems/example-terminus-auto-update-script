@@ -46,6 +46,8 @@ This script will:
 			* Header: `Content-Type`
 			* Value: `application/json`
 			* Request Body: `{"build_parameters" : {"CRON_BUILD" : "1"}}`
+		* Cron-Job.org](https://cron-job.org/en/) settings are shown here for reference:
+ +	![in the Header field we see Content-Type.  In the Value vfield we see application/json in the "Request body" we see {"build_parameters" : {"CRON_BUILD" : "1"}}][https://image.ibb.co/iAz6Wv/Screen_Shot_2017_09_13_at_2_54_00_PM.png]
 
 ## Notes ##
 This workflow assumes that the Dev and Test environments on Pantheon are always in a shippable state as the script will automatically deploy changes from Dev to Test and Live if the tests pass.
