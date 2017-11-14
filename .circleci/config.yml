@@ -41,7 +41,7 @@ jobs:
         steps:
             - checkout
 
-             - run:
+            - run:
                 name: declare environment variables
                 command: ./.circleci/set-up-globals.sh
 
