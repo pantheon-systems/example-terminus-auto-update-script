@@ -28,6 +28,8 @@ then
 	echo "export LIVE_URL='https://live-$SITE_NAME.pantheonsite.io/'" >> $BASH_ENV
 fi
 
+echo 'export PATH=$PATH:$HOME/bin:$HOME/terminus/bin' >> $BASH_ENV
+
 source $BASH_ENV
 
 #===========================================
