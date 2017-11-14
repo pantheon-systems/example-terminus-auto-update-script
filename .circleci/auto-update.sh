@@ -17,6 +17,8 @@ echo -e "\nChecking for upstream updates on the ${MULTIDEV} multidev..."
 # the output goes to stderr, not stdout
 UPSTREAM_UPDATES="$(terminus upstream:updates:list $SITE_UUID.$MULTIDEV  --format=list  2>&1)"
 
+UPDATES_APPLIED=false
+
 if [[ ${UPSTREAM_UPDATES} == *"no available updates"* ]]
 then
     # no upstream updates available
@@ -98,6 +100,7 @@ then
     curl -X POST --data "payload={\"channel\": \"${SLACK_CHANNEL}\", \"username\": \"${SLACK_USERNAME}\", \"text\": \"${SLACK_MESSAGE}\"}" $SLACK_HOOK_URL
 else
     # Run visual regression tests
+	echo -e "\nUpdates applied, starting the visual regression testing job via API..."
 	curl --user ${CIRCLE_TOKEN}: \
                 --data build_parameters[CIRCLE_JOB]=visual_regression_test \
                 --data revision=$CIRCLE_SHA1 \

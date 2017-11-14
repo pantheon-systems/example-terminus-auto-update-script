@@ -68,6 +68,7 @@ else
 	echo -e "\nVisual regression tests passed between the ${MULTIDEV} multidev and live."
 
 	# Deploy updates
+	echo -e "\nStarting the deploy job via API..."
 	curl --user ${CIRCLE_TOKEN}: \
                 --data build_parameters[CIRCLE_JOB]=deploy_updates \
                 --data revision=$CIRCLE_SHA1 \
