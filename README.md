@@ -9,7 +9,7 @@ This script will:
 2. Delete the multidev environment `update-wp`
 3. Recreate the multidev environment `update-wp`
 	* Deletion and recreation is done to clear any existing changes and pull the latest database/files from the live environment
-4. Switch the multidev environment `update-wp` to Git mode
+4. Switch the multidev environment `update-wp` to git mode
 5. [Apply Pantheon upstream updates](https://pantheon.io/docs/upstream-updates/)
 	* WordPress core updates are managed in the upstream
 6. Switch the multidev environment `update-wp` to SFTP mode
@@ -27,29 +27,22 @@ This script will:
 [GPLv2 or later](http://www.gnu.org/licenses/gpl-2.0.html)
 
 ## Setup ##
-1. Fork this repository or use this code to create your own
-2. Update _scenarios_ in `backstop.json` with URLs for pages you wish to check with visual regression
-	* `url` refers to the live URL and `referenceUrl` refers to the same page on the Pantheon multidev environment
+1. Don't fork this repository, instead clone it and [change the remote URL](https://help.github.com/articles/changing-a-remote-s-url/) to your own fresh GitHub repository and push the code there
+2. Update `backstop.template.json` to meet your needs, tweaking things like `viewport`
 3. Create a [CircleCI](https://circleci.com) project
 4. Add [environment variables to CircleCI](https://circleci.com/docs/environment-variables/) for the following:
 	* `SITE_UUID`: The [Pantheon site UUID](https://pantheon.io/docs/sites/#site-uuid)
+	* `SITE_NAME`: The site machine name. Can be found with `terminus site:list` or `terminus org:site:list`
+	* `MULTIDEV`: The multidev name to use for applying/testing updates. Defaults to `update-wp`
+	* `LIVE_URL`: The live site URL to use for applying/testing updates. Defaults to the Pantheon hosted live environment URL but should be updated for custom domains.
+	* `CIRCLE_TOKEN`: A Circle CI API token with access to the project created in step 3.
 	* `TERMINUS_MACHINE_TOKEN`: A [Pantheon Terminus machine token](https://pantheon.io/docs/machine-tokens/) with access to the site
 	* `SLACK_HOOK_URL`: The [Slack incoming webhook URL](https://api.slack.com/incoming-webhooks)
 	* `SLACK_CHANNEL`: The Slack channel to post notifications to
 	* `SLACK_USERNAME`: The username to post to Slack with
 5. Add an [SSH key to Pantheon](https://pantheon.io/docs/ssh-keys/) and [to the CircleCI project](https://circleci.com/docs/permissions-and-access-during-deployment/)
-6. Ping the [CircleCI API](https://circleci.com/docs/api/) at the desired frequency, e.g. daily, to run the script. You will need to set the `CRON_BUILD` variable, sent as POST data. See the [nightly build doc](https://circleci.com/docs/1.0/nightly-builds/) for details.
-	* You can use a free service such as [cron-job.org](https://cron-job.org/en/) with the following configuration:
-		* Address: `https://circleci.com/api/v1.1/project/github/[GITHUB-USERNAME]/[PROJECT]?circle-token=[CIRCLECI-PERSONAL-API-TOKEN]` (Get a token at https://circleci.com/account/api)
-		* Request method: `POST`
-		* You'll need to save the cron job and edit it again before you can add these important settings:
-			* Header: `Content-Type`
-			* Value: `application/json`
-			* Request Body: `{"build_parameters" : {"CRON_BUILD" : "1"}}`
-		* Cron-Job.org](https://cron-job.org/en/) settings are shown here for reference:
- +	![in the Header field we see Content-Type.  In the Value vfield we see application/json in the "Request body" we see {"build_parameters" : {"CRON_BUILD" : "1"}}][https://image.ibb.co/iAz6Wv/Screen_Shot_2017_09_13_at_2_54_00_PM.png]
 
 ## Notes ##
-This workflow assumes that the Dev and Test environments on Pantheon are always in a shippable state as the script will automatically deploy changes from Dev to Test and Live if the tests pass.
+This workflow assumes that the Dev and Test environments on Pantheon are always in a shippable state as the script will automatically deploy changes from Dev to Test and Live if the visual regression tests of updates pass.
 
-All incomplete work should be kept in a [Pantheon multidev environment](https://pantheon.io/docs/multidev/), on a separate Git branch.
+All work that isn't ready for deployment to production should be kept in a [Pantheon multidev environment](https://pantheon.io/docs/multidev/), on a separate git branch.
