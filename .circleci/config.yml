@@ -36,7 +36,7 @@ defaults: &defaults
 
 version: 2
 jobs:
-    check_for_updates:
+    build:
         <<: *defaults
         steps:
             - checkout
@@ -85,7 +85,7 @@ workflows:
   version: 2
   commit-workflow:
     jobs:
-      - check_for_updates
+      - build
   update_and_test:
     triggers:
       - schedule:
@@ -96,4 +96,4 @@ workflows:
                 - master
                 - circle-2
     jobs:
-      - check_for_updates
+      - build
