@@ -1,4 +1,5 @@
 #!/bin/bash
+echo -e "\nKicking off an update check for $SITE_NAME..."
 
 # login to Terminus
 echo -e "\nLogging into Terminus..."

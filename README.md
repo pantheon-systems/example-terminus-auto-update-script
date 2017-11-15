@@ -1,9 +1,9 @@
 # Pantheon WordPress Auto Update #
 
 ## Description ##
-Automated testing and deployment of WordPress core, plugin and theme updates on a [Pantheon](https://pantheon.io) site with help from [Terminus](https://github.com/pantheon-systems/terminus), [CircleCI](https://circleci.com), [WP-CLI](http://wp-cli.org/), [BackstopJS](https://garris.github.io/BackstopJS/) and [Slack](https://slack.com/).
+Automated testing and deployment of WordPress core, plugin and theme updates on [Pantheon](https://pantheon.io) sites with help from [Terminus](https://github.com/pantheon-systems/terminus), [CircleCI](https://circleci.com), [WP-CLI](http://wp-cli.org/), [BackstopJS](https://garris.github.io/BackstopJS/) and [Slack](https://slack.com/).
 
-This script will:
+This script will loop through all sites in a given organization with a specific Pantheon tag and:
 
 1. Authenticate with [Terminus](https://github.com/pantheon-systems/terminus) via machine token
 2. Delete the multidev environment `update-wp`
@@ -31,7 +31,7 @@ This script will:
 2. Update `backstop.template.json` to meet your needs, tweaking things like `viewport`
 3. Create a [CircleCI](https://circleci.com) project
 4. Add [environment variables to CircleCI](https://circleci.com/docs/environment-variables/) for the following:
-	* `ORG_UUID`: The Pantheon org UUID for the organization containing the sites to update
+	* `ORG_UUID`: The Pantheon org UUID for the organization containing the sites to update. Pro tip: This can be a supporting organization.
 	* `UPDATE_TAG`: The Pantheon site tag applied in the organization from the step above to sites that need auto updates. Defaults to `auto-update`
 	* `MULTIDEV`: The multidev name to use for applying/testing updates. Defaults to `update-wp`
 	* `CIRCLE_TOKEN`: A Circle CI API token with access to the project created in step 3.
