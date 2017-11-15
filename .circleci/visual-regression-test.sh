@@ -8,8 +8,9 @@ GITHUB_API_URL="https://api.github.com/repos/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PR
 MULTIDEV_SITE_URL="https://$MULTIDEV-$TERMINUS_SITE.pantheonsite.io/"
 LIVE_SITE_URL="https://live-$TERMINUS_SITE.pantheonsite.io/"
 
-# Make artifacts directory
+# Make artifacts directories
 CIRCLE_ARTIFACTS='artifacts'
+mkdir -p $CIRCLE_ARTIFACTS
 CIRCLE_ARTIFACTS_DIR='/tmp/artifacts'
 mkdir -p $CIRCLE_ARTIFACTS_DIR
 
@@ -42,7 +43,7 @@ VISUAL_REGRESSION_RESULTS=$(backstop test || echo 'true')
 echo "${VISUAL_REGRESSION_RESULTS}"
 
 # Rsync files to CIRCLE_ARTIFACTS
-echo -e "\nRsyincing backstop_data files to $CIRCLE_ARTIFACTS..."
+echo -e "\nRsyncing backstop_data files to $CIRCLE_ARTIFACTS..."
 rsync -rlvz backstop_data $CIRCLE_ARTIFACTS
 
 DIFF_REPORT="$CIRCLE_ARTIFACTS/backstop_data/html_report/index.html"
@@ -53,8 +54,6 @@ if [ ! -f $DIFF_REPORT ]; then
 fi
 
 DIFF_REPORT_URL="$CIRCLE_ARTIFACTS_URL/backstop_data/html_report/index.html"
-
-cd -
 
 if [[ ${VISUAL_REGRESSION_RESULTS} == *"Mismatch errors found"* ]]
 then
