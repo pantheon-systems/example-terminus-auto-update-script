@@ -1,7 +1,7 @@
 # Pantheon WordPress Auto Update #
 
 ## Description ##
-Automated testing and deployment of WordPress core, plugin and theme updates on [Pantheon](https://pantheon.io) sites with help from [Terminus](https://github.com/pantheon-systems/terminus), [CircleCI](https://circleci.com), [WP-CLI](http://wp-cli.org/), [BackstopJS](https://garris.github.io/BackstopJS/) and [Slack](https://slack.com/).
+Automated testing and deployment of upstream (WordPress core), plugin and theme updates on [Pantheon](https://pantheon.io) sites with help from [Terminus](https://github.com/pantheon-systems/terminus), [CircleCI](https://circleci.com), [WP-CLI](http://wp-cli.org/), [BackstopJS](https://garris.github.io/BackstopJS/) and [Slack](https://slack.com/).
 
 This script will loop through all sites in a given organization with a specific Pantheon tag and:
 
@@ -11,13 +11,14 @@ This script will loop through all sites in a given organization with a specific 
 	* Deletion and recreation is done to clear any existing changes and pull the latest database/files from the live environment
 4. Switch the multidev environment `update-wp` to git mode
 5. [Apply Pantheon upstream updates](https://pantheon.io/docs/upstream-updates/)
-	* WordPress core updates are managed in the upstream
+	* WordPress core updates are managed in the default upstream
+	* Custom upstream updates will be applied if using a custom upstream
 6. Switch the multidev environment `update-wp` to SFTP mode
 7. Check for and apply WordPress plugin updates via [WP-CLI](http://wp-cli.org/), if available
 8. Check for and apply WordPress theme updates via [WP-CLI](http://wp-cli.org/), if available
-	* If no WordPress updates are available the script will complete and report the Slack
+	* If no WordPress updates are available the script will stop here
 9. Use BackstopJS to run a visual regression test between the live environment and the multidev environment
-	* If discrepencies are found the script will fail and link to the report in Slack
+	* If discrepencies are found the script will stop here and post a link to the visual regression report in Slack
 10. Merge the multidev environment with the dev environment
 11. Deploy the dev environment to the test environment
 12. Deploy the test environment to the live environment
