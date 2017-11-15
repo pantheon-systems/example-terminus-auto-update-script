@@ -9,8 +9,6 @@ MULTIDEV_SITE_URL="https://$MULTIDEV-$TERMINUS_SITE.pantheonsite.io/"
 LIVE_SITE_URL="https://live-$TERMINUS_SITE.pantheonsite.io/"
 
 # Make artifacts directories
-CIRCLE_ARTIFACTS='artifacts'
-mkdir -p $CIRCLE_ARTIFACTS
 CIRCLE_ARTIFACTS_DIR='/tmp/artifacts'
 mkdir -p $CIRCLE_ARTIFACTS_DIR
 
@@ -42,11 +40,11 @@ VISUAL_REGRESSION_RESULTS=$(backstop test || echo 'true')
 
 echo "${VISUAL_REGRESSION_RESULTS}"
 
-# Rsync files to CIRCLE_ARTIFACTS
-echo -e "\nRsyncing backstop_data files to $CIRCLE_ARTIFACTS..."
-rsync -rlvz backstop_data $CIRCLE_ARTIFACTS
+# Rsync files to CIRCLE_ARTIFACTS_DIR
+echo -e "\nRsyncing backstop_data files to $CIRCLE_ARTIFACTS_DIR..."
+rsync -rlvz backstop_data $CIRCLE_ARTIFACTS_DIR
 
-DIFF_REPORT="$CIRCLE_ARTIFACTS/backstop_data/html_report/index.html"
+DIFF_REPORT="$CIRCLE_ARTIFACTS_DIR/backstop_data/html_report/index.html"
 
 if [ ! -f $DIFF_REPORT ]; then
 	echo -e "\nDiff report file $DIFF_REPORT not found!"
