@@ -29,7 +29,7 @@ curl -I "$LIVE_URL" >/dev/null
 if [ ! -f backstop.json ]; then
 	# Create Backstop config file with dynamic URLs
 	echo -e "\nCreating backstop.js config file with backstop-crawl..."
-	backstop-crawl $LIVE_URL --referenceUrl="$MULTIDEV_URL" --ignore-robots
+	backstop-crawl $LIVE_URL --referenceUrl="$MULTIDEV_URL" --ignore-robots --limit-similar=1
 fi
 
 # Backstop visual regression
