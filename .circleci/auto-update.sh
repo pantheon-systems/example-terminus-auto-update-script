@@ -94,10 +94,10 @@ fi
 if [[ "${UPDATES_APPLIED}" = false ]]
 then
     # no updates applied
-    echo -e "\nNo updates to apply..."
-    SLACK_MESSAGE="Circle CI update check #${CIRCLE_BUILD_NUM} by ${CIRCLE_PROJECT_USERNAME}. No updates to apply, nothing deployed."
-    echo -e "\nSending a message to the ${SLACK_CHANNEL} Slack channel"
-    curl -X POST --data "payload={\"channel\": \"${SLACK_CHANNEL}\", \"username\": \"${SLACK_USERNAME}\", \"text\": \"${SLACK_MESSAGE}\"}" $SLACK_HOOK_URL
+    #echo -e "\nNo updates to apply..."
+    #SLACK_MESSAGE="Circle CI update check #${CIRCLE_BUILD_NUM} by ${CIRCLE_PROJECT_USERNAME}. No updates to apply, nothing deployed."
+    #echo -e "\nSending a message to the ${SLACK_CHANNEL} Slack channel"
+    #curl -X POST --data "payload={\"channel\": \"${SLACK_CHANNEL}\", \"username\": \"${SLACK_USERNAME}\", \"text\": \"${SLACK_MESSAGE}\"}" $SLACK_HOOK_URL
 else
     # Run visual regression tests
 	echo -e "\nUpdates applied, starting the visual regression testing job via API..."
