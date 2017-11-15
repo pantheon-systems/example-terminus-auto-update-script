@@ -42,6 +42,11 @@ This script will loop through all sites in a given organization with a specific 
 	* `SLACK_USERNAME`: The username to post to Slack with
 5. Add an [SSH key to Pantheon](https://pantheon.io/docs/ssh-keys/) and [to the CircleCI project](https://circleci.com/docs/permissions-and-access-during-deployment/)
 
+## Know Limitations ##
+* Backups of sites with large a large database or media files are taking too long and timing out on Circle CI (10 mins)
+* Sites with a Solr Index fail visual regression tests as the multidev created doesn't have items indexed in Solr
+* `backstop-crawl` on sites with many (~100+) URLs are taking too long and timing out on Circle CI (10 mins)
+
 ## Notes ##
 This workflow assumes that the Dev and Test environments on Pantheon are always in a shippable state as the script will automatically deploy changes from Dev to Test and Live if the visual regression tests of updates pass.
 
