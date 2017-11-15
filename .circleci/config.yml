@@ -46,6 +46,19 @@ jobs:
                 command: ./.circleci/set-up-globals.sh
 
             - run:
+                name: fire off updates on multiple sites
+                command: ./.circleci/sites-to-update.sh
+
+    check_for_updates:
+        <<: *defaults
+        steps:
+            - checkout
+
+            - run:
+                name: declare environment variables
+                command: ./.circleci/set-up-globals.sh
+
+            - run:
                 name: check for updates
                 command: ./.circleci/auto-update.sh
 

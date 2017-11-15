@@ -21,6 +21,11 @@ then
     echo 'export MULTIDEV=update-wp' >> $BASH_ENV
 fi
 
+if [ -z "$UPDTE_TAG" ]
+then
+    echo 'export UPDATE_TAG=auto-update' >> $BASH_ENV
+fi
+
 # Stash site URLs
 echo "export MULTIDEV_URL='https://$MULTIDEV-$SITE_NAME.pantheonsite.io/'" >> $BASH_ENV
 if [ -z "$LIVE_URL" ]

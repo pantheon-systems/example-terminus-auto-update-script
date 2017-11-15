@@ -31,12 +31,11 @@ This script will:
 2. Update `backstop.template.json` to meet your needs, tweaking things like `viewport`
 3. Create a [CircleCI](https://circleci.com) project
 4. Add [environment variables to CircleCI](https://circleci.com/docs/environment-variables/) for the following:
-	* `SITE_UUID`: The [Pantheon site UUID](https://pantheon.io/docs/sites/#site-uuid)
-	* `SITE_NAME`: The site machine name. Can be found with `terminus site:list` or `terminus org:site:list`
+	* `ORG_UUID`: The Pantheon org UUID for the organization containing the sites to update
+	* `UPDATE_TAG`: The Pantheon site tag applied in the organization from the step above to sites that need auto updates. Defaults to `auto-update`
 	* `MULTIDEV`: The multidev name to use for applying/testing updates. Defaults to `update-wp`
-	* `LIVE_URL`: The live site URL to use for applying/testing updates. Defaults to the Pantheon hosted live environment URL but should be updated for custom domains.
 	* `CIRCLE_TOKEN`: A Circle CI API token with access to the project created in step 3.
-	* `TERMINUS_MACHINE_TOKEN`: A [Pantheon Terminus machine token](https://pantheon.io/docs/machine-tokens/) with access to the site
+	* `TERMINUS_MACHINE_TOKEN`: A [Pantheon Terminus machine token](https://pantheon.io/docs/machine-tokens/) with access to the org above.
 	* `SLACK_HOOK_URL`: The [Slack incoming webhook URL](https://api.slack.com/incoming-webhooks)
 	* `SLACK_CHANNEL`: The Slack channel to post notifications to
 	* `SLACK_USERNAME`: The username to post to Slack with
