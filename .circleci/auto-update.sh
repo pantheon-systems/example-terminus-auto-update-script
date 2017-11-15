@@ -1,5 +1,6 @@
 #!/bin/bash
-echo -e "\nKicking off an update check for $SITE_NAME..."
+echo -e "\nKicking off an update check for $SITE_NAME with UUID $SITE_UUID..."
+exit 1
 
 # login to Terminus
 echo -e "\nLogging into Terminus..."
