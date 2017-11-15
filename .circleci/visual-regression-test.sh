@@ -10,6 +10,7 @@ MULTIDEV_SITE_URL="https://$MULTIDEV-$TERMINUS_SITE.pantheonsite.io/"
 LIVE_SITE_URL="https://live-$TERMINUS_SITE.pantheonsite.io/"
 
 # Make artifacts directories
+CIRCLE_ARTIFACTS='artifacts'
 CIRCLE_ARTIFACTS_DIR='/tmp/artifacts'
 mkdir -p $CIRCLE_ARTIFACTS_DIR
 
