@@ -1,4 +1,5 @@
 #!/bin/bash
+echo -e "\nRunning visual regression tests for $SITE_NAME with UUID $SITE_UUID..."
 
 # Variables
 BUILD_DIR=$(pwd)

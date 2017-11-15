@@ -1,4 +1,5 @@
 #!/bin/bash
+echo -e "\Deploying updates for $SITE_NAME with UUID $SITE_UUID..."
 
 # login to Terminus
 echo -e "\nLogging into Terminus..."
