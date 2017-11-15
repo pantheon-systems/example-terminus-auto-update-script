@@ -70,6 +70,7 @@ else
 	echo -e "\nStarting the deploy job via API..."
 	curl --user ${CIRCLE_TOKEN}: \
                 --data build_parameters[CIRCLE_JOB]=deploy_updates \
+                --data build_parameters[DIFF_REPORT_URL]=$DIFF_REPORT_URL \
                 --data revision=$CIRCLE_SHA1 \
                 https://circleci.com/api/v1.1/project/github/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME/tree/$CIRCLE_BRANCH  >/dev/null
 fi
