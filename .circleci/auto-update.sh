@@ -1,6 +1,5 @@
 #!/bin/bash
 echo -e "\nKicking off an update check for $SITE_NAME with UUID $SITE_UUID..."
-exit 1
 
 # login to Terminus
 echo -e "\nLogging into Terminus..."
@@ -105,6 +104,8 @@ else
 	echo -e "\nUpdates applied, starting the visual regression testing job via API..."
 	curl --user ${CIRCLE_TOKEN}: \
                 --data build_parameters[CIRCLE_JOB]=visual_regression_test \
+				--data build_parameters[SITE_NAME]=$SITE_NAME \
+				--data build_parameters[SITE_UUID]=$SITE_UUID \
                 --data revision=$CIRCLE_SHA1 \
                 https://circleci.com/api/v1.1/project/github/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME/tree/$CIRCLE_BRANCH  >/dev/null
 fi
