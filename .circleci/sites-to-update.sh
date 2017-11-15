@@ -19,7 +19,7 @@ while read -r SITE_UUID; do
 				--data build_parameters[SITE_NAME]=$SITE_NAME \
 				--data build_parameters[SITE_UUID]=$SITE_UUID \
 				--data revision=$CIRCLE_SHA1 \
-				https://circleci.com/api/v1.1/project/github/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME/tree/$CIRCLE_BRANCH
+				https://circleci.com/api/v1.1/project/github/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME/tree/$CIRCLE_BRANCH  >/dev/null
 done <<< "$SITE_UUIDS"
 
 #echo -e "\nVisual regression tests passed! WordPress updates deployed to live..."
