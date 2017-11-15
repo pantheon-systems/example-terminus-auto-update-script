@@ -1,5 +1,9 @@
 #!/bin/bash
 
+# login to Terminus
+echo -e "\nLogging into Terminus..."
+terminus auth:login --machine-token=${TERMINUS_MACHINE_TOKEN}
+
 # enable git mode on dev
 echo -e "\nEnabling git mode on the dev environment..."
 terminus connection:set $SITE_UUID.dev git
