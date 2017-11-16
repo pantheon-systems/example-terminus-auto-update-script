@@ -28,7 +28,7 @@ fi
 
 # Stash site URLs
 echo "export MULTIDEV_URL='https://$MULTIDEV-$SITE_NAME.pantheonsite.io/'" >> $BASH_ENV
-if [ -z "$LIVE_URL" ]
+if [ -z "$LIVE_URL" || "$LIVE_URL" == "0" ]
 then
 	echo "export LIVE_URL='https://live-$SITE_NAME.pantheonsite.io/'" >> $BASH_ENV
 fi
