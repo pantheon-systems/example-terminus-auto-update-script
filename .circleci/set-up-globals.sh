@@ -32,7 +32,7 @@ if [ -z "$LIVE_URL" ] || [ "$LIVE_URL" == "0" ]
 then
 	echo "export LIVE_URL='https://live-$SITE_NAME.pantheonsite.io/'" >> $BASH_ENV
 else
-	echo "using eusing LIVE_URL $LIVE_URL for $SITE_NAME"
+	echo "using existing LIVE_URL $LIVE_URL for $SITE_NAME"
 fi
 
 echo 'export PATH=$PATH:$HOME/bin:$HOME/terminus/bin' >> $BASH_ENV
