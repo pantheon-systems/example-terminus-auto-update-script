@@ -15,7 +15,7 @@ TERMINUS_DOES_MULTIDEV_EXIST()
     fi
     
     # Stash list of Pantheon multidev environments
-    PANTHEON_MULTIDEV_LIST="$(terminus multidev:list -n ${TERMINUS_SITE} --format=list --field=Name)"
+    PANTHEON_MULTIDEV_LIST="$(terminus multidev:list -n ${SITE_NAME} --format=list --field=Name)"
 
     while read -r multiDev; do
         if [[ "${multiDev}" == "$1" ]]
@@ -40,7 +40,7 @@ if ! TERMINUS_DOES_MULTIDEV_EXIST ${MULTIDEV}
 then
     # Create the multidev environment
 	echo -e "\nCreating the ${MULTIDEV} multidev environment for $SITE_NAME..."
-	terminus multidev:create $SITE_UUID.live $MULTIDEV
+	terminus multidev:create $SITE_NAME.live $MULTIDEV
 fi
 
 # check for upstream updates
