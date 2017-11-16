@@ -28,4 +28,4 @@ while IFS= read -r SITE_UUID &&
 				--data revision=$CIRCLE_SHA1 \
 				https://circleci.com/api/v1.1/project/github/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME/tree/$CIRCLE_BRANCH  >/dev/null
 
-done < <(jq -r '.[] | (.SITE_UUID, .SITE_NAME, .CREATE_BACKUPS, .RECREATE_MULTIDEV, LIVE_URL)' < "$(dirname "$pwd")/sites-to-auto-update.json")
+done < <(jq -r '.[] | (.SITE_UUID, .SITE_NAME, .CREATE_BACKUPS, .RECREATE_MULTIDEV, .LIVE_URL)' < "$(dirname "$pwd")/sites-to-auto-update.json")
