@@ -39,7 +39,7 @@ This script will loop through all sites in `sites-to-auto-update.json` and:
 	* `SLACK_CHANNEL`: The Slack channel to post notifications to
 	* `SLACK_USERNAME`: The username to post to Slack with
 5. Add an [SSH key to Pantheon](https://pantheon.io/docs/ssh-keys/) and [to the CircleCI project](https://circleci.com/docs/permissions-and-access-during-deployment/)
-6. Edit `sites-to-auto-update.json` and set the following for each site you wish to auto update
+6. Edit `sites-to-auto-update.json` and set the following key for each JSON object for sites you wish to auto update. **The order is important** do not change the order of the keys in the object or skip keys.
 	* `SITE_UUID`: The site UUID, which can be acquired with `terminus site:list` or is in the dashboard URL for the site.
 	* `SITE_NAME`: The site machine name, which can be acquired with `terminus site:list`.
 	* `CREATE_BACKUPS`: `0` or `1` to determine if a backup of the live site is made before deployment. You may want to disable for sites where a backup takes longer than 10 minutes **and** you have regularly backups scheduled via another method.
