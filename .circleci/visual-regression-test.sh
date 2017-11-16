@@ -26,7 +26,7 @@ echo -e "\nPinging the live environment to wake it from sleep for $SITE_NAME..."
 curl -I "$LIVE_URL" >/dev/null
 
 # Check for custom backstop.json for the specific site
-if [ -f "$SITE_NAME.backstop.json" || -f "$SITE_NAME.backstop-config.js" ]; then
+if [ -f "$SITE_NAME.backstop.json" ] || [ -f "$SITE_NAME.backstop-config.js" ]; then
 
 	echo -e "\nCustom Backstop template $SITE_NAME.backstop.json or $SITE_NAME.backstop-config.js found for $SITE_NAME, skipping URL crawl..."
 	
