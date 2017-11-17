@@ -1,0 +1,111 @@
+# https://circleci.com/docs/2.0/workflows/#using-workspaces-to-share-data-among-jobs
+defaults: &defaults
+  docker:
+    - image: ataylorme/docker-php-advanced-wordpress-on-pantheon:latest
+  working_directory: ~/wordpress-at-scale-auto-update
+  environment:
+    #=========================================================================
+    # In addition to the environment variables defined in this file, also
+    # add the following variables in the Circle CI UI.
+    #
+    # See: https://circleci.com/docs/2.0/environment-variables/
+    #
+    # TERMINUS_SITE:  Name of the Pantheon site to run tests on, e.g. my_site
+    # TERMINUS_TOKEN: The Pantheon machine token
+    # GITHUB_TOKEN:   The GitHub personal access token
+    # GIT_EMAIL:      The email address to use when making commits
+    #
+    # TEST_SITE_NAME: The name of the test site to provide when installing.
+    # ADMIN_PASSWORD: The admin password to use when installing.
+    # ADMIN_EMAIL:    The email address to give the admin when installing.
+    #=========================================================================
+    TZ: "/usr/share/zoneinfo/America/Los_Angeles"
+
+    # The variables below usually do not need to be modified.
+    
+    #======================================================================================================================================
+    # Circle CI 2.0 does not yet expand environment variables so they have to be manually EXPORTed
+    # Once environment variables can be expanded the variables below can be uncommented and the EXPORTs in set-up-globals.sh can be removed
+    # See: https://discuss.circleci.com/t/unclear-how-to-work-with-user-variables-circleci-provided-env-variables/12810/11
+    # See: https://discuss.circleci.com/t/environment-variable-expansion-in-working-directory/11322
+    # See: https://discuss.circleci.com/t/circle-2-0-global-environment-variables/8681
+    #======================================================================================================================================
+    # See set-up-globals.sh for more environment variables
+    
+    TERM: dumb
+
+version: 2
+jobs:
+    build:
+        <<: *defaults
+        steps:
+            - checkout
+
+            - run:
+                name: declare environment variables
+                command: ./.circleci/set-up-globals.sh
+
+            - run:
+                name: fire off updates on multiple sites
+                command: ./.circleci/sites-to-update.sh
+
+    check_for_updates:
+        <<: *defaults
+        steps:
+            - checkout
+
+            - run:
+                name: declare environment variables
+                command: ./.circleci/set-up-globals.sh
+
+            - run:
+                name: check for updates
+                command: ./.circleci/auto-update.sh
+
+    visual_regression_test:
+        <<: *defaults
+        docker:
+          - image: ataylorme/docker-node-advanced-wordpress-on-pantheon:latest
+        steps:
+            - checkout
+
+            - run:
+                name: declare environment variables
+                command: ./.circleci/set-up-globals.sh
+
+            - run:
+                name: run visual regression tests
+                command: ./.circleci/visual-regression-test.sh
+
+            - store_artifacts:
+                path: /tmp/artifacts
+                destination: artifacts
+    
+    deploy_updates:
+        <<: *defaults
+        steps:
+            - checkout
+
+            - run:
+                name: declare environment variables
+                command: ./.circleci/set-up-globals.sh
+
+            - run:
+                name: deploy updates
+                command: ./.circleci/deploy-updates.sh
+
+workflows:
+  version: 2
+  commit-workflow:
+    jobs:
+      - build
+  update_and_test:
+    triggers:
+      - schedule:
+          cron: "0 * * * *"
+          filters:
+            branches:
+              only:
+                - master
+    jobs:
+      - build

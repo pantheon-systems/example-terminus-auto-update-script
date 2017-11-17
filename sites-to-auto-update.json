@@ -1,0 +1,30 @@
+[
+	{
+		"SITE_UUID": "02854fa0-b6e4-4349-932a-8aa7d9cab884",
+		"SITE_NAME": "wp-microsite",
+		"CREATE_BACKUPS": 1,
+		"RECREATE_MULTIDEV": 1,
+		"LIVE_URL": "https://scalewp.io/"
+	},
+	{
+		"SITE_UUID": "f45d9975-599b-4e9f-8eca-6953a341b34c",
+		"SITE_NAME": "wp-quicksilver-demo",
+		"CREATE_BACKUPS": 1,
+		"RECREATE_MULTIDEV": 1,
+		"LIVE_URL": 0
+	},
+	{
+		"SITE_UUID": "6a8d7840-0f5c-41e7-8eb6-999f541d51cb",
+		"SITE_NAME": "solr-power",
+		"CREATE_BACKUPS": 0,
+		"RECREATE_MULTIDEV": 0,
+		"LIVE_URL": 0
+	},
+	{
+		"SITE_UUID": "c11d47d4-a4e0-491f-863a-e8c03c3c79ea",
+		"SITE_NAME": "wp-new-relic-demo",
+		"CREATE_BACKUPS": 0,
+		"RECREATE_MULTIDEV": 0,
+		"LIVE_URL": 0
+	}
+]
