@@ -31,9 +31,12 @@ if [[ "$RECREATE_MULTIDEV" == "0" ]]
 then
 	echo -e "\nSkipping recreation of multidev for $SITE_NAME..."
 else
-	# delete the multidev environment
-	echo -e "\nDeleting the ${MULTIDEV} multidev environment for $SITE_NAME..."
-	terminus multidev:delete $SITE_UUID.$MULTIDEV --delete-branch --yes
+	# delete the multidev environment if it exists
+	if TERMINUS_DOES_MULTIDEV_EXIST ${MULTIDEV}
+	then
+		echo -e "\nDeleting the ${MULTIDEV} multidev environment for $SITE_NAME..."
+		terminus multidev:delete $SITE_UUID.$MULTIDEV --delete-branch --yes
+	fi
 fi
 
 if ! TERMINUS_DOES_MULTIDEV_EXIST ${MULTIDEV}
