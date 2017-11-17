@@ -99,6 +99,9 @@ workflows:
   commit-workflow:
     jobs:
       - build
+      branches:
+        ignore:
+          - master
   update_and_test:
     triggers:
       - schedule:
