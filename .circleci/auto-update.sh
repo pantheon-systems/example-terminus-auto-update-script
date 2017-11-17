@@ -18,7 +18,7 @@ TERMINUS_DOES_MULTIDEV_EXIST()
     PANTHEON_MULTIDEV_LIST="$(terminus multidev:list -n ${SITE_NAME} --format=list --field=Name)"
 
     while read -r multiDev; do
-        if [[ "${multiDev}" == "$1" ]]
+        if [[ "${MULTIDEV}" == "$1" ]]
         then
             return 0;
         fi
