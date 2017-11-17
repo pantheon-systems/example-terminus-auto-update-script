@@ -26,5 +26,19 @@
 		"CREATE_BACKUPS": 0,
 		"RECREATE_MULTIDEV": 0,
 		"LIVE_URL": 0
+	},
+	{
+		"SITE_UUID": "500bf017-3dc3-4ea9-8f17-455c9ab68adc",
+		"SITE_NAME": "davidwp",
+		"CREATE_BACKUPS": 1,
+		"RECREATE_MULTIDEV": 1,
+		"LIVE_URL": 0
+	},
+	{
+		"SITE_UUID": "b29504f8-99f3-4bfe-a3f8-a65dea30472a",
+		"SITE_NAME": "pantheon-overview",
+		"CREATE_BACKUPS": 1,
+		"RECREATE_MULTIDEV": 1,
+		"LIVE_URL": 0
 	}
 ]
