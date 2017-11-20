@@ -50,6 +50,7 @@ This script will loop through all sites in `sites-to-auto-update.json` and:
 * Backups of sites with large a large database or media files are taking too long and timing out on Circle CI (10 mins)
 * Sites with a Solr Index fail visual regression tests as the multidev created doesn't have items indexed in Solr
 * `backstop-crawl` on sites with many (~100+) URLs are taking too long and timing out on Circle CI (10 mins).
+* If visual regression testing fails **and** `RECREATE_MULTIDEV` is set to `0` then a multidev with updates applied will persist causing subsequent update checks to return no updates and prevent visual regression tests from running again. This cycle will break when there are further updates released to be applied.
 
 ## Configuring Backstop JS ##
 `backstop.template.json` is used as a generic template for `backstop-crawl` when creating `backstop.json` files dynamically.
