@@ -21,13 +21,6 @@
 		"LIVE_URL": 0
 	},
 	{
-		"SITE_UUID": "c11d47d4-a4e0-491f-863a-e8c03c3c79ea",
-		"SITE_NAME": "wp-new-relic-demo",
-		"CREATE_BACKUPS": 0,
-		"RECREATE_MULTIDEV": 0,
-		"LIVE_URL": 0
-	},
-	{
 		"SITE_UUID": "500bf017-3dc3-4ea9-8f17-455c9ab68adc",
 		"SITE_NAME": "davidwp",
 		"CREATE_BACKUPS": 1,
