@@ -61,6 +61,7 @@ jobs:
             - run:
                 name: check for updates
                 command: ./.circleci/auto-update.sh
+                no_output_timeout: 30m
 
     visual_regression_test:
         <<: *defaults
@@ -93,6 +94,7 @@ jobs:
             - run:
                 name: deploy updates
                 command: ./.circleci/deploy-updates.sh
+                no_output_timeout: 30m
 
 workflows:
   version: 2
