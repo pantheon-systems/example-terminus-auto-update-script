@@ -124,6 +124,8 @@ else
 	echo -e "\nSending a message to the ${SLACK_CHANNEL} Slack channel"
 	curl -X POST --data "payload={\"channel\": \"${SLACK_CHANNEL}\", \"username\": \"${SLACK_USERNAME}\", \"text\": \"${SLACK_MESSAGE}\"}" $SLACK_HOOK_URL
 
+    exit 0
+
 	# Deploy updates
 	echo -e "\nStarting the deploy job via API for $SITE_NAME..."
 	curl --user ${CIRCLE_TOKEN}: \
