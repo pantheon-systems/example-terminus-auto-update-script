@@ -11,10 +11,6 @@ then
 	exit 0
 fi
 
-# Stash site URLs
-MULTIDEV_SITE_URL="https://$MULTIDEV-$SITE_UUID.pantheonsite.io/"
-LIVE_SITE_URL="https://live-$SITE_UUID.pantheonsite.io/"
-
 # Make artifacts directory
 CIRCLE_ARTIFACTS='artifacts'
 CIRCLE_ARTIFACTS_DIR='/tmp/artifacts'
@@ -22,7 +18,7 @@ mkdir -p $CIRCLE_ARTIFACTS_DIR
 
 # Set Lighthouse results directory, branch and url
 LIGHTHOUSE_BRANCH=$MULTIDEV
-LIGHTHOUSE_URL=$MULTIDEV_SITE_URL
+LIGHTHOUSE_URL=$MULTIDEV_URL
 LIGHTHOUSE_RESULTS_DIR="lighthouse_results/$LIGHTHOUSE_BRANCH"
 LIGHTHOUSE_REPORT_NAME="$LIGHTHOUSE_RESULTS_DIR/lighthouse.json"
 LIGHTHOUSE_JSON_REPORT="$LIGHTHOUSE_RESULTS_DIR/lighthouse.report.json"
@@ -82,11 +78,11 @@ LIGHTHOUSE_MASTER_RESULTS_JSON="$LIGHTHOUSE_MASTER_RESULTS_DIR/lighthouse.result
 
 # Ping the live environment to wake it from sleep and prime the cache
 echo -e "\nPinging the live environment to wake it from sleep..."
-curl -s -I "$LIVE_SITE_URL" >/dev/null
+curl -s -I "$LIVE_URL" >/dev/null
 
 # Run Lighthouse on the live environment
 echo -e "\nRunning Lighthouse on the live environment"
-lighthouse --perf --save-artifacts --output json --output html --output-path "$LIGHTHOUSE_MASTER_REPORT_NAME" --chrome-flags="--headless --disable-gpu --no-sandbox" ${LIVE_SITE_URL}
+lighthouse --perf --save-artifacts --output json --output html --output-path "$LIGHTHOUSE_MASTER_REPORT_NAME" --chrome-flags="--headless --disable-gpu --no-sandbox" ${LIVE_URL}
 
 # Create tailored results JSON file
 cat $LIGHTHOUSE_MASTER_JSON_REPORT | jq '. | { "total-score": .score, "speed-index": .audits["speed-index-metric"]["score"], "first-meaningful-paint": .audits["first-meaningful-paint"]["score"], "estimated-input-latency": .audits["estimated-input-latency"]["score"], "time-to-first-byte": .audits["time-to-first-byte"]["rawValue"], "first-interactive": .audits["first-interactive"]["score"], "consistently-interactive": .audits["consistently-interactive"]["score"], "critical-request-chains": .audits["critical-request-chains"]["displayValue"], "redirects": .audits["redirects"]["score"], "bootup-time": .audits["bootup-time"]["rawValue"], "uses-long-cache-ttl": .audits["uses-long-cache-ttl"]["score"], "total-byte-weight": .audits["total-byte-weight"]["score"], "offscreen-images": .audits["offscreen-images"]["score"], "uses-webp-images": .audits["uses-webp-images"]["score"], "uses-optimized-images": .audits["uses-optimized-images"]["score"], "uses-request-compression": .audits["uses-request-compression"]["score"], "uses-responsive-images": .audits["uses-responsive-images"]["score"], "dom-size": .audits["dom-size"]["score"], "script-blocking-first-paint": .audits["script-blocking-first-paint"]["score"] }' > $LIGHTHOUSE_MASTER_RESULTS_JSON

@@ -5,10 +5,6 @@ echo -e "\nRunning visual regression tests for $SITE_NAME with UUID $SITE_UUID..
 BUILD_DIR=$(pwd)
 GITHUB_API_URL="https://api.github.com/repos/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME"
 
-# Stash site URLs
-MULTIDEV_SITE_URL="https://$MULTIDEV-$TERMINUS_SITE.pantheonsite.io/"
-LIVE_SITE_URL="https://live-$TERMINUS_SITE.pantheonsite.io/"
-
 # Make artifacts directories
 CIRCLE_ARTIFACTS='artifacts'
 CIRCLE_ARTIFACTS_DIR='/tmp/artifacts'
