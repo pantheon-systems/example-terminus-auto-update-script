@@ -12,8 +12,8 @@ then
 fi
 
 # Stash site URLs
-MULTIDEV_SITE_URL="https://$MULTIDEV-$TERMINUS_SITE.pantheonsite.io/"
-LIVE_SITE_URL="https://live-$TERMINUS_SITE.pantheonsite.io/"
+MULTIDEV_SITE_URL="https://$MULTIDEV-$SITE_UUID.pantheonsite.io/"
+LIVE_SITE_URL="https://live-$SITE_UUID.pantheonsite.io/"
 
 # Make artifacts directory
 CIRCLE_ARTIFACTS='artifacts'
