@@ -83,10 +83,10 @@ else
 	# visual regression passed
 	echo -e "\nVisual regression tests passed between the ${MULTIDEV} multidev and live for $SITE_NAME."
 
-	# Deploy updates
-	echo -e "\nStarting the deploy job via API for $SITE_NAME..."
+	# Lighthouse performance testing
+	echo -e "\nStarting the Lighthouse performance testing job via API for $SITE_NAME..."
 	curl --user ${CIRCLE_TOKEN}: \
-                --data build_parameters[CIRCLE_JOB]=deploy_updates \
+                --data build_parameters[CIRCLE_JOB]=lighthouse_performance_test \
                 --data build_parameters[DIFF_REPORT_URL]=$DIFF_REPORT_URL \
 				--data build_parameters[SITE_NAME]=$SITE_NAME \
 				--data build_parameters[SITE_UUID]=$SITE_UUID \
