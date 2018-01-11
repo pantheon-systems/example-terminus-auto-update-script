@@ -68,8 +68,8 @@ fi
 
 DIFF_REPORT_URL="$CIRCLE_ARTIFACTS_URL/backstop_data/html_report/index.html"
 
-$GREEN_HEX="#008000"
-$RED_HEX="#FF0000"
+GREEN_HEX="#008000"
+RED_HEX="#FF0000"
 
 if [[ ${VISUAL_REGRESSION_RESULTS} == *"Mismatch errors found"* ]]
 then
