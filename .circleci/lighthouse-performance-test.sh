@@ -97,17 +97,18 @@ echo -e "\nMaster score of $LIGHTHOUSE_PRODUCTION_SCORE recorded"
 
 LIGHTHOUSE_PRODUCTION_HTML_REPORT_URL="$CIRCLE_ARTIFACTS_URL/$LIGHTHOUSE_PRODUCTION_HTML_REPORT"
 REPORT_LINK="<$LIGHTHOUSE_HTML_REPORT_URL|Lighthouse performance report for \`$CIRCLE_BRANCH\`> and compare it to the <$LIGHTHOUSE_PRODUCTION_HTML_REPORT_URL|Lighthouse performance report for the \`master\` branch>"
+SLACK_ATTACHEMENTS="\"attachments\": [{\"fallback\": \"View the reports in CircleCI artifacts\",\"color\": \"#FF0000\",\"actions\": [{\"type\": \"button\",\"text\": \"${MULTIDEV} (${LIGHTHOUSE_SCORE})\",\"url\":\"${LIGHTHOUSE_HTML_REPORT_URL}\"},{\"type\": \"button\",\"text\": \"Live (${LIGHTHOUSE_PRODUCTION_SCORE})\",\"url\":\"${LIGHTHOUSE_PRODUCTION_HTML_REPORT_URL}\"}]}]"
 
 # Level of tolerance for score decline	
 LIGHTHOUSE_ACCEPTABLE_THRESHOLD=5
 LIGHTHOUSE_ACCEPTABLE_SCORE=$((LIGHTHOUSE_PRODUCTION_SCORE-LIGHTHOUSE_ACCEPTABLE_THRESHOLD))
+
 if [ $LIGHTHOUSE_SCORE -lt $LIGHTHOUSE_ACCEPTABLE_SCORE ]; then
 	# Lighthouse test failed! The score is less than the acceptable score
-	echo -e "\nLighthouse test failed for $SITE_NAME! The score of $LIGHTHOUSE_SCORE is less than the acceptable score of $LIGHTHOUSE_ACCEPTABLE_SCORE ($LIGHTHOUSE_ACCEPTABLE_THRESHOLD less the score of $LIGHTHOUSE_PRODUCTION_SCORE on $LIVE_URL)"
-	SLACK_MESSAGE="Lighthouse test failed for $SITE_NAME! The score of \`$LIGHTHOUSE_SCORE\` is less than the acceptable score of \`$LIGHTHOUSE_ACCEPTABLE_SCORE\` (\`$LIGHTHOUSE_ACCEPTABLE_THRESHOLD\` less than the score of \`$LIGHTHOUSE_PRODUCTION_SCORE\` on $LIVE_URL)"
+	echo -e "\nAuto update Lighthouse test failed for $SITE_NAME! The score of $LIGHTHOUSE_SCORE is less than the acceptable score of $LIGHTHOUSE_ACCEPTABLE_SCORE. Deployment halted, please manually review the $MULTIDEV environment."
+	SLACK_MESSAGE="Auto update Lighthouse test failed for $SITE_NAME! The score of \`$LIGHTHOUSE_SCORE\` is less than the acceptable score of \`$LIGHTHOUSE_ACCEPTABLE_SCORE\` **Deployment halted, please manually review <$MULTIDEV_URL|the $MULTIDEV environment>.**"
 
 	SLACK_MESSAGE="$SLACK_MESSAGE"
-    SLACK_ATTACHEMENTS="\"attachments\": [{\"fallback\": \"View the reports in CircleCI artifacts\",\"color\": \"#FF0000\",\"actions\": [{\"type\": \"button\",\"text\": \"${MULTIDEV} (${LIGHTHOUSE_SCORE})\",\"url\":\"${LIGHTHOUSE_HTML_REPORT_URL}\"},{\"type\": \"button\",\"text\": \"Live (${LIGHTHOUSE_PRODUCTION_SCORE})\",\"url\":\"${LIGHTHOUSE_PRODUCTION_HTML_REPORT_URL}\"}]}]"
 
 	# Post the report back to Slack
 	echo -e "\nSending a message to the ${SLACK_CHANNEL} Slack channel"
@@ -116,17 +117,15 @@ if [ $LIGHTHOUSE_SCORE -lt $LIGHTHOUSE_ACCEPTABLE_SCORE ]; then
 	exit 1
 else
 	# Lighthouse test passed! The score isn't less than the acceptable score
-	echo -e "\nLighthouse test passed for $SITE_NAME! The score of $LIGHTHOUSE_SCORE isn't less than the acceptable score of $LIGHTHOUSE_ACCEPTABLE_SCORE ($LIGHTHOUSE_ACCEPTABLE_THRESHOLD less than the score of $LIGHTHOUSE_PRODUCTION_SCORE on $LIVE_URL)"
-	SLACK_MESSAGE="Lighthouse test passed for $SITE_NAME! The score of \`$LIGHTHOUSE_SCORE\` isn't less than the acceptable score of \`$LIGHTHOUSE_ACCEPTABLE_SCORE\` (\`$LIGHTHOUSE_ACCEPTABLE_THRESHOLD\` less than the score of \`$LIGHTHOUSE_PRODUCTION_SCORE\` on $LIVE_URL)"
+	echo -e "\nAuto update Lighthouse test passed for $SITE_NAME! The score of $LIGHTHOUSE_SCORE isn't less than the acceptable score of $LIGHTHOUSE_ACCEPTABLE_SCORE ($LIGHTHOUSE_ACCEPTABLE_THRESHOLD less than the score of $LIGHTHOUSE_PRODUCTION_SCORE on $LIVE_URL)"
+	SLACK_MESSAGE="Auto update Lighthouse test passed for $SITE_NAME! The score of \`$LIGHTHOUSE_SCORE\` isn't less than the acceptable score of \`$LIGHTHOUSE_ACCEPTABLE_SCORE\` (\`$LIGHTHOUSE_ACCEPTABLE_THRESHOLD\` less than the score of \`$LIGHTHOUSE_PRODUCTION_SCORE\` on $LIVE_URL)."
 
 	SLACK_MESSAGE="$SLACK_MESSAGE"
-    SLACK_ATTACHEMENTS="\"attachments\": [{\"fallback\": \"View the reports in CircleCI artifacts\",\"color\": \"#008000\",\"actions\": [{\"type\": \"button\",\"text\": \"${MULTIDEV} (${LIGHTHOUSE_SCORE})\",\"url\":\"${LIGHTHOUSE_HTML_REPORT_URL}\"},{\"type\": \"button\",\"text\": \"Live (${LIGHTHOUSE_PRODUCTION_SCORE})\",\"url\":\"${LIGHTHOUSE_PRODUCTION_HTML_REPORT_URL}\"}]}]"
 
 	# Post the report back to Slack
 	echo -e "\nSending a message to the ${SLACK_CHANNEL} Slack channel"
 	curl -X POST --data "payload={\"channel\": \"${SLACK_CHANNEL}\",${SLACK_ATTACHEMENTS}, \"username\": \"${SLACK_USERNAME}\", \"text\": \"${SLACK_MESSAGE}\"}" $SLACK_HOOK_URL
 
-    exit 0
 
 	# Deploy updates
 	echo -e "\nStarting the deploy job via API for $SITE_NAME..."
