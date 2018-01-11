@@ -106,9 +106,7 @@ LIGHTHOUSE_ACCEPTABLE_SCORE=$((LIGHTHOUSE_PRODUCTION_SCORE-LIGHTHOUSE_ACCEPTABLE
 if [ $LIGHTHOUSE_SCORE -lt $LIGHTHOUSE_ACCEPTABLE_SCORE ]; then
 	# Lighthouse test failed! The score is less than the acceptable score
 	echo -e "\nAuto update Lighthouse test failed for $SITE_NAME! The score of $LIGHTHOUSE_SCORE is less than the acceptable score of $LIGHTHOUSE_ACCEPTABLE_SCORE. Deployment halted, please manually review the $MULTIDEV environment."
-	SLACK_MESSAGE="Auto update Lighthouse test failed for $SITE_NAME! The score of \`$LIGHTHOUSE_SCORE\` is less than the acceptable score of \`$LIGHTHOUSE_ACCEPTABLE_SCORE\` **Deployment halted, please manually review <$MULTIDEV_URL|the $MULTIDEV environment>.**"
-
-	SLACK_MESSAGE="$SLACK_MESSAGE"
+	SLACK_MESSAGE="Auto update Lighthouse test failed for $SITE_NAME! The score of \`$LIGHTHOUSE_SCORE\` is less than the acceptable score of \`$LIGHTHOUSE_ACCEPTABLE_SCORE\`. **Deployment halted, please manually review <$MULTIDEV_URL|the $MULTIDEV environment>.** View the reports below:"
 
 	# Post the report back to Slack
 	echo -e "\nSending a message to the ${SLACK_CHANNEL} Slack channel"
@@ -118,9 +116,7 @@ if [ $LIGHTHOUSE_SCORE -lt $LIGHTHOUSE_ACCEPTABLE_SCORE ]; then
 else
 	# Lighthouse test passed! The score isn't less than the acceptable score
 	echo -e "\nAuto update Lighthouse test passed for $SITE_NAME! The score of $LIGHTHOUSE_SCORE isn't less than the acceptable score of $LIGHTHOUSE_ACCEPTABLE_SCORE ($LIGHTHOUSE_ACCEPTABLE_THRESHOLD less than the score of $LIGHTHOUSE_PRODUCTION_SCORE on $LIVE_URL)"
-	SLACK_MESSAGE="Auto update Lighthouse test passed for $SITE_NAME! The score of \`$LIGHTHOUSE_SCORE\` isn't less than the acceptable score of \`$LIGHTHOUSE_ACCEPTABLE_SCORE\` (\`$LIGHTHOUSE_ACCEPTABLE_THRESHOLD\` less than the score of \`$LIGHTHOUSE_PRODUCTION_SCORE\` on $LIVE_URL)."
-
-	SLACK_MESSAGE="$SLACK_MESSAGE"
+	SLACK_MESSAGE="Auto update Lighthouse test passed for $SITE_NAME! The score of \`$LIGHTHOUSE_SCORE\` isn't less than the acceptable score of \`$LIGHTHOUSE_ACCEPTABLE_SCORE\` (\`$LIGHTHOUSE_ACCEPTABLE_THRESHOLD\` less than the score of \`$LIGHTHOUSE_PRODUCTION_SCORE\` on $LIVE_URL). View the reports below:"
 
 	# Post the report back to Slack
 	echo -e "\nSending a message to the ${SLACK_CHANNEL} Slack channel"
