@@ -107,7 +107,7 @@ if [ $LIGHTHOUSE_SCORE -lt $LIGHTHOUSE_ACCEPTABLE_SCORE ]; then
 	SLACK_MESSAGE="Lighthouse test failed! The score of \`$LIGHTHOUSE_SCORE\` is less than the acceptable score of \`$LIGHTHOUSE_ACCEPTABLE_SCORE\` (\`$LIGHTHOUSE_ACCEPTABLE_THRESHOLD\` less than the score of \`$LIGHTHOUSE_PRODUCTION_SCORE\` on the master branch)"
 
 	SLACK_MESSAGE="$SLACK_MESSAGE"
-    SLACK_ATTACHEMENTS="\"attachments\": [{\"fallback\": \"View the reports in CircleCI artifacts\",\"actions\": [{\"type\": \"button\",\"text\": \"${MULTIDEV} (${LIGHTHOUSE_SCORE})\",\"url\":\"${LIGHTHOUSE_HTML_REPORT_URL}\"},{\"type\": \"button\",\"text\": \"Live (${LIGHTHOUSE_PRODUCTION_SCORE})\",\"url\":\"${LIGHTHOUSE_PRODUCTION_HTML_REPORT_URL}\"}]}]"
+    SLACK_ATTACHEMENTS="\"attachments\": [{\"fallback\": \"View the reports in CircleCI artifacts\",\"color\": \"#FF0000\",\"actions\": [{\"type\": \"button\",\"text\": \"${MULTIDEV} (${LIGHTHOUSE_SCORE})\",\"url\":\"${LIGHTHOUSE_HTML_REPORT_URL}\"},{\"type\": \"button\",\"text\": \"Live (${LIGHTHOUSE_PRODUCTION_SCORE})\",\"url\":\"${LIGHTHOUSE_PRODUCTION_HTML_REPORT_URL}\"}]}]"
 
 	# Post the report back to Slack
 	echo -e "\nSending a message to the ${SLACK_CHANNEL} Slack channel"
@@ -120,7 +120,7 @@ else
 	SLACK_MESSAGE="Lighthouse test passed! The score of \`$LIGHTHOUSE_SCORE\` isn't less than the acceptable score of \`$LIGHTHOUSE_ACCEPTABLE_SCORE\` (\`$LIGHTHOUSE_ACCEPTABLE_THRESHOLD\` less than the score of \`$LIGHTHOUSE_PRODUCTION_SCORE\` on the master branch)"
 
 	SLACK_MESSAGE="$SLACK_MESSAGE"
-    SLACK_ATTACHEMENTS="\"attachments\": [{\"fallback\": \"View the reports in CircleCI artifacts\",\"actions\": [{\"type\": \"button\",\"text\": \"${MULTIDEV} (${LIGHTHOUSE_SCORE})\",\"url\":\"${LIGHTHOUSE_HTML_REPORT_URL}\"},{\"type\": \"button\",\"text\": \"Live (${LIGHTHOUSE_PRODUCTION_SCORE})\",\"url\":\"${LIGHTHOUSE_PRODUCTION_HTML_REPORT_URL}\"}]}]"
+    SLACK_ATTACHEMENTS="\"attachments\": [{\"fallback\": \"View the reports in CircleCI artifacts\",\"color\": \"#008000\",\"actions\": [{\"type\": \"button\",\"text\": \"${MULTIDEV} (${LIGHTHOUSE_SCORE})\",\"url\":\"${LIGHTHOUSE_HTML_REPORT_URL}\"},{\"type\": \"button\",\"text\": \"Live (${LIGHTHOUSE_PRODUCTION_SCORE})\",\"url\":\"${LIGHTHOUSE_PRODUCTION_HTML_REPORT_URL}\"}]}]"
 
 	# Post the report back to Slack
 	echo -e "\nSending a message to the ${SLACK_CHANNEL} Slack channel"
