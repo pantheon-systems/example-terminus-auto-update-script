@@ -68,13 +68,21 @@ fi
 
 DIFF_REPORT_URL="$CIRCLE_ARTIFACTS_URL/backstop_data/html_report/index.html"
 
+$GREEN_HEX="#008000"
+$RED_HEX="#FF0000"
+
+SLACK_ATTACHEMENTS="\"attachments\": [{\"fallback\": \"View the visual regression report in CircleCI artifacts\",\"color\": \"${RED_HEX}\",\"actions\": [{\"type\": \"button\",\"text\": \"BackstopJS Report\",\"url\":\"${DIFF_REPORT_URL}\"},{\"type\": \"button\",\"text\": \"${MULTIDEV} Site)\",\"url\":\"${MULTIDEV_URL}\"},{\"type\": \"button\",\"text\": \"${MULTIDEV} Dashboard)\",\"url\":\"https://dashboard.pantheon.io/sites/${SITE_UUID}#${MULTIDEV}/code\"}]}]"
+
 if [[ ${VISUAL_REGRESSION_RESULTS} == *"Mismatch errors found"* ]]
 then
 	# visual regression failed
 	echo -e "\nVisual regression tests failed! Please manually check the ${MULTIDEV} multidev for $SITE_NAME..."
-	SLACK_MESSAGE="Circle CI update check #${CIRCLE_BUILD_NUM} by ${CIRCLE_PROJECT_USERNAME} on ${SITE_NAME}. Visual regression tests failed on <https://dashboard.pantheon.io/sites/${SITE_UUID}#${MULTIDEV}/code|the ${MULTIDEV} environment>! Please test manually. Visual Regression Report: $DIFF_REPORT_URL"
+	SLACK_MESSAGE="Circle CI update check #${CIRCLE_BUILD_NUM} by ${CIRCLE_PROJECT_USERNAME} on ${SITE_NAME}. Visual regression tests failed on the ${MULTIDEV} environment! Please test manually."
+
+    SLACK_ATTACHEMENTS="\"attachments\": [{\"fallback\": \"View the visual regression report in CircleCI artifacts\",\"color\": \"${RED_HEX}\",\"actions\": [{\"type\": \"button\",\"text\": \"BackstopJS Report\",\"url\":\"${DIFF_REPORT_URL}\"},{\"type\": \"button\",\"text\": \"${MULTIDEV} Site)\",\"url\":\"${MULTIDEV_URL}\"},{\"type\": \"button\",\"text\": \"${MULTIDEV} Dashboard)\",\"url\":\"https://dashboard.pantheon.io/sites/${SITE_UUID}#${MULTIDEV}/code\"}]}]"
+
 	echo -e "\nSending a message to the ${SLACK_CHANNEL} Slack channel"
-	curl -X POST --data "payload={\"channel\": \"${SLACK_CHANNEL}\", \"username\": \"${SLACK_USERNAME}\", \"text\": \"${SLACK_MESSAGE}\"}" $SLACK_HOOK_URL
+	curl -X POST --data "payload={\"channel\": \"${SLACK_CHANNEL}\",${SLACK_ATTACHEMENTS}, \"username\": \"${SLACK_USERNAME}\", \"text\": \"${SLACK_MESSAGE}\"}" $SLACK_HOOK_URL
 else
 	# visual regression passed
 	echo -e "\nVisual regression tests passed between the ${MULTIDEV} multidev and live for $SITE_NAME."
