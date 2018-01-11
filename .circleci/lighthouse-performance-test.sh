@@ -97,9 +97,6 @@ echo -e "\nMaster score of $LIGHTHOUSE_PRODUCTION_SCORE recorded"
 
 LIGHTHOUSE_PRODUCTION_HTML_REPORT_URL="$CIRCLE_ARTIFACTS_URL/$LIGHTHOUSE_PRODUCTION_HTML_REPORT"
 
-GREEN_HEX="#008000"
-RED_HEX="#FF0000"
-
 # Level of tolerance for score decline	
 LIGHTHOUSE_ACCEPTABLE_THRESHOLD=5
 LIGHTHOUSE_ACCEPTABLE_SCORE=$((LIGHTHOUSE_PRODUCTION_SCORE-LIGHTHOUSE_ACCEPTABLE_THRESHOLD))
@@ -119,21 +116,18 @@ if [ $LIGHTHOUSE_SCORE -lt $LIGHTHOUSE_ACCEPTABLE_SCORE ]; then
 else
 	# Lighthouse test passed! The score isn't less than the acceptable score
 	echo -e "\nAuto update Lighthouse test passed for $SITE_NAME! The score of $LIGHTHOUSE_SCORE isn't less than the acceptable score of $LIGHTHOUSE_ACCEPTABLE_SCORE ($LIGHTHOUSE_ACCEPTABLE_THRESHOLD less than the score of $LIGHTHOUSE_PRODUCTION_SCORE on $LIVE_URL)"
-	SLACK_MESSAGE="Auto update Lighthouse test passed for $SITE_NAME! The score of \`$LIGHTHOUSE_SCORE\` isn't less than the acceptable score of \`$LIGHTHOUSE_ACCEPTABLE_SCORE\` (\`$LIGHTHOUSE_ACCEPTABLE_THRESHOLD\` less than the score of \`$LIGHTHOUSE_PRODUCTION_SCORE\` on $LIVE_URL). View the reports below:"
-
-    SLACK_ATTACHEMENTS="\"attachments\": [{\"fallback\": \"View the Lighthouse reports in CircleCI artifacts\",\"color\": \"${GREEN_HEX}\",\"actions\": [{\"type\": \"button\",\"text\": \"${MULTIDEV} (${LIGHTHOUSE_SCORE})\",\"url\":\"${LIGHTHOUSE_HTML_REPORT_URL}\"},{\"type\": \"button\",\"text\": \"Live (${LIGHTHOUSE_PRODUCTION_SCORE})\",\"url\":\"${LIGHTHOUSE_PRODUCTION_HTML_REPORT_URL}\"}]}]"
-
-	# Post the report back to Slack
-	echo -e "\nSending a message to the ${SLACK_CHANNEL} Slack channel"
-	curl -X POST --data "payload={\"channel\": \"${SLACK_CHANNEL}\",${SLACK_ATTACHEMENTS}, \"username\": \"${SLACK_USERNAME}\", \"text\": \"${SLACK_MESSAGE}\"}" $SLACK_HOOK_URL
-
 
 	# Deploy updates
 	echo -e "\nStarting the deploy job via API for $SITE_NAME..."
 	curl --user ${CIRCLE_TOKEN}: \
                 --data build_parameters[CIRCLE_JOB]=deploy_updates \
-                --data build_parameters[DIFF_REPORT_URL]=$DIFF_REPORT_URL \
 				--data build_parameters[SITE_NAME]=$SITE_NAME \
+                --data build_parameters[VISUAL_REGRESSION_HTML_REPORT_URL]=$VISUAL_REGRESSION_HTML_REPORT_URL \
+				--data build_parameters[LIGHTHOUSE_SCORE]=$LIGHTHOUSE_SCORE \
+				--data build_parameters[LIGHTHOUSE_HTML_REPORT_URL]=$LIGHTHOUSE_HTML_REPORT_URL \
+				--data build_parameters[LIGHTHOUSE_PRODUCTION_SCORE]=$LIGHTHOUSE_PRODUCTION_SCORE \
+				--data build_parameters[LIGHTHOUSE_PRODUCTION_HTML_REPORT_URL]=$LIGHTHOUSE_PRODUCTION_HTML_REPORT_URL \
+				--data build_parameters[LIGHTHOUSE_ACCEPTABLE_THRESHOLD]=$LIGHTHOUSE_ACCEPTABLE_THRESHOLD \
 				--data build_parameters[SITE_UUID]=$SITE_UUID \
 				--data build_parameters[CREATE_BACKUPS]=$CREATE_BACKUPS \
 				--data build_parameters[RECREATE_MULTIDEV]=$RECREATE_MULTIDEV \

@@ -66,10 +66,7 @@ if [ ! -f $DIFF_REPORT ]; then
 	exit 1
 fi
 
-DIFF_REPORT_URL="$CIRCLE_ARTIFACTS_URL/backstop_data/html_report/index.html"
-
-GREEN_HEX="#008000"
-RED_HEX="#FF0000"
+VISUAL_REGRESSION_HTML_REPORT_URL="$CIRCLE_ARTIFACTS_URL/backstop_data/html_report/index.html"
 
 if [[ ${VISUAL_REGRESSION_RESULTS} == *"Mismatch errors found"* ]]
 then
@@ -77,7 +74,7 @@ then
 	echo -e "\nVisual regression tests failed! Please manually check the ${MULTIDEV} multidev for $SITE_NAME..."
 	SLACK_MESSAGE="Circle CI update check #${CIRCLE_BUILD_NUM} by ${CIRCLE_PROJECT_USERNAME} on ${SITE_NAME}. Visual regression tests failed on the ${MULTIDEV} environment! Please test manually."
 
-    SLACK_ATTACHEMENTS="\"attachments\": [{\"fallback\": \"View the visual regression report in CircleCI artifacts\",\"color\": \"${RED_HEX}\",\"actions\": [{\"type\": \"button\",\"text\": \"BackstopJS Report\",\"url\":\"${DIFF_REPORT_URL}\"},{\"type\": \"button\",\"text\": \"${MULTIDEV} Site\",\"url\":\"${MULTIDEV_URL}\"},{\"type\": \"button\",\"text\": \"${MULTIDEV} Dashboard\",\"url\":\"https://dashboard.pantheon.io/sites/${SITE_UUID}#${MULTIDEV}/code\"}]}]"
+    SLACK_ATTACHEMENTS="\"attachments\": [{\"fallback\": \"View the visual regression report in CircleCI artifacts\",\"color\": \"${RED_HEX}\",\"actions\": [{\"type\": \"button\",\"text\": \"BackstopJS Report\",\"url\":\"${VISUAL_REGRESSION_HTML_REPORT_URL}\"},{\"type\": \"button\",\"text\": \"${MULTIDEV} Site\",\"url\":\"${MULTIDEV_URL}\"},{\"type\": \"button\",\"text\": \"${MULTIDEV} Dashboard\",\"url\":\"https://dashboard.pantheon.io/sites/${SITE_UUID}#${MULTIDEV}/code\"}]}]"
 
 	echo -e "\nSending a message to the ${SLACK_CHANNEL} Slack channel"
 	curl -X POST --data "payload={\"channel\": \"${SLACK_CHANNEL}\",${SLACK_ATTACHEMENTS}, \"username\": \"${SLACK_USERNAME}\", \"text\": \"${SLACK_MESSAGE}\"}" $SLACK_HOOK_URL
@@ -89,7 +86,7 @@ else
 	echo -e "\nStarting the Lighthouse performance testing job via API for $SITE_NAME..."
 	curl --user ${CIRCLE_TOKEN}: \
                 --data build_parameters[CIRCLE_JOB]=lighthouse_performance_test \
-                --data build_parameters[DIFF_REPORT_URL]=$DIFF_REPORT_URL \
+                --data build_parameters[VISUAL_REGRESSION_HTML_REPORT_URL]=$VISUAL_REGRESSION_HTML_REPORT_URL \
 				--data build_parameters[SITE_NAME]=$SITE_NAME \
 				--data build_parameters[SITE_UUID]=$SITE_UUID \
 				--data build_parameters[CREATE_BACKUPS]=$CREATE_BACKUPS \

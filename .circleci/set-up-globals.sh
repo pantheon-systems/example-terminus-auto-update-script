@@ -26,6 +26,9 @@ then
     echo 'export UPDATE_TAG=auto-update' >> $BASH_ENV
 fi
 
+echo 'export GREEN_HEX="008000"' >> $BASH_ENV
+echo 'export GREEN_HEX="FF0000"' >> $BASH_ENV
+
 # Stash site URLs
 echo "export MULTIDEV_URL='https://$MULTIDEV-$SITE_NAME.pantheonsite.io/'" >> $BASH_ENV
 if [ -z "$LIVE_URL" ] || [ "$LIVE_URL" == "0" ]
