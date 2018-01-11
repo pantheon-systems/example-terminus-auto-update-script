@@ -21,7 +21,7 @@ then
     echo 'export MULTIDEV=update-wp' >> $BASH_ENV
 fi
 
-if [ -z "$UPDTE_TAG" ]
+if [ -z "$UPDATE_TAG" ]
 then
     echo 'export UPDATE_TAG=auto-update' >> $BASH_ENV
 fi

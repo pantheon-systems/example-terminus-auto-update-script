@@ -67,14 +67,14 @@ LIGHTHOUSE_SCORE=$(cat $LIGHTHOUSE_RESULTS_JSON | jq '.["total-score"] | floor |
 LIGHTHOUSE_HTML_REPORT_URL="$CIRCLE_ARTIFACTS_URL/$LIGHTHOUSE_HTML_REPORT"
 
 # Rsync files to CIRCLE_ARTIFACTS_DIR
-echo -e "\nRsyincing lighthouse_results files to $CIRCLE_ARTIFACTS_DIR..."
+echo -e "\nRsyncing lighthouse_results files to $CIRCLE_ARTIFACTS_DIR..."
 rsync -rlvz lighthouse_results $CIRCLE_ARTIFACTS_DIR
 
-LIGHTHOUSE_MASTER_RESULTS_DIR="lighthouse_results/master"
-LIGHTHOUSE_MASTER_REPORT_NAME="$LIGHTHOUSE_MASTER_RESULTS_DIR/lighthouse.json"
-LIGHTHOUSE_MASTER_JSON_REPORT="$LIGHTHOUSE_MASTER_RESULTS_DIR/lighthouse.report.json"
-LIGHTHOUSE_MASTER_HTML_REPORT="$LIGHTHOUSE_MASTER_RESULTS_DIR/lighthouse.report.html"
-LIGHTHOUSE_MASTER_RESULTS_JSON="$LIGHTHOUSE_MASTER_RESULTS_DIR/lighthouse.results.json"
+LIGHTHOUSE_PRODUCTION_RESULTS_DIR="lighthouse_results/master"
+LIGHTHOUSE_PRODUCTION_REPORT_NAME="$LIGHTHOUSE_PRODUCTION_RESULTS_DIR/lighthouse.json"
+LIGHTHOUSE_PRODUCTION_JSON_REPORT="$LIGHTHOUSE_PRODUCTION_RESULTS_DIR/lighthouse.report.json"
+LIGHTHOUSE_PRODUCTION_HTML_REPORT="$LIGHTHOUSE_PRODUCTION_RESULTS_DIR/lighthouse.report.html"
+LIGHTHOUSE_PRODUCTION_RESULTS_JSON="$LIGHTHOUSE_PRODUCTION_RESULTS_DIR/lighthouse.results.json"
 
 # Ping the live environment to wake it from sleep and prime the cache
 echo -e "\nPinging the live environment to wake it from sleep..."
@@ -82,47 +82,49 @@ curl -s -I "$LIVE_URL" >/dev/null
 
 # Run Lighthouse on the live environment
 echo -e "\nRunning Lighthouse on the live environment"
-lighthouse --perf --save-artifacts --output json --output html --output-path "$LIGHTHOUSE_MASTER_REPORT_NAME" --chrome-flags="--headless --disable-gpu --no-sandbox" ${LIVE_URL}
+lighthouse --perf --save-artifacts --output json --output html --output-path "$LIGHTHOUSE_PRODUCTION_REPORT_NAME" --chrome-flags="--headless --disable-gpu --no-sandbox" ${LIVE_URL}
 
 # Create tailored results JSON file
-cat $LIGHTHOUSE_MASTER_JSON_REPORT | jq '. | { "total-score": .score, "speed-index": .audits["speed-index-metric"]["score"], "first-meaningful-paint": .audits["first-meaningful-paint"]["score"], "estimated-input-latency": .audits["estimated-input-latency"]["score"], "time-to-first-byte": .audits["time-to-first-byte"]["rawValue"], "first-interactive": .audits["first-interactive"]["score"], "consistently-interactive": .audits["consistently-interactive"]["score"], "critical-request-chains": .audits["critical-request-chains"]["displayValue"], "redirects": .audits["redirects"]["score"], "bootup-time": .audits["bootup-time"]["rawValue"], "uses-long-cache-ttl": .audits["uses-long-cache-ttl"]["score"], "total-byte-weight": .audits["total-byte-weight"]["score"], "offscreen-images": .audits["offscreen-images"]["score"], "uses-webp-images": .audits["uses-webp-images"]["score"], "uses-optimized-images": .audits["uses-optimized-images"]["score"], "uses-request-compression": .audits["uses-request-compression"]["score"], "uses-responsive-images": .audits["uses-responsive-images"]["score"], "dom-size": .audits["dom-size"]["score"], "script-blocking-first-paint": .audits["script-blocking-first-paint"]["score"] }' > $LIGHTHOUSE_MASTER_RESULTS_JSON
+cat $LIGHTHOUSE_PRODUCTION_JSON_REPORT | jq '. | { "total-score": .score, "speed-index": .audits["speed-index-metric"]["score"], "first-meaningful-paint": .audits["first-meaningful-paint"]["score"], "estimated-input-latency": .audits["estimated-input-latency"]["score"], "time-to-first-byte": .audits["time-to-first-byte"]["rawValue"], "first-interactive": .audits["first-interactive"]["score"], "consistently-interactive": .audits["consistently-interactive"]["score"], "critical-request-chains": .audits["critical-request-chains"]["displayValue"], "redirects": .audits["redirects"]["score"], "bootup-time": .audits["bootup-time"]["rawValue"], "uses-long-cache-ttl": .audits["uses-long-cache-ttl"]["score"], "total-byte-weight": .audits["total-byte-weight"]["score"], "offscreen-images": .audits["offscreen-images"]["score"], "uses-webp-images": .audits["uses-webp-images"]["score"], "uses-optimized-images": .audits["uses-optimized-images"]["score"], "uses-request-compression": .audits["uses-request-compression"]["score"], "uses-responsive-images": .audits["uses-responsive-images"]["score"], "dom-size": .audits["dom-size"]["score"], "script-blocking-first-paint": .audits["script-blocking-first-paint"]["score"] }' > $LIGHTHOUSE_PRODUCTION_RESULTS_JSON
 
-LIGHTHOUSE_MASTER_SCORE=$(cat $LIGHTHOUSE_MASTER_RESULTS_JSON | jq '.["total-score"] | floor | tonumber')
+LIGHTHOUSE_PRODUCTION_SCORE=$(cat $LIGHTHOUSE_PRODUCTION_RESULTS_JSON | jq '.["total-score"] | floor | tonumber')
 
 # Rsync files to CIRCLE_ARTIFACTS_DIR again now that we have master results
-echo -e "\nRsyincing lighthouse_results files to $CIRCLE_ARTIFACTS_DIR..."
+echo -e "\nRsyncing lighthouse_results files to $CIRCLE_ARTIFACTS_DIR..."
 rsync -rlvz lighthouse_results $CIRCLE_ARTIFACTS_DIR
 
-echo -e "\nMaster score of $LIGHTHOUSE_MASTER_SCORE recorded"
+echo -e "\nMaster score of $LIGHTHOUSE_PRODUCTION_SCORE recorded"
 
-LIGHTHOUSE_MASTER_HTML_REPORT_URL="$CIRCLE_ARTIFACTS_URL/$LIGHTHOUSE_MASTER_HTML_REPORT"
-REPORT_LINK="<Lighthouse performance report for \`$CIRCLE_BRANCH\`|$LIGHTHOUSE_HTML_REPORT_URL> and compare it to the <Lighthouse performance report for the \`master\` branch|$LIGHTHOUSE_MASTER_HTML_REPORT_URL>"
+LIGHTHOUSE_PRODUCTION_HTML_REPORT_URL="$CIRCLE_ARTIFACTS_URL/$LIGHTHOUSE_PRODUCTION_HTML_REPORT"
+REPORT_LINK="<$LIGHTHOUSE_HTML_REPORT_URL|Lighthouse performance report for \`$CIRCLE_BRANCH\`> and compare it to the <$LIGHTHOUSE_PRODUCTION_HTML_REPORT_URL|Lighthouse performance report for the \`master\` branch>"
 
 # Level of tolerance for score decline	
 LIGHTHOUSE_ACCEPTABLE_THRESHOLD=5
-LIGHTHOUSE_ACCEPTABLE_SCORE=$((LIGHTHOUSE_MASTER_SCORE-LIGHTHOUSE_ACCEPTABLE_THRESHOLD))
+LIGHTHOUSE_ACCEPTABLE_SCORE=$((LIGHTHOUSE_PRODUCTION_SCORE-LIGHTHOUSE_ACCEPTABLE_THRESHOLD))
 if [ $LIGHTHOUSE_SCORE -lt $LIGHTHOUSE_ACCEPTABLE_SCORE ]; then
 	# Lighthouse test failed! The score is less than the acceptable score
-	echo -e "\nLighthouse test failed! The score of $LIGHTHOUSE_SCORE is less than the acceptable score of $LIGHTHOUSE_ACCEPTABLE_SCORE ($LIGHTHOUSE_ACCEPTABLE_THRESHOLD less the score of $LIGHTHOUSE_MASTER_SCORE on the master branch)"
-	SLACK_MESSAGE="Lighthouse test failed! The score of \`$LIGHTHOUSE_SCORE\` is less than the acceptable score of \`$LIGHTHOUSE_ACCEPTABLE_SCORE\` (\`$LIGHTHOUSE_ACCEPTABLE_THRESHOLD\` less than the score of \`$LIGHTHOUSE_MASTER_SCORE\` on the master branch)"
+	echo -e "\nLighthouse test failed! The score of $LIGHTHOUSE_SCORE is less than the acceptable score of $LIGHTHOUSE_ACCEPTABLE_SCORE ($LIGHTHOUSE_ACCEPTABLE_THRESHOLD less the score of $LIGHTHOUSE_PRODUCTION_SCORE on the master branch)"
+	SLACK_MESSAGE="Lighthouse test failed! The score of \`$LIGHTHOUSE_SCORE\` is less than the acceptable score of \`$LIGHTHOUSE_ACCEPTABLE_SCORE\` (\`$LIGHTHOUSE_ACCEPTABLE_THRESHOLD\` less than the score of \`$LIGHTHOUSE_PRODUCTION_SCORE\` on the master branch)"
 
-	SLACK_MESSAGE="$SLACK_MESSAGE\n\nView the full $REPORT_LINK"
+	SLACK_MESSAGE="$SLACK_MESSAGE"
+    SLACK_ATTACHEMENTS="\"attachments\": [{\"fallback\": \"View the reports in CircleCI artifacts\",\"actions\": [{\"type\": \"button\",\"text\": \"${MULTIDEV} (${LIGHTHOUSE_SCORE})\",\"url\":\"${LIGHTHOUSE_HTML_REPORT_URL}\"},{\"type\": \"button\",\"text\": \"Live (${LIGHTHOUSE_PRODUCTION_SCORE})\",\"url\":\"${LIGHTHOUSE_PRODUCTION_SCORE}\"}]}]"
 
 	# Post the report back to Slack
 	echo -e "\nSending a message to the ${SLACK_CHANNEL} Slack channel"
-	curl -X POST --data "payload={\"channel\": \"${SLACK_CHANNEL}\", \"username\": \"${SLACK_USERNAME}\", \"text\": \"${SLACK_MESSAGE}\"}" $SLACK_HOOK_URL
+	curl -X POST --data "payload={\"channel\": \"${SLACK_CHANNEL}\",${SLACK_ATTACHEMENTS}, \"username\": \"${SLACK_USERNAME}\", \"text\": \"${SLACK_MESSAGE}\"}" $SLACK_HOOK_URL
 
 	exit 1
 else
 	# Lighthouse test passed! The score isn't less than the acceptable score
-	echo -e "\nLighthouse test passed! The score of $LIGHTHOUSE_SCORE isn't less than the acceptable score of $LIGHTHOUSE_ACCEPTABLE_SCORE ($LIGHTHOUSE_ACCEPTABLE_THRESHOLD less than the score of $LIGHTHOUSE_MASTER_SCORE on the master branch)"
-	SLACK_MESSAGE="Lighthouse test passed! The score of \`$LIGHTHOUSE_SCORE\` isn't less than the acceptable score of \`$LIGHTHOUSE_ACCEPTABLE_SCORE\` (\`$LIGHTHOUSE_ACCEPTABLE_THRESHOLD\` less than the score of \`$LIGHTHOUSE_MASTER_SCORE\` on the master branch)"
+	echo -e "\nLighthouse test passed! The score of $LIGHTHOUSE_SCORE isn't less than the acceptable score of $LIGHTHOUSE_ACCEPTABLE_SCORE ($LIGHTHOUSE_ACCEPTABLE_THRESHOLD less than the score of $LIGHTHOUSE_PRODUCTION_SCORE on the master branch)"
+	SLACK_MESSAGE="Lighthouse test passed! The score of \`$LIGHTHOUSE_SCORE\` isn't less than the acceptable score of \`$LIGHTHOUSE_ACCEPTABLE_SCORE\` (\`$LIGHTHOUSE_ACCEPTABLE_THRESHOLD\` less than the score of \`$LIGHTHOUSE_PRODUCTION_SCORE\` on the master branch)"
 
-	SLACK_MESSAGE="$SLACK_MESSAGE\n\nView the full $REPORT_LINK"
+	SLACK_MESSAGE="$SLACK_MESSAGE"
+    SLACK_ATTACHEMENTS="\"attachments\": [{\"fallback\": \"View the reports in CircleCI artifacts\",\"actions\": [{\"type\": \"button\",\"text\": \"${MULTIDEV} (${LIGHTHOUSE_SCORE})\",\"url\":\"${LIGHTHOUSE_HTML_REPORT_URL}\"},{\"type\": \"button\",\"text\": \"Live (${LIGHTHOUSE_PRODUCTION_SCORE})\",\"url\":\"${LIGHTHOUSE_PRODUCTION_SCORE}\"}]}]"
 
 	# Post the report back to Slack
 	echo -e "\nSending a message to the ${SLACK_CHANNEL} Slack channel"
-	curl -X POST --data "payload={\"channel\": \"${SLACK_CHANNEL}\", \"username\": \"${SLACK_USERNAME}\", \"text\": \"${SLACK_MESSAGE}\"}" $SLACK_HOOK_URL
+	curl -X POST --data "payload={\"channel\": \"${SLACK_CHANNEL}\",${SLACK_ATTACHEMENTS}, \"username\": \"${SLACK_USERNAME}\", \"text\": \"${SLACK_MESSAGE}\"}" $SLACK_HOOK_URL
 
     exit 0
 

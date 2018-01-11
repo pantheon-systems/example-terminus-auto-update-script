@@ -94,7 +94,7 @@ jobs:
                 command: ./.circleci/set-up-globals.sh
 
             - run:
-                name: run visual regression tests
+                name: run lighthouse tests
                 command: ./.circleci/lighthouse-performance-test.sh
 
             - store_artifacts:
