@@ -47,7 +47,7 @@ SLACK_MESSAGE="Circle CI update check #${CIRCLE_BUILD_NUM} by ${CIRCLE_PROJECT_U
 
 SLACK_MESSAGE="Automated tests passed for $SITE_NAME! View the reports below:"
 
-SLACK_ATTACHEMENTS="\"attachments\": [{\"fallback\": \"View the test results in CircleCI artifacts\",\"color\": \"${GREEN_HEX}\",\"actions\": [{\"type\": \"button\",\"text\": \"Lighthouse Report for ${MULTIDEV} (${LIGHTHOUSE_SCORE})\",\"url\":\"${LIGHTHOUSE_HTML_REPORT_URL}\"},{\"type\": \"button\",\"text\": \"Lighthouse Report for Live (${LIGHTHOUSE_PRODUCTION_SCORE})\",\"url\":\"${LIGHTHOUSE_PRODUCTION_HTML_REPORT_URL}\"},{\"type\": \"button\",\"text\": \"BackstopJS Visual Regression Report\",\"url\":\"${DIFF_REPORT_URL}\"},{\"type\": \"button\",\"text\": \"View Site\",\"url\":\"${LIVE_URL}\"}]},{\"type\": \"button\",\"text\": \"Live environment dashboard\",\"url\":\"https://dashboard.pantheon.io/sites/${SITE_UUID}#live\"}]"
+SLACK_ATTACHEMENTS="\"attachments\": [{\"fallback\": \"View the test results in CircleCI artifacts\",\"color\": \"${GREEN_HEX}\",\"actions\": [{\"type\": \"button\",\"text\": \"Lighthouse Report for ${MULTIDEV} (${LIGHTHOUSE_SCORE})\",\"url\":\"${LIGHTHOUSE_HTML_REPORT_URL}\"},{\"type\": \"button\",\"text\": \"Lighthouse Report for Live (${LIGHTHOUSE_PRODUCTION_SCORE})\",\"url\":\"${LIGHTHOUSE_PRODUCTION_HTML_REPORT_URL}\"},{\"type\": \"button\",\"text\": \"BackstopJS Visual Regression Report\",\"url\":\"${DIFF_REPORT_URL}\"},{\"type\": \"button\",\"text\": \"View Site\",\"url\":\"${LIVE_URL}\"},{\"type\": \"button\",\"text\": \"Live environment dashboard\",\"url\":\"https://dashboard.pantheon.io/sites/${SITE_UUID}#live\"}]}]"
 
 # Post the report back to Slack
 echo -e "\nSending a message to the ${SLACK_CHANNEL} Slack channel"
