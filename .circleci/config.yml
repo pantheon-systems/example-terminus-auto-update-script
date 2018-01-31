@@ -139,7 +139,7 @@ workflows:
   update_and_test:
     triggers:
       - schedule:
-          cron: "0 */4 * * *"
+          cron: "5 4 * * *"
           filters:
             branches:
               only:
