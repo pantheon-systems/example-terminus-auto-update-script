@@ -77,6 +77,7 @@ jobs:
             - run:
                 name: run visual regression tests
                 command: ./.circleci/visual-regression-test.sh
+                no_output_timeout: 30m
 
             - store_artifacts:
                 path: /tmp/artifacts
@@ -96,10 +97,25 @@ jobs:
             - run:
                 name: run lighthouse tests
                 command: ./.circleci/lighthouse-performance-test.sh
+                no_output_timeout: 30m
 
             - store_artifacts:
                 path: /tmp/artifacts
                 destination: artifacts
+
+    behat_test:
+        <<: *defaults
+        steps:
+            - checkout
+
+            - run:
+                name: declare environment variables
+                command: ./.circleci/set-up-globals.sh
+
+            - run:
+                name: run behat tests
+                command: ./.circleci/behat-test.sh
+                no_output_timeout: 30m
     
     deploy_updates:
         <<: *defaults
