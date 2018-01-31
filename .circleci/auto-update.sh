@@ -130,7 +130,7 @@ else
     # Run visual regression tests
 	echo -e "\nUpdates applied, starting the visual regression testing job via API for $SITE_NAME..."
 	curl --user ${CIRCLE_TOKEN}: \
-                --data build_parameters[CIRCLE_JOB]=visual_regression_test \
+                --data build_parameters[CIRCLE_JOB]=lighthouse_performance_test \
 				--data build_parameters[SITE_NAME]=$SITE_NAME \
 				--data build_parameters[SITE_UUID]=$SITE_UUID \
 				--data build_parameters[CREATE_BACKUPS]=$CREATE_BACKUPS \
