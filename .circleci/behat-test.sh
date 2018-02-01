@@ -38,12 +38,6 @@ terminus -n backup:create $SITE_NAME.$MULTIDEV
 # Clear site cache
 terminus -n env:clear-cache $SITE_NAME.$MULTIDEV
 
-# Stash current WordPress username
-export WORDPRESS_USER_NAME=$WORDPRESS_ADMIN_USERNAME
-
-# Use a generic Pantheon user for testing
-export WORDPRESS_ADMIN_USERNAME='pantheon-ci-testing'
-
 # Setup the WordPress admin user
 terminus -n wp $SITE_NAME.$MULTIDEV -- user delete $WORDPRESS_ADMIN_USERNAME --yes
 {
@@ -68,15 +62,14 @@ cd $WORKING_DIR
 # Restore the backup made before testing
 terminus -n backup:restore $SITE_NAME.$MULTIDEV --element=database --yes
 
-# Reset WordPress user name
-export WORDPRESS_ADMIN_USERNAME=$WORDPRESS_USER_NAME
-
 SLACK_MESSAGE="Behat tests passed for $SITE_NAME! Proceeding with deployment."
 echo -e $SLACK_MESSAGE
 
+SLACK_ATTACHEMENTS="\"attachments\": [{\"fallback\": \"View the Behat log in CircleCI\",\"color\": \"${GREEN_HEX}\",\"actions\": [{\"type\": \"button\",\"text\": \"Behat test logs\",\"url\":\"${CIRCLE_BUILD_URL}\"}]}]"
+
 # Post the report back to Slack
 echo -e "\nSending a message to the ${SLACK_CHANNEL} Slack channel"
-curl -X POST --data "payload={\"channel\": \"${SLACK_CHANNEL}\", \"username\": \"${SLACK_USERNAME}\", \"text\": \"${SLACK_MESSAGE}\"}" $SLACK_HOOK_URL
+curl -X POST --data "payload={\"channel\": \"${SLACK_CHANNEL}\",${SLACK_ATTACHEMENTS}, \"username\": \"${SLACK_USERNAME}\", \"text\": \"${SLACK_MESSAGE}\"}" $SLACK_HOOK_URL
 
 
 # Deploy updates
