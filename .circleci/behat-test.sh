@@ -12,9 +12,9 @@ then
     exit 1
 fi
 
-if [ -z "$ADMIN_USERNAME" ] || [ -z "$ADMIN_PASSWORD" ]
+if [ -z "$WORDPRESS_ADMIN_USERNAME" ] || [ -z "$WORDPRESS_ADMIN_PASSWORD" ]
 then
-    echo "No WordPress credentials specified. Set ADMIN_USERNAME and ADMIN_PASSWORD."
+    echo "No WordPress credentials specified. Set WORDPRESS_ADMIN_USERNAME and WORDPRESS_ADMIN_PASSWORD."
     exit 1
 fi
 
@@ -35,19 +35,19 @@ terminus -n backup:create $SITE_NAME.$MULTIDEV
 terminus -n env:clear-cache $SITE_NAME.$MULTIDEV
 
 # Stash current WordPress username
-export WORDPRESS_USER_NAME=$ADMIN_USERNAME
+export WORDPRESS_USER_NAME=$WORDPRESS_ADMIN_USERNAME
 
 # Use a generic Pantheon user for testing
-export ADMIN_USERNAME='pantheon-ci-testing'
+export WORDPRESS_ADMIN_USERNAME='pantheon-ci-testing'
 
 # Setup the WordPress admin user
-terminus -n wp $SITE_NAME.$MULTIDEV -- user delete $ADMIN_USERNAME --yes
+terminus -n wp $SITE_NAME.$MULTIDEV -- user delete $WORDPRESS_ADMIN_USERNAME --yes
 {
-terminus -n wp $SITE_NAME.$MULTIDEV -- user create $ADMIN_USERNAME no-reply@getpantheon.com --user_pass=$ADMIN_PASSWORD --role=administrator
+terminus -n wp $SITE_NAME.$MULTIDEV -- user create $WORDPRESS_ADMIN_USERNAME no-reply@getpantheon.com --user_pass=$WORDPRESS_ADMIN_PASSWORD --role=administrator
 } &> /dev/null
 
 # Set Behat variables from environment variables
-export BEHAT_PARAMS='{"extensions":{"Behat\\MinkExtension":{"base_url":"https://'$MULTIDEV'-'$SITE_NAME'.pantheonsite.io"},"PaulGibbs\\WordpressBehatExtension":{"site_url":"https://'$MULTIDEV'-'$SITE_NAME'.pantheonsite.io/wp","users":{"admin":{"username":"'$ADMIN_USERNAME'","password":"'$ADMIN_PASSWORD'"}},"wpcli":{"binary":"terminus -n wp '$SITE_NAME'.'$MULTIDEV' --"}}}}'
+export BEHAT_PARAMS='{"extensions":{"Behat\\MinkExtension":{"base_url":"https://'$MULTIDEV'-'$SITE_NAME'.pantheonsite.io"},"PaulGibbs\\WordpressBehatExtension":{"site_url":"https://'$MULTIDEV'-'$SITE_NAME'.pantheonsite.io/wp","users":{"admin":{"username":"'$WORDPRESS_ADMIN_USERNAME'","password":"'$WORDPRESS_ADMIN_PASSWORD'"}},"wpcli":{"binary":"terminus -n wp '$SITE_NAME'.'$MULTIDEV' --"}}}}'
 
 # Wake the multidev environment before running tests
 terminus -n env:wake $SITE_NAME.$MULTIDEV
@@ -65,7 +65,7 @@ cd $WORKING_DIR
 terminus -n backup:restore $SITE_NAME.$MULTIDEV --element=database --yes
 
 # Reset WordPress user name
-export ADMIN_USERNAME=$WORDPRESS_USER_NAME
+export WORDPRESS_ADMIN_USERNAME=$WORDPRESS_USER_NAME
 
 SLACK_MESSAGE="Behat tests passed for $SITE_NAME! Proceeding with deployment."
 echo -e $SLACK_MESSAGE
