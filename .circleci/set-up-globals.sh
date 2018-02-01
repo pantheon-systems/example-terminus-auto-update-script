@@ -28,7 +28,7 @@ fi
 
 echo 'export GREEN_HEX="008000"' >> $BASH_ENV
 echo 'export RED_HEX="FF0000"' >> $BASH_ENV
-$RANDOM_PASS = $(openssl rand -hex 8)
+$RANDOM_PASS=$(openssl rand -hex 8)
 echo 'export WORDPRESS_ADMIN_USERNAME="pantheon"' >> $BASH_ENV
 echo 'export WORDPRESS_ADMIN_PASSWORD="$RANDOM_PASS"' >> $BASH_ENV
 
