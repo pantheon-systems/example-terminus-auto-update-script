@@ -26,6 +26,10 @@ echo
 # Exit immediately on errors
 set -ex
 
+# login to Terminus
+echo -e "\nLogging into Terminus..."
+terminus auth:login --machine-token=${TERMINUS_MACHINE_TOKEN}
+
 WORKING_DIR=$(pwd)
 
 # Create a backup before running Behat tests
