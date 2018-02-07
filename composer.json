@@ -4,10 +4,15 @@
   "version": "0.1.0",
   "type": "project",
   "keywords": [],
+  "minimum-stability": "dev",
   "repositories": [
     {
       "type": "composer",
       "url": "https://wpackagist.org"
+    },
+    {
+      "type": "vcs",
+      "url": "https://github.com/ataylorme/behat-wordpress-extension"
     }
   ],
   "require": {
@@ -17,7 +22,7 @@
     "behat/mink": "~1.5",
     "behat/mink-goutte-driver": "~1.0",
     "behat/mink-selenium2-driver": "~1.1",
-    "ataylorme/behat-wordpress-extension": "dev-allow-null-wp-cli-path"
+    "paulgibbs/behat-wordpress-extension": "dev-allow-null-wp-cli-path"
   },
   "config": {
     "vendor-dir": "vendor",
