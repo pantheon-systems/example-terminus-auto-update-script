@@ -30,7 +30,14 @@ set -ex
 echo -e "\nLogging into Terminus..."
 terminus auth:login --machine-token=${TERMINUS_MACHINE_TOKEN}
 
-WORKING_DIR=$(pwd)
+export WORKING_DIR=$(pwd)
+
+# Check for tests to run
+if [ ! -d $WORKING_DIR/tests/behat/$SITE_NAME ]
+then
+    echo -e "\n Behat test directory $WORKING_DIR/tests/behat/$SITE_NAME not found"
+    exit 1
+fi
 
 # Create a backup before running Behat tests
 terminus -n backup:create $SITE_NAME.$MULTIDEV
@@ -54,11 +61,6 @@ terminus -n env:wake $SITE_NAME.$MULTIDEV
 terminus -n wp $SITE_NAME.$MULTIDEV -- cli version
 
 # Run the Behat tests
-if[ ! -d $WORKING_DIR/tests/behat/$SITE_NAME ];
-then
-    echo -e "\n Behat test directory $WORKING_DIR/tests/behat/$SITE_NAME not found"
-    exit 1
-fi
 cd $WORKING_DIR/tests/behat/$SITE_NAME && $WORKING_DIR/vendor/bin/behat --config=$WORKING_DIR/tests/behat/behat-pantheon.yml --strict "$@"
 
 # Change back into working directory
