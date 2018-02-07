@@ -23,9 +23,6 @@ echo "Behat test site: $SITE_NAME.$MULTIDEV"
 echo "::::::::::::::::::::::::::::::::::::::::::::::::"
 echo
 
-# Exit immediately on errors
-set -ex
-
 # login to Terminus
 echo -e "\nLogging into Terminus..."
 terminus auth:login --machine-token=${TERMINUS_MACHINE_TOKEN}
@@ -60,6 +57,9 @@ done <<< "$WORDPRESS_ADMIN_USER_LIST"
 {
 terminus -n wp $SITE_NAME.$MULTIDEV -- user create $WORDPRESS_ADMIN_USERNAME no-reply@getpantheon.com --user_pass=$WORDPRESS_ADMIN_PASSWORD --role=administrator
 } &> /dev/null
+
+# Exit immediately on errors
+set -ex
 
 # Set Behat variables from environment variables
 export BEHAT_PARAMS='{"extensions":{"Behat\\MinkExtension":{"base_url":"https://'$MULTIDEV'-'$SITE_NAME'.pantheonsite.io"},"PaulGibbs\\WordpressBehatExtension":{"site_url":"https://'$MULTIDEV'-'$SITE_NAME'.pantheonsite.io/wp","users":{"admin":{"username":"'$WORDPRESS_ADMIN_USERNAME'","password":"'$WORDPRESS_ADMIN_PASSWORD'"}},"wpcli":{"binary":"terminus -n wp '$SITE_NAME'.'$MULTIDEV' --"}}}}'
