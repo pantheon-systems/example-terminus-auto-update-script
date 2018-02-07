@@ -54,12 +54,12 @@ terminus -n env:wake $SITE_NAME.$MULTIDEV
 terminus -n wp $SITE_NAME.$MULTIDEV -- cli version
 
 # Run the Behat tests
-if[ ! -d tests/behat/$SITE_NAME ];
+if[ ! -d $WORKING_DIR/tests/behat/$SITE_NAME ];
 then
-    echo -e "\n Behat test directory tests/behat/$SITE_NAME not found"
+    echo -e "\n Behat test directory $WORKING_DIR/tests/behat/$SITE_NAME not found"
     exit 1
 fi
-cd tests/behat/$SITE_NAME && $WORKING_DIR/vendor/bin/behat --config=$WORKING_DIR/tests/behat/behat-pantheon.yml --strict "$@"
+cd $WORKING_DIR/tests/behat/$SITE_NAME && $WORKING_DIR/vendor/bin/behat --config=$WORKING_DIR/tests/behat/behat-pantheon.yml --strict "$@"
 
 # Change back into working directory
 cd $WORKING_DIR
