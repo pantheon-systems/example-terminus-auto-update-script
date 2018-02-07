@@ -60,6 +60,9 @@ terminus -n env:wake $SITE_NAME.$MULTIDEV
 # Ping wp-cli to start ssh with the app server
 terminus -n wp $SITE_NAME.$MULTIDEV -- cli version
 
+# Install Composer dependencies
+composer install --no-ansi --no-interaction --optimize-autoloader --no-progress
+
 # Run the Behat tests
 cd $WORKING_DIR/tests/behat/$SITE_NAME && $WORKING_DIR/vendor/bin/behat --config=$WORKING_DIR/tests/behat/behat-pantheon.yml --strict "$@"
 
