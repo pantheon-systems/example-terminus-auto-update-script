@@ -33,20 +33,30 @@ terminus auth:login --machine-token=${TERMINUS_MACHINE_TOKEN}
 export WORKING_DIR=$(pwd)
 
 # Check for tests to run
-if [ ! -d $WORKING_DIR/tests/behat/$SITE_NAME ]
-then
+if [ ! -d $WORKING_DIR/tests/behat/$SITE_NAME ]; then
     echo -e "\n Behat test directory $WORKING_DIR/tests/behat/$SITE_NAME not found"
     exit 1
 fi
 
 # Create a backup before running Behat tests
-terminus -n backup:create $SITE_NAME.$MULTIDEV
+if [[ "$RECREATE_MULTIDEV" == "0" ]]
+then
+    echo -e "\n Reacreation of multidev was skipped so making a backup before running Behat tests"
+    terminus -n backup:create $SITE_NAME.$MULTIDEV
+fi
 
 # Clear site cache
 terminus -n env:clear-cache $SITE_NAME.$MULTIDEV
 
-# Setup the WordPress admin user
-terminus -n wp $SITE_NAME.$MULTIDEV -- user delete $WORDPRESS_ADMIN_USERNAME --yes
+# Check if the WordPress admin user exists
+WORDPRESS_ADMIN_USER_LIST="$(terminus -n wp $SITE_NAME.$MULTIDEV -- user list --field=user_login --role=administrator)"
+
+while read -r USER; do
+    if [[ "${USER}" == "$WORDPRESS_ADMIN_USERNAME" ]]; then
+        terminus -n wp $SITE_NAME.$MULTIDEV -- user delete $WORDPRESS_ADMIN_USERNAME --yes
+    fi
+done <<< "$WORDPRESS_ADMIN_USER_LIST"
+
 {
 terminus -n wp $SITE_NAME.$MULTIDEV -- user create $WORDPRESS_ADMIN_USERNAME no-reply@getpantheon.com --user_pass=$WORDPRESS_ADMIN_PASSWORD --role=administrator
 } &> /dev/null
@@ -70,7 +80,11 @@ cd $WORKING_DIR/tests/behat/$SITE_NAME && $WORKING_DIR/vendor/bin/behat --config
 cd $WORKING_DIR
 
 # Restore the backup made before testing
-terminus -n backup:restore $SITE_NAME.$MULTIDEV --element=database --yes
+if [[ "$RECREATE_MULTIDEV" == "0" ]]
+then
+    echo -e "\n Reacreation of multidev was skipped so restoring the backup made before running Behat tests"
+    terminus -n backup:restore $SITE_NAME.$MULTIDEV --element=database --yes
+fi
 
 SLACK_MESSAGE="Behat tests passed for $SITE_NAME! Proceeding with deployment."
 echo -e $SLACK_MESSAGE
