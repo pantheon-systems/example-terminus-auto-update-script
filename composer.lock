@@ -927,12 +927,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/ataylorme/behat-wordpress-extension.git",
-                "reference": "5370e59de92ee133a5e35428e6ca0d474207d009"
+                "reference": "31e64f87baa90c03e0289ad42e166933ab8a346a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/ataylorme/behat-wordpress-extension/zipball/5370e59de92ee133a5e35428e6ca0d474207d009",
-                "reference": "5370e59de92ee133a5e35428e6ca0d474207d009",
+                "url": "https://api.github.com/repos/ataylorme/behat-wordpress-extension/zipball/31e64f87baa90c03e0289ad42e166933ab8a346a",
+                "reference": "31e64f87baa90c03e0289ad42e166933ab8a346a",
                 "shasum": ""
             },
             "require": {
@@ -1002,7 +1002,7 @@
             "support": {
                 "source": "https://github.com/ataylorme/behat-wordpress-extension/tree/allow-null-wp-cli-path"
             },
-            "time": "2018-02-08T01:36:14+00:00"
+            "time": "2018-02-08T17:06:12+00:00"
         },
         {
             "name": "psr/container",
