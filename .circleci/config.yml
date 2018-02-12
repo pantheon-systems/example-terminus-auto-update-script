@@ -127,6 +127,6 @@ workflows:
           filters:
             branches:
               only:
-                - cron
+                - master
     jobs:
       - build
