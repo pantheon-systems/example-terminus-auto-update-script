@@ -927,12 +927,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/ataylorme/behat-wordpress-extension.git",
-                "reference": "982bf2974b0b9ebc1a782e491f750b5a2fd64be4"
+                "reference": "8d70933445df62b7194124bb8be4acac835c053b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/ataylorme/behat-wordpress-extension/zipball/982bf2974b0b9ebc1a782e491f750b5a2fd64be4",
-                "reference": "982bf2974b0b9ebc1a782e491f750b5a2fd64be4",
+                "url": "https://api.github.com/repos/ataylorme/behat-wordpress-extension/zipball/8d70933445df62b7194124bb8be4acac835c053b",
+                "reference": "8d70933445df62b7194124bb8be4acac835c053b",
                 "shasum": ""
             },
             "require": {
@@ -1002,7 +1002,7 @@
             "support": {
                 "source": "https://github.com/ataylorme/behat-wordpress-extension/tree/allow-null-wp-cli-path"
             },
-            "time": "2018-02-08T17:32:45+00:00"
+            "time": "2018-02-12T18:15:48+00:00"
         },
         {
             "name": "psr/container",
@@ -1352,12 +1352,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/console.git",
-                "reference": "3a5d4a855f7fb4741cbb34756bf11de3bb31ea6b"
+                "reference": "4de97e8d0ff6d4822f0b4d1486b63edf9028eac8"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/console/zipball/3a5d4a855f7fb4741cbb34756bf11de3bb31ea6b",
-                "reference": "3a5d4a855f7fb4741cbb34756bf11de3bb31ea6b",
+                "url": "https://api.github.com/repos/symfony/console/zipball/4de97e8d0ff6d4822f0b4d1486b63edf9028eac8",
+                "reference": "4de97e8d0ff6d4822f0b4d1486b63edf9028eac8",
                 "shasum": ""
             },
             "require": {
@@ -1412,7 +1412,7 @@
             ],
             "description": "Symfony Console Component",
             "homepage": "https://symfony.com",
-            "time": "2018-02-07T06:27:48+00:00"
+            "time": "2018-02-09T15:48:09+00:00"
         },
         {
             "name": "symfony/css-selector",
@@ -1473,12 +1473,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/dependency-injection.git",
-                "reference": "096607414f7f707ab74f9de09ac1c5bd2b7e4bc6"
+                "reference": "e6158523d19a04043ecf403400f6c5b4617001eb"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/dependency-injection/zipball/096607414f7f707ab74f9de09ac1c5bd2b7e4bc6",
-                "reference": "096607414f7f707ab74f9de09ac1c5bd2b7e4bc6",
+                "url": "https://api.github.com/repos/symfony/dependency-injection/zipball/e6158523d19a04043ecf403400f6c5b4617001eb",
+                "reference": "e6158523d19a04043ecf403400f6c5b4617001eb",
                 "shasum": ""
             },
             "require": {
@@ -1536,7 +1536,7 @@
             ],
             "description": "Symfony DependencyInjection Component",
             "homepage": "https://symfony.com",
-            "time": "2018-02-04T14:28:49+00:00"
+            "time": "2018-02-12T14:11:06+00:00"
         },
         {
             "name": "symfony/dom-crawler",
@@ -1839,12 +1839,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/yaml.git",
-                "reference": "a8906f0709fd3b0e6020886014aeb423f584993e"
+                "reference": "b33f2fbe7349704d2a06bacc5a15b1a4c94e468f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/yaml/zipball/a8906f0709fd3b0e6020886014aeb423f584993e",
-                "reference": "a8906f0709fd3b0e6020886014aeb423f584993e",
+                "url": "https://api.github.com/repos/symfony/yaml/zipball/b33f2fbe7349704d2a06bacc5a15b1a4c94e468f",
+                "reference": "b33f2fbe7349704d2a06bacc5a15b1a4c94e468f",
                 "shasum": ""
             },
             "require": {
@@ -1889,7 +1889,7 @@
             ],
             "description": "Symfony Yaml Component",
             "homepage": "https://symfony.com",
-            "time": "2018-01-21T19:07:38+00:00"
+            "time": "2018-02-11T17:18:00+00:00"
         },
         {
             "name": "zendframework/zend-code",
