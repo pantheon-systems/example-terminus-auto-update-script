@@ -1,4 +1,4 @@
-Feature: Login as an administrator (no-js)
+Feature: Login as an administrator
   As a maintainer of the site
   I want basic login behavior to work
   So that I can administer the site
