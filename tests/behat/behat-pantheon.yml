@@ -13,7 +13,6 @@ default:
         - PaulGibbs\WordpressBehatExtension\Context\WordpressContext
         - PaulGibbs\WordpressBehatExtension\Context\EditPostContext
         - PaulGibbs\WordpressBehatExtension\Context\WidgetContext
-        - PaulGibbs\WordpressBehatExtension\Context\MinkGoutteDriver
 
   extensions:
     Behat\MinkExtension:
