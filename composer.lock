@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "09a6fa24af4d6a4a72d1a8714f29bc83",
+    "content-hash": "02727a47a2234642852f2c5d39403d5a",
     "packages": [],
     "packages-dev": [
         {
@@ -2002,6 +2002,8 @@
     "aliases": [],
     "minimum-stability": "dev",
     "stability-flags": {
+        "behat/mink-goutte-driver": 20,
+        "behat/mink-selenium2-driver": 20,
         "paulgibbs/behat-wordpress-extension": 20
     },
     "prefer-stable": false,
