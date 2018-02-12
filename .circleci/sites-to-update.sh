@@ -19,7 +19,6 @@ while IFS= read -r SITE_UUID &&
 	fi
 
 	curl --user ${CIRCLE_TOKEN}: \
-				#--data build_parameters[CIRCLE_JOB]=check_for_updates \
 				--data build_parameters[CIRCLE_JOB]=behat_test \
 				--data build_parameters[SITE_NAME]=$SITE_NAME \
 				--data build_parameters[SITE_UUID]=$SITE_UUID \
