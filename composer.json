@@ -12,7 +12,7 @@
     },
     {
       "type": "vcs",
-      "url": "https://github.com/ataylorme/behat-wordpress-extension"
+      "url": "https://github.com/paulgibbs/behat-wordpress-extension"
     }
   ],
   "require": {
@@ -22,7 +22,7 @@
     "behat/mink": "~1.5",
     "behat/mink-goutte-driver": "^1.2@dev",
     "behat/mink-selenium2-driver": "^1.3@dev",
-    "paulgibbs/behat-wordpress-extension": "dev-allow-null-wp-cli-path"
+    "paulgibbs/behat-wordpress-extension": "dev-185-path-fix"
   },
   "config": {
     "vendor-dir": "vendor",
