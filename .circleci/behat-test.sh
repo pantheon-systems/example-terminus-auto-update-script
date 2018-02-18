@@ -59,7 +59,7 @@ terminus -n wp $SITE_NAME.$MULTIDEV -- user create $WORDPRESS_ADMIN_USERNAME no-
 } &> /dev/null
 
 # Exit immediately on errors
-set -ex
+#set -ex
 
 # Set Behat variables from environment variables
 export BEHAT_PARAMS='{"extensions":{"Behat\\MinkExtension":{"base_url":"https://'$MULTIDEV'-'$SITE_NAME'.pantheonsite.io"},"PaulGibbs\\WordpressBehatExtension":{"site_url":"https://'$MULTIDEV'-'$SITE_NAME'.pantheonsite.io","users":{"admin":{"username":"'$WORDPRESS_ADMIN_USERNAME'","password":"'$WORDPRESS_ADMIN_PASSWORD'"}},"wpcli":{"binary":"terminus -n wp '$SITE_NAME'.'$MULTIDEV' --"}}}}'
