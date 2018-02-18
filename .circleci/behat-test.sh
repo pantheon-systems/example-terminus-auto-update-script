@@ -74,7 +74,8 @@ composer install --no-ansi --no-interaction --optimize-autoloader --no-progress
 cd $WORKING_DIR/tests/behat/$SITE_NAME
 
 # Stash the Behat results
-BEHAT_RESULTS="$($WORKING_DIR/vendor/bin/behat --config=$WORKING_DIR/tests/behat/behat-pantheon.yml --strict \"$@\" || echo 'true' )"
+echo -e "\n Running Behat..."
+BEHAT_RESULTS=$($WORKING_DIR/vendor/bin/behat --config=$WORKING_DIR/tests/behat/behat-pantheon.yml --strict "$@" || echo 'true' )
 
 # Output
 echo $BEHAT_RESULTS
