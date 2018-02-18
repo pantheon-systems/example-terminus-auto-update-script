@@ -58,9 +58,6 @@ done <<< "$WORDPRESS_ADMIN_USER_LIST"
 terminus -n wp $SITE_NAME.$MULTIDEV -- user create $WORDPRESS_ADMIN_USERNAME no-reply@getpantheon.com --user_pass=$WORDPRESS_ADMIN_PASSWORD --role=administrator
 } &> /dev/null
 
-# Exit immediately on errors
-#set -ex
-
 # Set Behat variables from environment variables
 export BEHAT_PARAMS='{"extensions":{"Behat\\MinkExtension":{"base_url":"https://'$MULTIDEV'-'$SITE_NAME'.pantheonsite.io"},"PaulGibbs\\WordpressBehatExtension":{"site_url":"https://'$MULTIDEV'-'$SITE_NAME'.pantheonsite.io","users":{"admin":{"username":"'$WORDPRESS_ADMIN_USERNAME'","password":"'$WORDPRESS_ADMIN_PASSWORD'"}},"wpcli":{"binary":"terminus -n wp '$SITE_NAME'.'$MULTIDEV' --"}}}}'
 
@@ -74,7 +71,13 @@ terminus -n wp $SITE_NAME.$MULTIDEV -- cli version
 composer install --no-ansi --no-interaction --optimize-autoloader --no-progress
 
 # Run the Behat tests
-cd $WORKING_DIR/tests/behat/$SITE_NAME && $WORKING_DIR/vendor/bin/behat --config=$WORKING_DIR/tests/behat/behat-pantheon.yml --strict "$@"
+cd $WORKING_DIR/tests/behat/$SITE_NAME
+
+# Stash the Behat results
+BEHAT_RESULTS="$($WORKING_DIR/vendor/bin/behat --config=$WORKING_DIR/tests/behat/behat-pantheon.yml --strict \"$@\" || echo 'true' )"
+
+# Output
+echo $BEHAT_RESULTS
 
 # Change back into working directory
 cd $WORKING_DIR
@@ -86,14 +89,27 @@ then
     terminus -n backup:restore $SITE_NAME.$MULTIDEV --element=database --yes
 fi
 
-SLACK_MESSAGE="Behat tests passed for $SITE_NAME! Proceeding with deployment."
-echo -e $SLACK_MESSAGE
+if [[ ${BEHAT_RESULTS} == *"Failed scenarios"* ]]
+then
+	# Behat failed
+    SLACK_MESSAGE="Behat tests failed for $SITE_NAME! Halting deployment. Please check the logs for more details."
+    SLACK_ATTACHEMENTS="\"attachments\": [{\"fallback\": \"View the Behat log in CircleCI\",\"color\": \"${RED_HEX}\",\"actions\": [{\"type\": \"button\",\"text\": \"Behat test logs\",\"url\":\"${CIRCLE_BUILD_URL}\"}]}]"
+else
+    SLACK_MESSAGE="Behat tests passed for $SITE_NAME! Proceeding with deployment."
+    SLACK_ATTACHEMENTS="\"attachments\": [{\"fallback\": \"View the Behat log in CircleCI\",\"color\": \"${GREEN_HEX}\",\"actions\": [{\"type\": \"button\",\"text\": \"Behat test logs\",\"url\":\"${CIRCLE_BUILD_URL}\"}]}]"
+fi
 
-SLACK_ATTACHEMENTS="\"attachments\": [{\"fallback\": \"View the Behat log in CircleCI\",\"color\": \"${GREEN_HEX}\",\"actions\": [{\"type\": \"button\",\"text\": \"Behat test logs\",\"url\":\"${CIRCLE_BUILD_URL}\"}]}]"
+echo -e $SLACK_MESSAGE
 
 # Post the report back to Slack
 echo -e "\nSending a message to the ${SLACK_CHANNEL} Slack channel"
 curl -X POST --data "payload={\"channel\": \"${SLACK_CHANNEL}\",${SLACK_ATTACHEMENTS}, \"username\": \"${SLACK_USERNAME}\", \"text\": \"${SLACK_MESSAGE}\"}" $SLACK_HOOK_URL
+
+if [[ ${BEHAT_RESULTS} == *"Failed scenarios"* ]]
+then
+	# Behat failed
+    exit 1
+fi
 
 
 # Deploy updates
