@@ -78,7 +78,7 @@ echo -e "\n Running Behat..."
 BEHAT_RESULTS=$($WORKING_DIR/vendor/bin/behat --config=$WORKING_DIR/tests/behat/behat-pantheon.yml --strict "$@" || echo 'true' )
 
 # Output
-echo $BEHAT_RESULTS
+echo "$BEHAT_RESULTS"
 
 # Change back into working directory
 cd $WORKING_DIR
@@ -100,7 +100,7 @@ else
     SLACK_ATTACHEMENTS="\"attachments\": [{\"fallback\": \"View the Behat log in CircleCI\",\"color\": \"${GREEN_HEX}\",\"actions\": [{\"type\": \"button\",\"text\": \"Behat test logs\",\"url\":\"${CIRCLE_BUILD_URL}\"}]}]"
 fi
 
-echo -e $SLACK_MESSAGE
+echo -e "\n$SLACK_MESSAGE"
 
 # Post the report back to Slack
 echo -e "\nSending a message to the ${SLACK_CHANNEL} Slack channel"
