@@ -15,10 +15,6 @@ set -ex
 # See: https://discuss.circleci.com/t/circle-2-0-global-environment-variables/8681
 #=====================================================================================================================
 
-echo 'export PATH=$PATH:$HOME/bin:$HOME/terminus/bin' >> $BASH_ENV
-
-source $BASH_ENV
-
 # Check to see if the multidev is already defined in the environment variable. If not, define it now.
 if [ -z "$MULTIDEV" ]
 then
@@ -32,9 +28,9 @@ fi
 
 # login to Terminus
 echo -e "\nLogging into Terminus..."
-terminus auth:login --machine-token=${TERMINUS_MACHINE_TOKEN}
+$HOME/terminus/bin auth:login --machine-token=${TERMINUS_MACHINE_TOKEN}
 
-PANTHEON_FRAMEWORK="$(terminus site:info ${SITE_NAME} --field=framework)"
+PANTHEON_FRAMEWORK="$($HOME/terminus/bin site:info ${SITE_NAME} --field=framework)"
 
 if [[ ${PANTHEON_FRAMEWORK} == "wordpress" ]]
 then
@@ -64,6 +60,8 @@ then
 else
 	echo "using existing LIVE_URL $LIVE_URL for $SITE_NAME"
 fi
+
+echo 'export PATH=$PATH:$HOME/bin:$HOME/terminus/bin' >> $BASH_ENV
 
 source $BASH_ENV
 
