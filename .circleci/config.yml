@@ -55,12 +55,12 @@ jobs:
             - checkout
 
             - run:
-                name: declare framework
-                command: ./.circleci/set-framework.sh
-
-            - run:
                 name: declare environment variables
                 command: ./.circleci/set-up-globals.sh
+
+            - run:
+                name: declare framework
+                command: ./.circleci/set-framework.sh
 
             - run:
                 name: check for updates
@@ -117,12 +117,12 @@ jobs:
                     - composer-cache
 
             - run:
-                name: declare framework
-                command: ./.circleci/set-framework.sh
-
-            - run:
                 name: declare environment variables
                 command: ./.circleci/set-up-globals.sh
+
+            - run:
+                name: declare framework
+                command: ./.circleci/set-framework.sh
 
             - run:
                 name: run behat tests
@@ -140,12 +140,12 @@ jobs:
             - checkout
 
             - run:
-                name: declare framework
-                command: ./.circleci/set-framework.sh
-
-            - run:
                 name: declare environment variables
                 command: ./.circleci/set-up-globals.sh
+
+            - run:
+                name: declare framework
+                command: ./.circleci/set-framework.sh
 
             - run:
                 name: deploy updates
