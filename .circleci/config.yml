@@ -2,7 +2,7 @@
 defaults: &defaults
   docker:
     - image: ataylorme/docker-php-advanced-wordpress-on-pantheon:latest
-  working_directory: ~/wordpress-at-scale-auto-update
+  working_directory: ~/pantheon-auto-updates
   environment:
     #=========================================================================
     # In addition to the environment variables defined in this file, also
