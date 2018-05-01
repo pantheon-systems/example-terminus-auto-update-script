@@ -18,7 +18,7 @@ set -ex
 # Check to see if the multidev is already defined in the environment variable. If not, define it now.
 if [ -z "$MULTIDEV" ]
 then
-    echo 'export MULTIDEV=update-wp' >> $BASH_ENV
+    echo 'export MULTIDEV=auto-update' >> $BASH_ENV
 fi
 
 if [ -z "$UPDATE_TAG" ]
