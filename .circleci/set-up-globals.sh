@@ -30,6 +30,10 @@ then
     echo 'export UPDATE_TAG=auto-update' >> $BASH_ENV
 fi
 
+# login to Terminus
+echo -e "\nLogging into Terminus..."
+terminus auth:login --machine-token=${TERMINUS_MACHINE_TOKEN}
+
 PANTHEON_FRAMEWORK="$(terminus site:info ${SITE_NAME} --field=framework)"
 
 if [[ ${PANTHEON_FRAMEWORK} == "wordpress" ]]
