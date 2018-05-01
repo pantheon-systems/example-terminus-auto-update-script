@@ -15,11 +15,6 @@ while IFS= read -r SITE_UUID &&
 		echo -e "Skipping backups for $SITE_NAME..."
 	fi
 
-    if [[ "$RECREATE_MULTIDEV" == "0" ]]
-	then
-		echo -e "Skipping recreation of multidev for $SITE_NAME..."
-	fi
-
 	curl --user ${CIRCLE_TOKEN}: \
 				--data build_parameters[CIRCLE_JOB]=check_for_updates \
 				--data build_parameters[SITE_NAME]=$SITE_NAME \

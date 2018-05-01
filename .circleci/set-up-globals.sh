@@ -18,7 +18,7 @@ set -ex
 # Check to see if the multidev is already defined in the environment variable. If not, define it now.
 if [ -z $MULTIDEV ]
 then
-    echo 'export MULTIDEV="auto-update"' >> $BASH_ENV
+    echo 'export MULTIDEV=auto-update' >> $BASH_ENV
 fi
 
 echo 'export GREEN_HEX="008000"' >> $BASH_ENV

@@ -27,6 +27,9 @@ echo
 echo -e "\nLogging into Terminus..."
 terminus auth:login --machine-token=${TERMINUS_MACHINE_TOKEN} > /dev/null 2>&1
 
+# Bail on errors
+set +ex
+
 export WORKING_DIR=$(pwd)
 
 # Check for tests to run

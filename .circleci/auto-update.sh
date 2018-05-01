@@ -5,6 +5,9 @@ echo -e "\nKicking off an update check for ${SITE_NAME} with UUID ${SITE_UUID}..
 echo -e "\nLogging into Terminus..."
 terminus auth:login --machine-token=${TERMINUS_MACHINE_TOKEN} > /dev/null 2>&1
 
+# Bail on errors
+set +ex
+
 # Helper to see if a multidev exists
 TERMINUS_DOES_MULTIDEV_EXIST()
 {
@@ -29,7 +32,7 @@ TERMINUS_DOES_MULTIDEV_EXIST()
 
 if [[ "$RECREATE_MULTIDEV" == "0" ]]
 then
-	echo -e "\nSkipping recreation of multidev for ${SITE_NAME}..."
+	echo -e "\nSkipping deletion and recreation of multidev for ${SITE_NAME}..."
 else
 	# delete the multidev environment if it exists
 	echo -e "\nDeleting the ${MULTIDEV} multidev environment for ${SITE_NAME}..."

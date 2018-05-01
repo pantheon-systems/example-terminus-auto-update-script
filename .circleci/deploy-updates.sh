@@ -5,6 +5,9 @@ echo -e "\Deploying updates for $SITE_NAME with UUID $SITE_UUID..."
 echo -e "\nLogging into Terminus..."
 terminus auth:login --machine-token=${TERMINUS_MACHINE_TOKEN} > /dev/null 2>&1
 
+# Bail on errors
+set +ex
+
 # enable git mode on dev
 echo -e "\nEnabling git mode on the dev environment for $SITE_NAME..."
 terminus connection:set $SITE_UUID.dev git
