@@ -37,8 +37,11 @@ else
 fi
 
 # Create the multidev environment
-echo -e "\nCreating the ${MULTIDEV} multidev environment for ${SITE_NAME}..."
-terminus multidev:create $SITE_NAME.live $MULTIDEV
+if ! TERMINUS_DOES_MULTIDEV_EXIST ${MULTIDEV}
+then
+    echo -e "\nCreating the ${MULTIDEV} multidev environment for ${SITE_NAME}..."
+    terminus multidev:create $SITE_NAME.live $MULTIDEV
+fi
 
 # check for upstream updates
 echo -e "\nChecking for upstream updates on the ${MULTIDEV} multidev for ${SITE_NAME}..."
