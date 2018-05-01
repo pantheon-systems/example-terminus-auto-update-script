@@ -42,6 +42,10 @@ jobs:
             - checkout
 
             - run:
+                name: declare environment variables
+                command: ./.circleci/set-up-globals.sh
+
+            - run:
                 name: fire off updates on multiple sites
                 command: ./.circleci/sites-to-update.sh
 
@@ -49,6 +53,10 @@ jobs:
         <<: *defaults
         steps:
             - checkout
+
+            - run:
+                name: declare framework
+                command: ./.circleci/set-framework.sh
 
             - run:
                 name: declare environment variables
@@ -109,6 +117,10 @@ jobs:
                     - composer-cache
 
             - run:
+                name: declare framework
+                command: ./.circleci/set-framework.sh
+
+            - run:
                 name: declare environment variables
                 command: ./.circleci/set-up-globals.sh
 
@@ -126,6 +138,10 @@ jobs:
         <<: *defaults
         steps:
             - checkout
+
+            - run:
+                name: declare framework
+                command: ./.circleci/set-framework.sh
 
             - run:
                 name: declare environment variables
