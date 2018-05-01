@@ -15,6 +15,10 @@ set -ex
 # See: https://discuss.circleci.com/t/circle-2-0-global-environment-variables/8681
 #=====================================================================================================================
 
+echo 'export PATH=$PATH:$HOME/bin:$HOME/terminus/bin' >> $BASH_ENV
+
+source $BASH_ENV
+
 # Check to see if the multidev is already defined in the environment variable. If not, define it now.
 if [ -z "$MULTIDEV" ]
 then
@@ -56,8 +60,6 @@ then
 else
 	echo "using existing LIVE_URL $LIVE_URL for $SITE_NAME"
 fi
-
-echo 'export PATH=$PATH:$HOME/bin:$HOME/terminus/bin' >> $BASH_ENV
 
 source $BASH_ENV
 
