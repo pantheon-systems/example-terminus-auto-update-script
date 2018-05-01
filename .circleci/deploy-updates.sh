@@ -3,7 +3,7 @@ echo -e "\Deploying updates for $SITE_NAME with UUID $SITE_UUID..."
 
 # login to Terminus
 echo -e "\nLogging into Terminus..."
-terminus auth:login --machine-token=${TERMINUS_MACHINE_TOKEN}
+terminus auth:login --machine-token=${TERMINUS_MACHINE_TOKEN} >/dev/null
 
 # enable git mode on dev
 echo -e "\nEnabling git mode on the dev environment for $SITE_NAME..."

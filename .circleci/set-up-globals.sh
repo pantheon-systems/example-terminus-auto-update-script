@@ -15,6 +15,8 @@ set -ex
 # See: https://discuss.circleci.com/t/circle-2-0-global-environment-variables/8681
 #=====================================================================================================================
 
+export PATH=$PATH:$HOME/bin:$HOME/terminus/bin
+
 # Check to see if the multidev is already defined in the environment variable. If not, define it now.
 if [ -z "$MULTIDEV" ]
 then
@@ -28,9 +30,9 @@ fi
 
 # login to Terminus
 echo -e "\nLogging into Terminus..."
-$HOME/terminus/bin auth:login --machine-token=${TERMINUS_MACHINE_TOKEN}
+terminus auth:login --machine-token=${TERMINUS_MACHINE_TOKEN} >/dev/null
 
-PANTHEON_FRAMEWORK="$($HOME/terminus/bin site:info ${SITE_NAME} --field=framework)"
+PANTHEON_FRAMEWORK="$(terminus site:info ${SITE_NAME} --field=framework)"
 
 if [[ ${PANTHEON_FRAMEWORK} == "wordpress" ]]
 then

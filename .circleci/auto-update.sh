@@ -3,7 +3,7 @@ echo -e "\nKicking off an update check for ${SITE_NAME} with UUID ${SITE_UUID}..
 
 # login to Terminus
 echo -e "\nLogging into Terminus..."
-terminus auth:login --machine-token=${TERMINUS_MACHINE_TOKEN}
+terminus auth:login --machine-token=${TERMINUS_MACHINE_TOKEN} >/dev/null
 
 # Helper to see if a multidev exists
 TERMINUS_DOES_MULTIDEV_EXIST()

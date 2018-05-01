@@ -25,7 +25,7 @@ echo
 
 # login to Terminus
 echo -e "\nLogging into Terminus..."
-terminus auth:login --machine-token=${TERMINUS_MACHINE_TOKEN}
+terminus auth:login --machine-token=${TERMINUS_MACHINE_TOKEN} >/dev/null
 
 export WORKING_DIR=$(pwd)
 
