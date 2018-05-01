@@ -25,7 +25,7 @@
     {
       "label": "/",
       "url": "https://live-solr-power.pantheonsite.io/",
-      "referenceUrl": "https://update-wp-solr-power.pantheonsite.io",
+      "referenceUrl": "https://auto-update-solr-power.pantheonsite.io",
       "hideSelectors": [],
       "selectors": [
         "document"
@@ -37,7 +37,7 @@
     {
       "label": "/hello-world/",
       "url": "https://live-solr-power.pantheonsite.io/hello-world/",
-      "referenceUrl": "https://update-wp-solr-power.pantheonsite.io/hello-world/",
+      "referenceUrl": "https://auto-update-solr-power.pantheonsite.io/hello-world/",
       "hideSelectors": [],
       "selectors": [
         "document"
@@ -49,7 +49,7 @@
     {
       "label": "/author/ataylor/",
       "url": "https://live-solr-power.pantheonsite.io/author/ataylor/",
-      "referenceUrl": "https://update-wp-solr-power.pantheonsite.io/author/ataylor/",
+      "referenceUrl": "https://auto-update-solr-power.pantheonsite.io/author/ataylor/",
       "hideSelectors": [],
       "selectors": [
         "document"
@@ -61,7 +61,7 @@
     {
       "label": "/category/uncategorized/",
       "url": "https://live-solr-power.pantheonsite.io/category/uncategorized/",
-      "referenceUrl": "https://update-wp-solr-power.pantheonsite.io/category/uncategorized/",
+      "referenceUrl": "https://auto-update-solr-power.pantheonsite.io/category/uncategorized/",
       "hideSelectors": [],
       "selectors": [
         "document"
@@ -73,7 +73,7 @@
     {
       "label": "/hello-world/?replytocom=1",
       "url": "https://live-solr-power.pantheonsite.io/hello-world/?replytocom=1",
-      "referenceUrl": "https://update-wp-solr-power.pantheonsite.io/hello-world/?replytocom=1",
+      "referenceUrl": "https://auto-update-solr-power.pantheonsite.io/hello-world/?replytocom=1",
       "hideSelectors": [],
       "selectors": [
         "document"
