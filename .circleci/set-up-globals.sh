@@ -30,7 +30,7 @@ fi
 
 # login to Terminus
 echo -e "\nLogging into Terminus..."
-terminus auth:login --machine-token=${TERMINUS_MACHINE_TOKEN} >/dev/null
+terminus auth:login --machine-token=${TERMINUS_MACHINE_TOKEN} > /dev/null 2>&1
 
 PANTHEON_FRAMEWORK="$(terminus site:info ${SITE_NAME} --field=framework)"
 
