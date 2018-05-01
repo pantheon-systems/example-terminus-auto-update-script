@@ -42,10 +42,6 @@ jobs:
             - checkout
 
             - run:
-                name: declare environment variables
-                command: ./.circleci/set-up-globals.sh
-
-            - run:
                 name: fire off updates on multiple sites
                 command: ./.circleci/sites-to-update.sh
 
