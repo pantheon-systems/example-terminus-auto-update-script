@@ -92,34 +92,56 @@ echo -e "\nChecking for ${CMS_CONTRIB} updates on the ${MULTIDEV} multidev for $
 if [[ ${CMS_FRAMEWORK} == "wordpress" ]]
 then
 
-    PLUGIN_UPDATES=$(terminus -n wp ${SITE_UUID}.${MULTIDEV} -- plugin list --fields=name,update,version,update_version --update=available --format=csv)
+    PLUGIN_UPDATES=$(terminus -n wp ${SITE_UUID}.${MULTIDEV} -- plugin list --update=available --format=count)
+
+    echo $PLUGIN_UPDATES
+
+    if [[ "$PLUGIN_UPDATES" == "0" ]]
+    then
+        # no WordPress plugin or Drupal module updates found
+        echo -e "\nNo ${CMS_CONTRIB} updates found on the ${MULTIDEV} multidev for $SITE_NAME..."
+    else
+        # update WordPress plugins or Drupal modules
+        echo -e "\nUpdating ${CMS_CONTRIB}s on the ${MULTIDEV} multidev for $SITE_NAME..."
+        terminus -n wp $SITE_UUID.$MULTIDEV -- plugin update --all
+
+        # wake the site environment before committing code
+        echo -e "\nWaking the ${MULTIDEV} multidev..."
+        terminus env:wake $SITE_UUID.$MULTIDEV
+
+        # committing updated WordPress plugins or Drupal modules
+        echo -e "\nCommitting ${CMS_CONTRIB} updates on the ${MULTIDEV} multidev for $SITE_NAME..."
+        terminus env:commit $SITE_UUID.$MULTIDEV --force --message="update ${CMS_CONTRIB}"
+        UPDATES_APPLIED=true
+    fi
 fi
 
 # check for Drupal module updates
 if [[ ${CMS_FRAMEWORK} == "drupal" ]]
 then
+
     PLUGIN_UPDATES=$(terminus drush ${SITE_UUID}.${TERMINUS_ENV} -- pm-updatestatus --format=list --check-disabled | grep -v ok)
-fi
 
-echo $PLUGIN_UPDATES
+    echo $PLUGIN_UPDATES
 
-if [[ "$PLUGIN_UPDATES" == "" ]]
-then
-    # no WordPress plugin or Drupal module updates found
-    echo -e "\nNo ${CMS_CONTRIB} updates found on the ${MULTIDEV} multidev for $SITE_NAME..."
-else
-    # update WordPress plugins or Drupal modules
-    echo -e "\nUpdating ${CMS_CONTRIB}s on the ${MULTIDEV} multidev for $SITE_NAME..."
-    terminus -n wp $SITE_UUID.$MULTIDEV -- plugin update --all
+    if [[ "$PLUGIN_UPDATES" == "" ]]
+    then
+        # no WordPress plugin or Drupal module updates found
+        echo -e "\nNo ${CMS_CONTRIB} updates found on the ${MULTIDEV} multidev for $SITE_NAME..."
+    else
+        # update WordPress plugins or Drupal modules
+        echo -e "\nUpdating ${CMS_CONTRIB}s on the ${MULTIDEV} multidev for $SITE_NAME..."
+        terminus -n drush $SITE_UUID.$MULTIDEV -- pm-updatecode --no-core --yes
 
-    # wake the site environment before committing code
-    echo -e "\nWaking the ${MULTIDEV} multidev..."
-    terminus env:wake $SITE_UUID.$MULTIDEV
+        # wake the site environment before committing code
+        echo -e "\nWaking the ${MULTIDEV} multidev..."
+        terminus env:wake $SITE_UUID.$MULTIDEV
 
-    # committing updated WordPress plugins or Drupal modules
-    echo -e "\nCommitting ${CMS_CONTRIB} updates on the ${MULTIDEV} multidev for $SITE_NAME..."
-    terminus env:commit $SITE_UUID.$MULTIDEV --force --message="update ${CMS_CONTRIB}"
-    UPDATES_APPLIED=true
+        # committing updated WordPress plugins or Drupal modules
+        echo -e "\nCommitting ${CMS_CONTRIB} updates on the ${MULTIDEV} multidev for $SITE_NAME..."
+        terminus env:commit $SITE_UUID.$MULTIDEV --force --message="update ${CMS_CONTRIB}"
+        UPDATES_APPLIED=true
+    fi
 fi
 
 # check for WordPress theme updates
