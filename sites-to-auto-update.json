@@ -40,5 +40,12 @@
 		"CREATE_BACKUPS": 1,
 		"RECREATE_MULTIDEV": 1,
 		"LIVE_URL": 0
+	},
+	{
+		"SITE_UUID": "5a0a798d-d881-4f27-aa88-39c57ee3a7eb",
+		"SITE_NAME": "museo-de-arte-store",
+		"CREATE_BACKUPS": 1,
+		"RECREATE_MULTIDEV": 1,
+		"LIVE_URL": 0
 	}
 ]
