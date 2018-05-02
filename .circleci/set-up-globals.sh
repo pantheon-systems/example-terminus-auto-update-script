@@ -19,6 +19,7 @@ set -ex
 if [ -z $MULTIDEV ]
 then
     echo 'export MULTIDEV=auto-update' >> $BASH_ENV
+    MULTIDEV=auto-update
 fi
 
 echo 'export GREEN_HEX="008000"' >> $BASH_ENV
