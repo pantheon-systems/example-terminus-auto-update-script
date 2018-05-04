@@ -9,13 +9,10 @@ while IFS= read -r SITE_UUID &&
 	
 	# Start check_for_updates job via API
 	echo -e "\nStarting the check for updates job via API for $SITE_NAME..."
-	if [[ "$CREATE_BACKUPS" == "0" ]]
+
+    if [[ "$CREATE_BACKUPS" == "0" ]]
 	then
 		echo -e "Skipping backups for $SITE_NAME..."
-	fi
-	if [[ "$RECREATE_MULTIDEV" == "0" ]]
-	then
-		echo -e "Skipping recreation of multidev for $SITE_NAME..."
 	fi
 
 	curl --user ${CIRCLE_TOKEN}: \

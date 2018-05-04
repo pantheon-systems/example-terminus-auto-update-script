@@ -16,21 +16,17 @@ set -ex
 #=====================================================================================================================
 
 # Check to see if the multidev is already defined in the environment variable. If not, define it now.
-if [ -z "$MULTIDEV" ]
+if [ -z $MULTIDEV ]
 then
-    echo 'export MULTIDEV=update-wp' >> $BASH_ENV
-fi
-
-if [ -z "$UPDATE_TAG" ]
-then
-    echo 'export UPDATE_TAG=auto-update' >> $BASH_ENV
+    echo 'export MULTIDEV=auto-update' >> $BASH_ENV
+    MULTIDEV=auto-update
 fi
 
 echo 'export GREEN_HEX="008000"' >> $BASH_ENV
 echo 'export RED_HEX="FF0000"' >> $BASH_ENV
 RANDOM_PASS=$(openssl rand -hex 8)
-echo "export WORDPRESS_ADMIN_USERNAME='pantheon'" >> $BASH_ENV
-echo "export WORDPRESS_ADMIN_PASSWORD='$RANDOM_PASS'" >> $BASH_ENV
+echo "export CMS_ADMIN_USERNAME='pantheon'" >> $BASH_ENV
+echo "export CMS_ADMIN_PASSWORD='$RANDOM_PASS'" >> $BASH_ENV
 
 # Stash site URLs
 echo "export MULTIDEV_URL='https://$MULTIDEV-$SITE_NAME.pantheonsite.io/'" >> $BASH_ENV

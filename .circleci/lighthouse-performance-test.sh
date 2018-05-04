@@ -1,5 +1,8 @@
 #!/bin/bash
 
+# Bail on errors
+set +ex
+
 # Variables
 BUILD_DIR=$(pwd)
 GITHUB_API_URL="https://api.github.com/repos/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME"
@@ -117,7 +120,7 @@ else
 	# Lighthouse test passed! The score isn't less than the acceptable score
 	echo -e "\nAuto update Lighthouse test passed for $SITE_NAME! The score of $LIGHTHOUSE_SCORE isn't less than the acceptable score of $LIGHTHOUSE_ACCEPTABLE_SCORE ($LIGHTHOUSE_ACCEPTABLE_THRESHOLD less than the score of $LIGHTHOUSE_PRODUCTION_SCORE on $LIVE_URL)"
 
-    if [ -d tests/behat/$SITE_NAME ]
+    if [[ -d tests/behat/$SITE_NAME && $CMS_FRAMEWORK == "wordpress" ]]
     then
         # Run Behat tests
         echo -e "\nStarting the behat test job via API for $SITE_NAME..."

@@ -12,9 +12,9 @@ then
     exit 1
 fi
 
-if [ -z "$WORDPRESS_ADMIN_USERNAME" ] || [ -z "$WORDPRESS_ADMIN_PASSWORD" ]
+if [ -z "$CMS_ADMIN_USERNAME" ] || [ -z "$CMS_ADMIN_PASSWORD" ]
 then
-    echo "No WordPress credentials specified. Set WORDPRESS_ADMIN_USERNAME and WORDPRESS_ADMIN_PASSWORD."
+    echo "No CMS credentials specified. Set CMS_ADMIN_USERNAME and CMS_ADMIN_PASSWORD."
     exit 1
 fi
 
@@ -25,7 +25,10 @@ echo
 
 # login to Terminus
 echo -e "\nLogging into Terminus..."
-terminus auth:login --machine-token=${TERMINUS_MACHINE_TOKEN}
+terminus auth:login --machine-token=${TERMINUS_MACHINE_TOKEN} > /dev/null 2>&1
+
+# Bail on errors
+set +ex
 
 export WORKING_DIR=$(pwd)
 
@@ -49,17 +52,17 @@ terminus -n env:clear-cache $SITE_NAME.$MULTIDEV
 WORDPRESS_ADMIN_USER_LIST="$(terminus -n wp $SITE_NAME.$MULTIDEV -- user list --field=user_login --role=administrator)"
 
 while read -r USER; do
-    if [[ "${USER}" == "$WORDPRESS_ADMIN_USERNAME" ]]; then
-        terminus -n wp $SITE_NAME.$MULTIDEV -- user delete $WORDPRESS_ADMIN_USERNAME --yes
+    if [[ "${USER}" == "$CMS_ADMIN_USERNAME" ]]; then
+        terminus -n wp $SITE_NAME.$MULTIDEV -- user delete $CMS_ADMIN_USERNAME --yes
     fi
 done <<< "$WORDPRESS_ADMIN_USER_LIST"
 
 {
-terminus -n wp $SITE_NAME.$MULTIDEV -- user create $WORDPRESS_ADMIN_USERNAME no-reply@getpantheon.com --user_pass=$WORDPRESS_ADMIN_PASSWORD --role=administrator
+terminus -n wp $SITE_NAME.$MULTIDEV -- user create $CMS_ADMIN_USERNAME no-reply@getpantheon.com --user_pass=$CMS_ADMIN_PASSWORD --role=administrator
 } &> /dev/null
 
 # Set Behat variables from environment variables
-export BEHAT_PARAMS='{"extensions":{"Behat\\MinkExtension":{"base_url":"https://'$MULTIDEV'-'$SITE_NAME'.pantheonsite.io"},"PaulGibbs\\WordpressBehatExtension":{"site_url":"https://'$MULTIDEV'-'$SITE_NAME'.pantheonsite.io","users":{"admin":{"username":"'$WORDPRESS_ADMIN_USERNAME'","password":"'$WORDPRESS_ADMIN_PASSWORD'"}},"wpcli":{"binary":"terminus -n wp '$SITE_NAME'.'$MULTIDEV' --"}}}}'
+export BEHAT_PARAMS='{"extensions":{"Behat\\MinkExtension":{"base_url":"https://'$MULTIDEV'-'$SITE_NAME'.pantheonsite.io"},"PaulGibbs\\WordpressBehatExtension":{"site_url":"https://'$MULTIDEV'-'$SITE_NAME'.pantheonsite.io","users":{"admin":{"username":"'$CMS_ADMIN_USERNAME'","password":"'$CMS_ADMIN_PASSWORD'"}},"wpcli":{"binary":"terminus -n wp '$SITE_NAME'.'$MULTIDEV' --"}}}}'
 
 # Wake the multidev environment before running tests
 terminus -n env:wake $SITE_NAME.$MULTIDEV

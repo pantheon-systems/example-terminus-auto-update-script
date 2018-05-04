@@ -1,6 +1,6 @@
 'use strict';
 
-const BackstopReferenceBaseUrl = 'https://update-wp-wp-new-relic-demo.pantheonsite.io/';
+const BackstopReferenceBaseUrl = 'https://auto-update-wp-new-relic-demo.pantheonsite.io/';
 const BackstopTestUrl = 'https://live-wp-new-relic-demo.pantheonsite.io/';
 
 const simple_scenarios_paths = [
