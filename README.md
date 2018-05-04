@@ -13,6 +13,9 @@ Scalable automated testing and deployment of upstream (core), plugin and theme u
 * [BackstopJS](https://garris.github.io/BackstopJS/) for visual regression testing
 * [Slack](https://slack.com/) for communication
 
+## Disclaimer
+While this script has worked well for us your mileage may vary. This repository is a proof of concept example of advanced Pantheon platform usage and it is provided without warranty or direct support. 
+
 ## The Process
 
 This script will loop through all sites in `sites-to-auto-update.json` and:
