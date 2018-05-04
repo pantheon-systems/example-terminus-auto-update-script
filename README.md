@@ -14,7 +14,9 @@ Scalable automated testing and deployment of upstream (core), plugin and theme u
 * [Slack](https://slack.com/) for communication
 
 ## Disclaimer
-While this script has worked well for us your mileage may vary. This repository is a proof of concept example of advanced Pantheon platform usage and it is provided without warranty or direct support. 
+While this script has worked well for us your mileage may vary. This repository is a proof of concept example of advanced Pantheon platform usage and is provided without warranty or direct support.
+
+Issues and questions may be filed in GitHub but their resolution is not guaranteed.
 
 ## The Process
 
