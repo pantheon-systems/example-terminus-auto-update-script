@@ -47,5 +47,12 @@
 		"CREATE_BACKUPS": 1,
 		"RECREATE_MULTIDEV": 1,
 		"LIVE_URL": 0
+	},
+	{
+		"SITE_UUID": "be5b6744-f822-4f2d-bf81-dcbb8565eb55",
+		"SITE_NAME": "devrel-gutes",
+		"CREATE_BACKUPS": 1,
+		"RECREATE_MULTIDEV": 1,
+		"LIVE_URL": 0
 	}
 ]
