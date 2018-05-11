@@ -1,7 +1,7 @@
 'use strict';
 
-const BackstopReferenceBaseUrl = 'https://auto-update-wp-new-relic-demo.pantheonsite.io/';
-const BackstopTestUrl = 'https://live-wp-new-relic-demo.pantheonsite.io/';
+const BackstopReferenceBaseUrl = 'https://auto-update-devrel-gutes.pantheonsite.io/';
+const BackstopTestUrl = 'https://dev-devrel-gutes.pantheonsite.io/';
 
 const simple_scenarios_paths = [
   "/gutenberg-demo-post/",
