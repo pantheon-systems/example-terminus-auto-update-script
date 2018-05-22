@@ -1,4 +1,4 @@
-# Pantheon Auto Update
+# Pantheon Example Terminus Auto Update Script
 
 ## Description
 
