@@ -94,5 +94,9 @@ All work that isn't ready for deployment to production should be kept in a [Pant
 
 Scalability relies on the number of CircleCI workers available. If workers are available to process jobs in parallel this script will scale very well.
 
-## License ##
+## Changelog
+### `1.0.0`
+* Initial release
+
+## License
 [GPLv2 or later](http://www.gnu.org/licenses/gpl-2.0.html)
