@@ -116,7 +116,7 @@ fi
 if [[ ${CMS_FRAMEWORK} == "drupal" ]]
 then
 
-    PLUGIN_UPDATES=$(terminus drush ${SITE_UUID}.${TERMINUS_ENV} -- pm-updatestatus --format=list --check-disabled | grep -v ok)
+    PLUGIN_UPDATES=$(terminus drush ${SITE_UUID}.${MULTIDEV} -- pm-updatestatus --format=list --check-disabled | grep -v ok)
 
     echo $PLUGIN_UPDATES
 
