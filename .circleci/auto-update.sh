@@ -8,6 +8,14 @@ terminus auth:login --machine-token=${TERMINUS_MACHINE_TOKEN} > /dev/null 2>&1
 # Bail on errors
 set +ex
 
+IS_FROZEN="$(terminus site:info ${SITE_UUID} --field=frozen)"
+
+if [ "true" == IS_FROZEN ]
+then
+    echo -e "Update check stopped! The site ${SITE_NAME} is frozen. Either unfreeze the site or consider removing it from the sites to check.\n"
+    exit 0
+fi
+
 # Helper to see if a multidev exists
 TERMINUS_DOES_MULTIDEV_EXIST()
 {
