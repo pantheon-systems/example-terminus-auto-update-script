@@ -54,5 +54,26 @@
 		"CREATE_BACKUPS": 1,
 		"RECREATE_MULTIDEV": 1,
 		"LIVE_URL": 0
-	}
+	},
+	{
+		"SITE_UUID": "7a025581-2ce5-4ea6-8743-e9839b34cddf",
+		"SITE_NAME": "review-signal-pantheon-elite-test-site",
+		"CREATE_BACKUPS": 1,
+		"RECREATE_MULTIDEV": 1,
+		"LIVE_URL": 0
+	},
+	{
+		"SITE_UUID": "cc3460fc-d471-483d-a75c-4fabdc6478e2",
+		"SITE_NAME": "review-signal-pantheon-personal-test-site",
+		"CREATE_BACKUPS": 1,
+		"RECREATE_MULTIDEV": 1,
+		"LIVE_URL": 0
+	},
+	{
+		"SITE_UUID": "b0a609c7-cd41-441e-a4fe-766c4eab4622",
+		"SITE_NAME": "review-signal-pantheon-professional-test-site",
+		"CREATE_BACKUPS": 1,
+		"RECREATE_MULTIDEV": 1,
+		"LIVE_URL": 0
+	},
 ]
