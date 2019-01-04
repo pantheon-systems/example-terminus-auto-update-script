@@ -61,7 +61,7 @@ This script will loop through all sites in `sites-to-auto-update.json` and:
 	* `SLACK_HOOK_URL`: The [Slack incoming webhook URL](https://api.slack.com/incoming-webhooks)
 	* `SLACK_CHANNEL`: The Slack channel to post notifications to
 	* `SLACK_USERNAME`: The username to post to Slack with
-5. Add an [SSH key to Pantheon](https://pantheon.io/docs/ssh-keys/) and [to the CircleCI project](https://circleci.com/docs/permissions-and-access-during-deployment/)
+5. Add an [SSH key to Pantheon](https://pantheon.io/docs/ssh-keys/) and [to the CircleCI project](https://circleci.com/docs/2.0/add-ssh-key/)
 6. Edit `sites-to-auto-update.json` and set the following key for each JSON object for sites you wish to auto update. **The order is important** do not change the order of the keys in the object or skip keys.
 	* `SITE_UUID`: The site UUID, which can be acquired with `terminus site:list` or is in the dashboard URL for the site.
 	* `SITE_NAME`: The site machine name, which can be acquired with `terminus site:list`.
