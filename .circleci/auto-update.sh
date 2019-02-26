@@ -10,7 +10,7 @@ set +ex
 
 IS_FROZEN="$(terminus site:info ${SITE_UUID} --field=frozen)"
 
-if [[ ${IS_FROZEN} == "true" ]]
+if [[ ${IS_FROZEN} == "1" ]]
 then
     echo -e "Update check stopped! The site ${SITE_NAME} is frozen. Either unfreeze the site or consider removing it from the sites to check.\n"
     exit 0
