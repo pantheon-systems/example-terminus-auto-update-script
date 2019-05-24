@@ -99,4 +99,4 @@ Scalability relies on the number of CircleCI workers available. If workers are a
 * Initial beta release
 
 ## License
-[GPLv2 or later](http://www.gnu.org/licenses/gpl-2.0.html)
+MIT
