@@ -157,13 +157,14 @@ workflows:
   commit-workflow:
     jobs:
       - build
-  update_and_test:
-    triggers:
-      - schedule:
-          cron: "5 4 * * *"
-          filters:
-            branches:
-              only:
-                - master
-    jobs:
-      - build
+# Remove the commented code below to run the build job on a daily cron
+#  update_and_test:
+#    triggers:
+#      - schedule:
+#          cron: "5 4 * * *"
+#          filters:
+#            branches:
+#              only:
+#                - master
+#    jobs:
+#      - build
