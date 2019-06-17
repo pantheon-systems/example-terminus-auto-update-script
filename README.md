@@ -2,7 +2,7 @@
 
 ## Repository Archived 2019-06-13
 
-This repository was archived on the 26th of June 2019. It remains as a reference implementation but is no longer used or maintained. The sites previously updated by this script have been migrated to [Staging Pilot](https://pantheon.io/blog/robots-autopilot-and-holy-grail-webops).
+This repository was archived on the 26th of June 2019. It remains as a reference implementation but is no longer used or maintained. The sites previously updated by this script have been migrated to [StagingPilot](https://pantheon.io/blog/robots-autopilot-and-holy-grail-webops).
 
 ## Description
 
